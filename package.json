@@ -1,0 +1,43 @@
+{
+  "name": "netflix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test:unit": "jasmine --config=unit-tests.json",
+    "test:integration": "jasmine --config=integration-tests.json",
+    "test:unit-coverage": "nyc npm run test:unit",
+    "test:integration-coverage": "nyc npm run test:integration"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigo-zamora/Netflix.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rodrigo-zamora/Netflix/issues"
+  },
+  "homepage": "https://github.com/rodrigo-zamora/Netflix#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "jasmine": "^4.0.2",
+    "jasmine-spec-reporter": "^7.0.0",
+    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.6",
+    "passport": "^0.5.2",
+    "passport-google-oauth20": "^2.0.0",
+    "supertest": "^6.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "nyc": "^15.1.0"
+  }
+}
