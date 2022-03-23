@@ -17,7 +17,7 @@ const paymentSchema = new mongoose.Schema({
         required: true,
         enum: ['creditCard', 'paypal']
     }
-});
+}, { collection : 'payments' });
 
 let Payment = mongoose.model('Payment', paymentSchema);
 

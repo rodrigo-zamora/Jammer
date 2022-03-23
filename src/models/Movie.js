@@ -48,7 +48,7 @@ const movieSquema = new mongoose.Schema({
         type: [String],
         required: true
     }
-});
+}, { collection : 'movies' });
 
 let Movie = mongoose.model('Movie', movieSquema);
 

@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt');
-
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -10,11 +8,6 @@ function generateUUID() {
     return uuid;
 }
 
-function hashPassword(password) {
-    return bcrypt.hashSync(password, 10);
-}
-
 module.exports = {
-    generateUUID,
-    hashPassword
+    generateUUID
 };

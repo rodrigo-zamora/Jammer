@@ -21,7 +21,7 @@ const suscriptionSquema = new mongoose.Schema({
         required: true,
         enum: ['free', 'premium']
     }
-});
+}, { collection : 'suscriptions' });
 
 let Suscription = mongoose.model('Suscription', suscriptionSquema);
 

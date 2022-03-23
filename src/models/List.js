@@ -30,7 +30,7 @@ const listSquema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }]
-});
+}, { collection : 'lists' });
 
 let List = mongoose.model('List', listSquema);
 
