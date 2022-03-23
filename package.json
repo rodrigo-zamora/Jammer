@@ -35,7 +35,9 @@
     "mongoose": "^6.2.6",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "swagger-ui-express": "^4.3.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",

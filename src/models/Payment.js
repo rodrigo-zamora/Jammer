@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+let Utils = require('../utils/utils');
+
 const paymentSchema = new mongoose.Schema({
     UUID: {
         type: String,
