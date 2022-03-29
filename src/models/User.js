@@ -39,50 +39,64 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        default: function () {
+            // Generate a salt
+            bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+                if (err) return next(err);
+
+                // Hash the password using our new salt
+                bcrypt.hash(user.password, salt, function (err, hash) {
+                    if (err) return next(err);
+
+                    // Override the cleartext password with the hashed one
+                    user.password = hash;
+                    next();
+                });
+            });
+        }
     },
     createdAt: {
         type: Date,
-        required: true,
+        required: false,
         default: Date.now
     },
     updatedAt: {
         type: Date,
-        required: true,
+        required: false,
         default: Date.now
     },
-    suscription: {
+    subscription: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Suscription'
+        ref: 'subscription'
     },
     list: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'List'
     }]
-}, { collection : 'users' });
+}, {
+    collection: 'users'
+});
 
-
-userSchema.pre('save', function (next) {
-    let user = this;
-
-    // Only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) {
-        return next();
-    }
-
-    // Generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-
-        // Hash the password using our new salt
-        bcrypt.hash(user.password, salt, function (err, hash) {
+userSchema.post('findOneAndUpdate', function (user, next) {
+    user.updatedAt = Date.now();
+    // If the password was updated, rehash it
+    if (user.password) {
+        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
             if (err) return next(err);
 
-            // Override the cleartext password with the hashed one
-            user.password = hash;
-            next();
+            // Hash the password using our new salt
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if (err) return next(err);
+
+                // Override the cleartext password with the hashed one
+                user.password = hash;
+                next();
+            });
         });
-    });
+    } else {
+        next();
+    }
 });
 
 userSchema.methods.comparePassword = function (candidatePassword, cb) {

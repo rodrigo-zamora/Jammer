@@ -4,8 +4,8 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 require('dotenv').config();
 
-/*const userRoute = require('./routes/user.route');
-const suscriptionRoute = require('./routes/suscription.route');
+const userRoute = require('./routes/user.route');
+/*const subscriptionRoute = require('./routes/subscription.route');
 const movieRoute = require('./routes/movie.route');
 const authRoute = require('./routes/auth.route');*/
 const {NotFoundError} = require('./utils/errors');
@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-/*app.use('/users', userRoute);
-app.use('/suscription', suscriptionRoute);
+app.use('/users', userRoute);
+/*app.use('/subscription', subscriptionRoute);
 app.use('/movie', movieRoute);
 app.use('/auth', authRoute);*/
 

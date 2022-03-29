@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/rodrigo-zamora/Netflix#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",

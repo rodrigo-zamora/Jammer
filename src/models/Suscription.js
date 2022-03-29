@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Utils = require('../utils/utils');
 
-const suscriptionSquema = new mongoose.Schema({
+const subscriptionSquema = new mongoose.Schema({
     UUID: {
         type: String,
         required: false,
@@ -16,13 +16,13 @@ const suscriptionSquema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Payment'
     },
-    suscriptionType: {
+    subscriptionType: {
         type: String,
         required: true,
         enum: ['free', 'premium']
     }
-}, { collection : 'suscriptions' });
+}, { collection : 'subscriptions' });
 
-let Suscription = mongoose.model('Suscription', suscriptionSquema);
+let subscription = mongoose.model('subscription', subscriptionSquema);
 
-module.exports = Suscription;
+module.exports = subscription;
