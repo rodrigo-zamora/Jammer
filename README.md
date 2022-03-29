@@ -1,0 +1,73 @@
+## Models
+- **User**
+    - UUID *string*
+    - firstName *string*
+    - lastName *string*
+    - imageURL *string*
+    - email *string*
+    - password *string*
+    - createdAt *date*
+    - updatedAt *date*
+    - subscription *string*
+    - list *string[]*
+- **List**
+    - UUID *string*
+    - name *string*
+    - movieUUID *string[]*
+    - isShared *boolean*
+    - sharedWith *string[]*
+- **Movie**
+    - UUID *string*
+    - title *string*
+    - poster *string*
+    - year *number*
+    - synopsis *string*
+    - rating *number*
+    - duration *string*
+    - genres *string[]*
+    - director *string[]*
+    - cast *string[]*
+- **Subscription**
+    - UUID *string*
+    - paymentUUID *string*
+    - subscriptionType *string, enum(free, premium)*
+- **Payment**
+    - UUID *string*
+    - paymentType *string, enum(paypal, creditCard)*
+## Routes
+- **User**
+    - [GET] /users
+    - [POST] /users
+    - [GET] /users/:UUID
+    - [PUT] /users/:UUID
+    - [DELETE] /users/:UUID
+    - [GET] /users/:UUID/lists
+    - [GET] /users/:UUID/subscriptions
+- **List**
+    - [GET] /lists
+    - [POST] /lists
+    - [GET] /lists/:userUUID
+    - [GET] /lists/:userUUID/:listUUID
+    - [PUT] /lists/:userUUID/:listUUID
+    - [DELETE] /lists/:userUUID/:listUUID
+    - [POST] /lists/:userUUID/:listUUID
+- **Movie**
+    - [GET] /movies
+    - [POST] /movies
+    - [GET] /movies/:movieUUID
+    - [PUT] /movies/:movieUUID
+    - [DELETE] /movies/:movieUUID
+- **Subscription**
+    - [GET] /subscription
+    - [POST] /subscription
+    - [GET] /subscription/:userUUID
+    - [POST] /subscription/:userUUID/
+    - [DELETE] /subscription/:userUUID
+    - [PUT] /subscription/:userUUID
+- **Payment**
+    - [GET] /payment
+    - [POST] /payment
+    - [GET] /payment/:userUUID
+    - [POST] /payment/:userUUID
+    - [DELETE] /payment/:userUUID
+    - [PUT] /payment/:userUUID
