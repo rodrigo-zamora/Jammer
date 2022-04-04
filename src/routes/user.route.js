@@ -6,7 +6,7 @@ const userController = require('../controllers/user.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /users');
-    const users = userController.getAllUsers();
+    const users = await userController.getAllUsers();
     res.send(users);
 }));
 

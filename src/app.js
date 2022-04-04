@@ -6,8 +6,8 @@ require('dotenv').config();
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
-/*const subscriptionRoute = require('./routes/subscription.route');
 const movieRoute = require('./routes/movie.route');
+/*const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');*/
 const {NotFoundError} = require('./utils/errors');
 
@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRoute);
 app.use('/lists', listRoute);
+app.use('/movies', movieRoute);
 /*app.use('/subscription', subscriptionRoute);
-app.use('/movie', movieRoute);
 app.use('/auth', authRoute);*/
 
 app.use((error, req, res, next) => {

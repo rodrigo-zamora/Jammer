@@ -6,7 +6,7 @@ const listController = require('../controllers/list.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /lists');
-    const lists = listController.getAll(req.user.uuid, res);
+    const lists = await listController.getAll(req.user.uuid, res);
     res.send(lists);
 }));
 
