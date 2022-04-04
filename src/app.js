@@ -5,6 +5,7 @@ const YAML = require('yamljs');
 require('dotenv').config();
 
 const userRoute = require('./routes/user.route');
+const listRoute = require('./routes/list.route');
 /*const subscriptionRoute = require('./routes/subscription.route');
 const movieRoute = require('./routes/movie.route');
 const authRoute = require('./routes/auth.route');*/
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRoute);
+app.use('/lists', listRoute);
 /*app.use('/subscription', subscriptionRoute);
 app.use('/movie', movieRoute);
 app.use('/auth', authRoute);*/

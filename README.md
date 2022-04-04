@@ -45,12 +45,11 @@
     - [GET] /users/:UUID/subscriptions
 - **List**
     - [GET] /lists
-    - [POST] /lists
     - [GET] /lists/:userUUID
+    - [POST] /lists/:userUUID
     - [GET] /lists/:userUUID/:listUUID
     - [PUT] /lists/:userUUID/:listUUID
     - [DELETE] /lists/:userUUID/:listUUID
-    - [POST] /lists/:userUUID/:listUUID
 - **Movie**
     - [GET] /movies
     - [POST] /movies
@@ -59,9 +58,8 @@
     - [DELETE] /movies/:movieUUID
 - **Subscription**
     - [GET] /subscription
-    - [POST] /subscription
+    - [POST] /subscription/:userUUID
     - [GET] /subscription/:userUUID
-    - [POST] /subscription/:userUUID/
     - [DELETE] /subscription/:userUUID
     - [PUT] /subscription/:userUUID
 - **Payment**
