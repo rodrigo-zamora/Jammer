@@ -60,18 +60,26 @@ const userController = {
     },
     update: function (uuid, user, res) {
         console.log(`Updating user with uuid ${uuid}`);
-        return User.findOneAndUpdate({
+        return User.findOne({
             UUID: uuid
-        }, user, {
-            new: true
-        }).then(user => {
-            if (!user) {
+        }).then(newUser => {
+            if (!newUser) {
                 console.log(`User with uuid ${uuid} not found`);
                 res.status(404).send('User not found');
             } else {
-                console.log(`User with uuid ${uuid} updated`);
-                user.save();
-                res.status(200).send(user);
+                console.log(`User with uuid ${uuid} found`);
+                for (let key in user) {
+                    if (user.hasOwnProperty(key)) {
+                        newUser[key] = user[key];
+                    }
+                }
+                newUser.save().then(user => {
+                    console.log('User updated');
+                    res.status(200).send(user);
+                }).catch(err => {
+                    console.log('Error updating user: ' + err.message);
+                    res.status(400).send(err.message);
+                });
             }
         });
     },

@@ -1,5 +1,5 @@
 const Movie = require('../models/Movie');
-const Cuevana3 = require('cuevana3');
+const Cuevana3 = require('../utils/cuevana3');
 
 const movieController = {
     getAllMovies: function () {
@@ -55,15 +55,11 @@ const movieController = {
                 res.status(404).send('Movie not found');
             } else {
                 console.log(`Movie with uuid ${uuid} found`);
-                newMovie.title = movie.title;
-                newMovie.poster = movie.poster;
-                newMovie.year = movie.year;
-                newMovie.synopsis = movie.synopsis;
-                newMovie.rating = movie.rating;
-                newMovie.duration = movie.duration;
-                newMovie.genres = movie.genres;
-                newMovie.director = movie.director;
-                newMovie.cast = movie.cast;
+                for (let key in movie) {
+                    if (movie.hasOwnProperty(key)) {
+                        newMovie[key] = movie[key];
+                    }
+                }
                 newMovie.save().then(movie => {
                     console.log('Movie updated');
                     res.status(200).send(movie);

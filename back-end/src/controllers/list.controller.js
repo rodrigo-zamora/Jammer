@@ -46,19 +46,18 @@ const listController = {
     },
     update: function (listUUID, listName, res) {
         console.log(`Updating list with listUUID ${listUUID} and listName ${listName}`);
-        return List.findOneAndUpdate({
+        return List.findOne({
             listUUID: listUUID
-        }, {
-            listName: listName
-        }, {
-            new: true
         }).then(list => {
             if (!list) {
                 console.log(`List with listUUID ${listUUID} not found`);
                 res.status(404).send('List not found');
             } else {
-                console.log(`List with listUUID ${listUUID} found`);
-                res.status(200).send(list);
+                list.listName = listName;
+                list.save().then(list => {
+                    console.log(`List with listUUID ${listUUID} updated`);
+                    res.status(200).send(list);
+                });
             }
         });
     },

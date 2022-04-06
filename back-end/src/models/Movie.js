@@ -12,6 +12,12 @@ const movieSquema = new mongoose.Schema({
             return Utils.generateUUID();
         }
     },
+    cuevanaUUID: {
+        type: String,
+        required: true,
+        index: true,
+        unique: true
+    },
     title: {
         type: String,
         required: true
