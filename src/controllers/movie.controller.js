@@ -1,4 +1,5 @@
 const Movie = require('../models/Movie');
+const Cuevana3 = require('cuevana3');
 
 const movieController = {
     getAllMovies: function () {
@@ -84,6 +85,18 @@ const movieController = {
             } else {
                 console.log(`Movie with uuid ${uuid} deleted`);
                 res.status(200).send(movie);
+            }
+        });
+    },
+    search: function (query, res) {
+        console.log(`Searching for movie with query ${query}`);
+        return Cuevana3.getSearch(query, 0).then(movies => {
+            if (movies.length === 0) {
+                console.log(`Movie with query ${query} not found`);
+                res.status(404).send('Movie not found');
+            } else {
+                console.log(`Movie with query ${query} found`);
+                res.status(200).send(movies);
             }
         });
     }

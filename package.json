@@ -11,12 +11,12 @@
     "test:unit-coverage": "nyc npm run test:unit",
     "test:integration-coverage": "nyc npm run test:integration"
   },
+  "author": "",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rodrigo-zamora/Netflix.git"
   },
-  "author": "",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rodrigo-zamora/Netflix/issues"
   },

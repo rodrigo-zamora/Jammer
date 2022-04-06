@@ -27,20 +27,37 @@ describe('/movies', () => {
     });
 });
 
-describe('/movies/:movieUUID', () => {
+describe('/movies/search', () => {
+    describe('GET', () => {
+        it('should return all the movies', async () => {
+
+        });
+    });
+});
+
+describe('/movies/movie/:movieUUID', () => {
     describe('GET', () => {
         it('should return a movie', async () => {
 
+        }),
+        it('should return 404 if movie does not exist', async () => {
+                
         });
     }),
     describe('PUT', () => {
         it('should update a movie and return it', async () => {
 
+        }),
+        it('should return 404 if movie does not exist', async () => {
+                
         });
     }),
     describe('DELETE', () => {
         it('should delete a movie and return it', async () => {
 
+        }),
+        it('should return 404 if movie does not exist', async () => {
+                
         });
     });
 });

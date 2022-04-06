@@ -53,9 +53,10 @@
 - **Movie**
     - [GET] /movies
     - [POST] /movies
-    - [GET] /movies/:movieUUID
-    - [PUT] /movies/:movieUUID
-    - [DELETE] /movies/:movieUUID
+    - [Get] /movies/search
+    - [GET] /movies/movie/:movieUUID
+    - [PUT] /movies/movie/:movieUUID
+    - [DELETE] /movies/movie/:movieUUID
 - **Subscription**
     - [GET] /subscription
     - [POST] /subscription/:userUUID
