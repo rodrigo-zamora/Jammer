@@ -1,0 +1,15 @@
+{
+    "spec_files": [
+      "**/*test.?(m)js"
+    ],
+    "spec_dir": "src/tests/unit",
+    "env": {
+      "failSpecWithNoExpectations": false,
+      "stopSpecOnExpectationFailure": false,
+      "stopOnSpecFailure": false,
+      "random": false
+    },
+    "helpers": [
+      "helpers/**/*jasmine.js"
+    ]
+  }

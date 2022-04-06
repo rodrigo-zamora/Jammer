@@ -11,20 +11,22 @@
     "test:unit-coverage": "nyc npm run test:unit",
     "test:integration-coverage": "nyc npm run test:integration"
   },
+  "author": "",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rodrigo-zamora/Netflix.git"
   },
-  "author": "",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rodrigo-zamora/Netflix/issues"
   },
   "homepage": "https://github.com/rodrigo-zamora/Netflix#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
+    "cuevana3": "^1.0.5",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
@@ -34,7 +36,9 @@
     "mongoose": "^6.2.6",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "swagger-ui-express": "^4.3.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
