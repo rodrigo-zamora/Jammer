@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const SALT_WORK_FACTOR = 10;
 
 let Utils = require('../utils/utils');
@@ -78,26 +79,24 @@ const userSchema = new mongoose.Schema({
     collection: 'users'
 });
 
-userSchema.post('findOneAndUpdate', function (user, next) {
+userSchema.pre('save', function (user, next) {
     user.updatedAt = Date.now();
-    // If the password was updated, rehash it
-    if (user.password) {
-        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+});
+
+userSchema.methods.hashPassword = function (password) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+
+        // Hash the password using our new salt
+        bcrypt.hash(password, salt, function (err, hash) {
             if (err) return next(err);
 
-            // Hash the password using our new salt
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) return next(err);
-
-                // Override the cleartext password with the hashed one
-                user.password = hash;
-                next();
-            });
+            // Override the cleartext password with the hashed one
+            this.password = hash;
+            next();
         });
-    } else {
-        next();
-    }
-});
+    });
+};
 
 userSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {

@@ -1,9 +1,10 @@
 const List = require('../models/List');
+const User = require('../models/User');
 
 const listController = {
     getAll: function (userUUID, res) {
         console.log(`Searching for list with userUUID ${userUUID}`);
-        return List.findOne({
+        return List.find({
             userUUID: userUUID
         }).then(list => {
             if (!list) {
@@ -29,31 +30,42 @@ const listController = {
             }
         });
     },
-    create: function (userUUID, listName, res) {
-        console.log(`Creating list with userUUID ${userUUID} and listName ${listName}`);
-        return List.create({
-            userUUID: userUUID,
-            listName: listName
-        }).then(list => {
-            if (!list) {
-                console.log(`List with userUUID ${userUUID} not found`);
-                res.status(404).send('List not found');
+    create: function (userUUID, listBody, res) {
+        console.log(`Creating list with userUUID ${userUUID} and listName ${listBody.listName}`);
+        User.findOne({
+            userUUID: userUUID
+        }).then(user => {
+            if (!user) {
+                console.log(`User with userUUID ${userUUID} not found`);
+                res.status(404).send('User not found');
             } else {
-                console.log(`List with userUUID ${userUUID} found`);
+                console.log(`User with userUUID ${userUUID} found`);
+                let list = new List({
+                    name: listBody.name,
+                    movieUUID: listBody.movieUUID,
+                    isShared: false,
+                    sharedWith: []
+                });
+                user.list.push(list);
+                user.save();
+                list.save();
+                console.log(user);
                 res.status(200).send(list);
             }
         });
     },
-    update: function (listUUID, listName, res) {
-        console.log(`Updating list with listUUID ${listUUID} and listName ${listName}`);
+    update: function (listUUID, listBody, res) {
+        console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
         return List.findOne({
-            listUUID: listUUID
+            UUID: listUUID
         }).then(list => {
             if (!list) {
                 console.log(`List with listUUID ${listUUID} not found`);
                 res.status(404).send('List not found');
             } else {
-                list.listName = listName;
+                for(let key in listBody) {
+                    list[key] = listBody[key];
+                }
                 list.save().then(list => {
                     console.log(`List with listUUID ${listUUID} updated`);
                     res.status(200).send(list);

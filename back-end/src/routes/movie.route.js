@@ -17,7 +17,12 @@ router.post('/', handleError(async (req, res) => {
 
 router.get('/search', handleError(async (req, res) => {
     console.log('GET /movies/search');
-    movieController.search(req.query.title, res);
+    movieController.search(req.query, res);
+}));
+
+router.get('/details', handleError(async (req, res) => {
+    console.log('GET /movies/details');
+    movieController.getDetails(req.query.cuevanaUUID, res);
 }));
 
 router.get('/movie/:uuid', handleError(async (req, res) => {

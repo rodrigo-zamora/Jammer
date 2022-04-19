@@ -85,14 +85,69 @@ const movieController = {
         });
     },
     search: function (query, res) {
-        console.log(`Searching for movie with query ${query}`);
-        return Cuevana3.getSearch(query, 0).then(movies => {
-            if (movies.length === 0) {
-                console.log(`Movie with query ${query} not found`);
+        console.log('Searching for movies: ', query);
+        let moviesFound = [];
+
+        for (key in query) {
+            if (query.hasOwnProperty(key)) {
+                if (key === 'query' || key === 'title') {
+                    console.log('Searching for movies using query: ', query[key]);
+                    Cuevana3.getSearch(query[key], 1).then(movies => {
+                        moviesFound = moviesFound.concat(movies);
+                    });
+                } else {
+                    if (key === 'genre') {
+                        console.log('Searching for movies with genre: ', query[key]);
+                    }
+                    if (key === 'actor') {
+                        console.log('Searching for movies with actor: ', query[key]);
+                    }
+                }
+            }
+        }
+
+        setTimeout(() => {
+            console.log('Checking for movies in database');
+            for (let movie in moviesFound) {
+                let modifiedMovie = {
+                    cuevanaUUID: moviesFound[movie].id,
+                    title: moviesFound[movie].title,
+                    poster: moviesFound[movie].poster,
+                    year: moviesFound[movie].year,
+                    sypnosis: moviesFound[movie].sypnosis,
+                    rating: moviesFound[movie].rating,
+                    duration: moviesFound[movie].duration,
+                    genres: moviesFound[movie].genres,
+                    director: moviesFound[movie].director,
+                    cast: moviesFound[movie].cast
+                }
+                moviesFound[movie] = modifiedMovie;
+                Movie.findOne({
+                    cuevanaUUID: moviesFound[movie].cuevanaUUID
+                }).then(newMovie => {
+                    if (!newMovie) {
+                        console.log('Movie with UUID ' + moviesFound[movie].cuevanaUUID + ' not found. Adding to database');
+                        Movie.create(moviesFound[movie]).then(movie => {}).catch(err => {
+                            console.log('Error adding movie to database: ' + err.message);
+                        });
+                    } else {
+                        console.log('Movie with UUID ' + moviesFound[movie].cuevanaUUID + ' found');
+                    }
+                });
+            }
+
+            res.status(200).send(moviesFound);
+        }, 1000);
+    },
+    getDetails: function (cuevanaUUID, res) {
+        console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
+        Cuevana3.getDetail(cuevanaUUID).then(movie => {
+            if (!movie) {
+                console.log('Movie with cuevanaUUID ' + cuevanaUUID + ' not found');
                 res.status(404).send('Movie not found');
             } else {
-                console.log(`Movie with query ${query} found`);
-                res.status(200).send(movies);
+                console.log('Movie with cuevanaUUID ' + cuevanaUUID + ' found');
+                res.status(200).send(movie);
             }
         });
     }

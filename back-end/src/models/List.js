@@ -18,12 +18,11 @@ const listSquema = new mongoose.Schema({
         default: 'New List'
     },
     movieUUID: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Movie'
     }],
     isShared: {
         type: Boolean,
-        required: true,
         default: false
     },
     sharedWith: [{

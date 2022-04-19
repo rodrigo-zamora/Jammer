@@ -44,7 +44,6 @@
     - [GET] /users/:UUID/lists
     - [GET] /users/:UUID/subscriptions
 - **List**
-    - [GET] /lists
     - [GET] /lists/:userUUID
     - [POST] /lists/:userUUID
     - [GET] /lists/:userUUID/:listUUID
@@ -53,7 +52,8 @@
 - **Movie**
     - [GET] /movies
     - [POST] /movies
-    - [Get] /movies/search
+    - [GET] /movies/search
+    - [GET] /movies/details/:cuevanaUUID
     - [GET] /movies/movie/:movieUUID
     - [PUT] /movies/movie/:movieUUID
     - [DELETE] /movies/movie/:movieUUID

@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
@@ -10,7 +11,7 @@ require('./config/passport');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
-const COOKIE_KEY = process.env.COOKIE_KEY;
+const COOKIE_KEY = process.env.COOKIE_KEY || 'secret';
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(cookieSession({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cors());
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');

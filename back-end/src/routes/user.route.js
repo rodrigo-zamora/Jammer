@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
 const {handleError} = require('../utils/hof');
+
 const userController = require('../controllers/user.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /users');
-    const users = await userController.getAllUsers();
-    res.send(users);
+    userController.getAllUsers(res);
 }));
 
 router.post('/', handleError(async (req, res) => {
@@ -15,9 +14,13 @@ router.post('/', handleError(async (req, res) => {
     userController.create(req.body, res);
 }));
 
-router.get('/:uuid', handleError(async (req, res) => {
-    console.log('GET /users/:uuid');
-    userController.get(req.params.uuid, res);
+router.get('/:query', handleError(async (req, res) => {
+    console.log('GET /users/:query');
+    if (req.params.query.includes('@')) {
+        userController.getByEmail(req.params.query, res);
+    } else {
+        userController.get(req.params.query, res);
+    }
 }));
 
 router.put('/:uuid', handleError(async (req, res) => {
@@ -37,7 +40,7 @@ router.get('/:uuid/lists', handleError(async (req, res) => {
 
 router.get('/:uuid/subscription', handleError(async (req, res) => {
     console.log('GET /users/:uuid/subscription');
-    userController.getsubscription(req.params.uuid, res);
+    userController.getSubscription(req.params.uuid, res);
 }));
 
 module.exports = router;

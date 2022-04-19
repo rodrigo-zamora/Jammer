@@ -1,12 +1,16 @@
 const User = require('../models/User');
 
 const userController = {
-    getAllUsers: function () {
+    getAllUsers: function (res) {
         console.log('Get all users');
-        const users = User.find({});
-        return users;
+        User.find({}, function (err, users) {
+            if (err) {
+                res.status(500).send(err);
+            }
+            res.status(200).json(users);
+        });
     },
-    get: async function (uuid, res) {
+    get: function (uuid, res) {
         console.log(`Searching for user with uuid ${uuid}`);
         return User.findOne({
             UUID: uuid
@@ -22,7 +26,7 @@ const userController = {
     },
     getByEmail: function (email, res) {
         console.log(`Searching for user with email ${email}`);
-        return User.findOne({
+        User.findOne({
             email: email
         }).then(user => {
             if (!user) {
@@ -34,7 +38,7 @@ const userController = {
             }
         });
     },
-    create: function (user, res) {
+    create: function (user) {
         console.log('Creating user: ', user);
         try {
             User.findOne({
@@ -42,92 +46,95 @@ const userController = {
             }).then(newUser => {
                 if (newUser) {
                     console.log('User already exists');
-                    res.status(400).send('User already exists');
+                    return null;
                 } else {
                     User.create(user).then(user => {
                         console.log('User created');
-                        res.status(201).send(user);
+                        return user;
                     }).catch(err => {
                         console.log('Error creating user: ' + err.message);
-                        res.status(400).send(err.message);
+                        return null;
                     });
                 }
             })
         } catch (err) {
             console.log('Error creating user: ', err);
-            res.status(500).send('Error creating user');
+            return null;
         }
     },
-    update: function (uuid, user, res) {
+    update: function (uuid, user) {
         console.log(`Updating user with uuid ${uuid}`);
         return User.findOne({
             UUID: uuid
         }).then(newUser => {
             if (!newUser) {
                 console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
+                return null;
             } else {
                 console.log(`User with uuid ${uuid} found`);
                 for (let key in user) {
                     if (user.hasOwnProperty(key)) {
                         newUser[key] = user[key];
                     }
+                    if (key === 'password') {
+                        newUser.hashPassword(user[key]);
+                    }
                 }
                 newUser.save().then(user => {
                     console.log('User updated');
-                    res.status(200).send(user);
+                    return user;
                 }).catch(err => {
                     console.log('Error updating user: ' + err.message);
-                    res.status(400).send(err.message);
+                    return null;
                 });
             }
         });
     },
-    delete: function (uuid, res) {
+    delete: function (uuid) {
         console.log(`Deleting user with uuid ${uuid}`);
         return User.findOneAndDelete({
             UUID: uuid
         }).then(user => {
             if (!user) {
                 console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
+                return null;
             } else {
                 console.log(`User with uuid ${uuid} deleted`);
-                res.status(200).send(user);
+                return user;
             }
         });
     },
-    getLists: async function (uuid, res) {
+    getLists: async function (uuid) {
         console.log(`Searching for lists for user with uuid ${uuid}`);
         return User.findOne({
             UUID: uuid
         }).then(user => {
             if (!user) {
                 console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
+                return null;
             } else if (!user.lists) {
                 console.log(`User with uuid ${uuid} has no lists`);
-                res.status(200).send([]);
+                return [];
             } else {
                 console.log(`User with uuid ${uuid} has lists`);
-                res.status(200).send(user.lists);
+                return user.lists;
             }
         });
     },
-    getsubscription: async function (uuid, res) {
+    getsubscription: async function (uuid) {
         console.log(`Searching for subscription for user with uuid ${uuid}`);
         return User.findOne({
             UUID: uuid
         }).then(user => {
             if (!user) {
                 console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
+                return null;
             } else if (!user.subscription) {
                 console.log(`User with uuid ${uuid} has no subscription`);
-                res.status(404).send('User has no subscription');
+                return [];
             } else {
                 console.log(`subscription of user with uuid ${uuid} found`);
-                res.status(200).send(user.subscription);
+                return user.subscription;
             }
         });
     }
