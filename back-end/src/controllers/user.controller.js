@@ -1,3 +1,4 @@
+const List = require('../models/List');
 const User = require('../models/User');
 
 const userController = {
@@ -50,6 +51,15 @@ const userController = {
                 } else {
                     User.create(user).then(user => {
                         console.log('User created');
+                        let list = new List({
+                            name: 'History',
+                            movieUUID: [],
+                            isShared: false,
+                            sharedWith: []
+                        });
+                        user.list.push(list);
+                        user.save();
+                        list.save();
                         return user;
                     }).catch(err => {
                         console.log('Error creating user: ' + err.message);

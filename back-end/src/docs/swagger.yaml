@@ -1,5 +1,122 @@
 openapi: 3.0.0
 info:
-  title: Streaming Service API
+  title: Jammer Service API
   version: 0.0.1
-  
+path:
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - users
+      responses:
+        200:
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user
+      tags:
+        - users
+      requestBody:
+        description: User object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Invalid user supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{uuid}:
+    get:
+      summary: Get a user by uuid
+      tags:
+        - users
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a user
+      tags:
+        - users
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the user
+          required: true
+          schema:
+            type: string
+        - name: body
+          in: body
+          description: The user to update
+          required: true
+          schema:
+            $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: A user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a user
+      tags:
+        - users
+      parameters:
+        - name: uuid
+          in: path
+          description: The uuid of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

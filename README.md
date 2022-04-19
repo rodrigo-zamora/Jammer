@@ -46,7 +46,8 @@
 - **List**
     - [GET] /lists/:userUUID
     - [POST] /lists/:userUUID
-    - [GET] /lists/:userUUID/:listUUID
+    - [GET] /lists/:userUUID/:
+    - [GET] /lists/:userUUID/:listName
     - [PUT] /lists/:userUUID/:listUUID
     - [DELETE] /lists/:userUUID/:listUUID
 - **Movie**

@@ -31,7 +31,7 @@ const movieRoute = require('./routes/movie.route');
 const authRoute = require('./routes/auth.route');
 const {NotFoundError} = require('./utils/errors');
 
-const swaggerDocument = YAML.load('src/docs/swagger.yaml');
+const swaggerDocument = YAML.load(path.resolve('./src/docs/swagger.yaml'));
 
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -15,20 +15,28 @@ const listSquema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        default: 'New List'
+        match: /^[a-zA-Z0-9\s]+$/
     },
     movieUUID: [{
         type: String,
-        ref: 'Movie'
+        required: false,
+        default: []
     }],
     isShared: {
         type: Boolean,
+        required: false,
         default: false
     },
     sharedWith: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }]
+        type: String,
+        required: false,
+        default: []
+    }],
+    imageURL: {
+        type: String,
+        required: false,
+        default: ''
+    }
 }, { collection : 'lists' });
 
 let List = mongoose.model('List', listSquema);

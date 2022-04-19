@@ -1,5 +1,5 @@
 {
-  "name": "netflix",
+  "name": "jammer",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -15,12 +15,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rodrigo-zamora/Netflix.git"
+    "url": "git+https://github.com/rodrigo-zamora/Jammer.git"
   },
   "bugs": {
-    "url": "https://github.com/rodrigo-zamora/Netflix/issues"
+    "url": "https://github.com/rodrigo-zamora/Jammer/issues"
   },
-  "homepage": "https://github.com/rodrigo-zamora/Netflix#readme",
+  "homepage": "https://github.com/rodrigo-zamora/Jammer#readme",
   "dependencies": {
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
@@ -29,7 +29,7 @@
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "ejs": "^3.1.6",
+    "ejs": "^3.0.2",
     "express": "^4.17.3",
     "jasmine": "^4.0.2",
     "jasmine-spec-reporter": "^7.0.0",
