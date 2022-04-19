@@ -29,7 +29,6 @@ jobs:
     steps:
     - name: Create env file
       run: |
-          cd ./back-end/
           touch .env
           echo CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
