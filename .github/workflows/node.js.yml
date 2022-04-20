@@ -31,6 +31,10 @@ jobs:
     - name: Create env file
       run: |
           touch .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_CLUSTER=${{ secrets.DB_CLUSTER }} >> .env
           echo CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
           echo CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
           cat .env
