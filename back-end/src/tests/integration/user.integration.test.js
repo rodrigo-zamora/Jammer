@@ -26,7 +26,7 @@ describe('/users/:uuid', () => {
             });
             it('should return a 404 if the user is not found', (done) => {
                 request(app)
-                    .get('/users/' + userUUID)
+                    .get('/users/' + userUUID + '-not-found')
                     .expect(404)
                     .end(endFunction(done));
             });
