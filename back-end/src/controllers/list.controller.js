@@ -109,7 +109,7 @@ const listController = {
         List.findOne({
             listUUID: listUUID
         }).then(list => {
-            if (list.name === 'History') {
+            if (list.name === 'Recently Watched') {
                 console.log(`List with listUUID ${listUUID} can't be deleted`);
                 res.status(400).send('List can\'t be deleted');
             }

@@ -1,9 +1,17 @@
 const request = require('supertest');
 
+const {
+    restore
+} = require('../../utils/fileHelpers');
+
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
 
 // TODO: complete integration tests
+
+afterAll(() => {
+    restore();
+})
 
 describe('/users', () => {
     describe('GET', () => {
@@ -24,7 +32,7 @@ describe('/users/:uuid', () => {
                     .expect(200)
                     .end(endFunction(done));
             });
-            it('should return a 404 if the user is not found', (done) => {
+            it('should return 404 if the user is not found', (done) => {
                 request(app)
                     .get('/users/' + userUUID + '-not-found')
                     .expect(404)
@@ -32,20 +40,32 @@ describe('/users/:uuid', () => {
             });
         }),
         describe('PUT', () => {
-            it('should update a user and return it', async () => {
-
+            it('should update a user and return it', (done) => {
+                request(app)
+                    .put('/users/' + userUUID)
+                    .send({
+                        name: 'New name'
+                    })
+                    .expect(200)
+                    .end(endFunction(done));
             }),
-            it('should return a 404 if the user is not found', async () => {
-
+            it('should return 404 if the user is not found', (done) => {
+                request(app)
+                    .put('/users/' + userUUID + '-not-found')
+                    .send({
+                        name: 'New name'
+                    })
+                    .expect(404)
+                    .end(endFunction(done));
             });
         }),
         describe('DELETE', () => {
             it('should delete a user and return it', async () => {
 
-                }),
-                it('should return a 404 if the user is not found', async () => {
+            }),
+            it('should return 404 if the user is not found', async () => {
 
-                });
+            });
         });
 });
 

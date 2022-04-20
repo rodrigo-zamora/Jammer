@@ -79,8 +79,13 @@ const userSchema = new mongoose.Schema({
     collection: 'users'
 });
 
-userSchema.pre('save', function (user, next) {
-    user.updatedAt = Date.now();
+userSchema.pre('findOneAndUpdate', function (next) {
+    // Update updatedAt with the current date
+    this.updatedAt = Date.now();
+
+    // TODO: Hash password if it was changed
+
+    next();
 });
 
 userSchema.methods.hashPassword = function (password) {
