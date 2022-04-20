@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon src/server.js -e js,yaml,json,mjs",
     "test:unit": "jasmine --config=unit-tests.json",
     "test:integration": "jasmine --config=integration-tests.json",
     "test:unit-coverage": "nyc npm run test:unit",

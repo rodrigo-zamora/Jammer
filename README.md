@@ -16,12 +16,13 @@
     - movieUUID *string[]*
     - isShared *boolean*
     - sharedWith *string[]*
+    - imageURL *string*
 - **Movie**
     - UUID *string*
     - title *string*
     - poster *string*
     - year *number*
-    - synopsis *string*
+    - sypnosis *string*
     - rating *number*
     - duration *string*
     - genres *string[]*
@@ -59,15 +60,14 @@
     - [PUT] /movies/movie/:movieUUID
     - [DELETE] /movies/movie/:movieUUID
 - **Subscription**
-    - [GET] /subscription
+    - [GET] /subscription/:subscriptionUUID
+    - [DELETE] /subscription/:subscriptionUUID
+    - [PUT] /subscription/:subscriptionUUID
+    - [GET] /subscription/all/:userUUID
     - [POST] /subscription/:userUUID
-    - [GET] /subscription/:userUUID
-    - [DELETE] /subscription/:userUUID
-    - [PUT] /subscription/:userUUID
 - **Payment**
-    - [GET] /payment
-    - [POST] /payment
-    - [GET] /payment/:userUUID
+    - [GET] /payment/:paymentUUID
+    - [DELETE] /payment/:paymentUUID
+    - [PUT] /payment/:paymentUUID
+    - [GET] /payment/all/:userUUID
     - [POST] /payment/:userUUID
-    - [DELETE] /payment/:userUUID
-    - [PUT] /payment/:userUUID

@@ -30,7 +30,7 @@ const movieSquema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    synopsis: {
+    sypnosis: {
         type: String,
         required: false
     },
