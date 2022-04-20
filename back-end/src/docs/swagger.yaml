@@ -1,122 +1,796 @@
 openapi: 3.0.0
 info:
   title: Jammer Service API
+  description: Jammer Service API
   version: 0.0.1
-path:
+tags:
+- name: User
+  description: User management
+- name: Lists
+  description: Lists management
+- name: Subscriptions
+  description: Subscriptions management
+- name: Payments
+  description: Payments management
+- name: Movies
+  description: Search movies, get movie details, get movie links, and movie management
+paths:
   /users:
     get:
-      summary: Get all users
       tags:
-        - users
+      - User
+      summary: Get all users
       responses:
-        200:
-          description: A list of users
+        "200":
+          description: A successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: The request is invalid
     post:
-      summary: Create a new user
       tags:
-        - users
+      - User
+      summary: Create a new user
       requestBody:
-        description: User object
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: John
+                lastName:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  example: john.doe@hotmail.com
+                password:
+                  type: string
+                  example: $2b$10$DWgYaN95r8pnh2Q/UC3uas81.eSrWlcggYqVNsLZdsH9k1FD.
       responses:
-        201:
-          description: Successfully created
+        "201":
+          description: A successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        400:
-          description: Invalid user supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /users/{uuid}:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: The request is invalid
+  /users/:uuid:
     get:
-      summary: Get a user by uuid
       tags:
-        - users
+      - User
+      summary: Get a user by uuid
       parameters:
         - name: uuid
           in: path
-          description: The uuid of the user
           required: true
           schema:
             type: string
       responses:
-        200:
-          description: A user
+        "200":
+          description: A successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/User"
+        "400":
+          description: The request is invalid
     put:
-      summary: Update a user
       tags:
-        - users
+      - User
+      summary: Update a user by uuid
       parameters:
         - name: uuid
           in: path
-          description: The uuid of the user
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: john_doe@hotmail.com
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UUID:
+                    type: string
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  firstName:
+                    type: string
+                    example: John
+                  lastName:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    example: john_doe@hotmail.com
+                  password:
+                    type: string
+                    example: $2b$10$DWgYaN95r8pnh2Q/UC3uas81.eSrWlcggYqVNsLZdsH9k1FD.
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2022-03-27T23:03:13.652+00:00
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2022-03-28T02:16:03.133+00:00
+                  subscription:
+                    type: string
+                    $ref: "#/components/schemas/Subscription"
+                  list:
+                    type: array
+                    $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+    delete:
+      tags:
+      - User
+      summary: Delete a user by uuid
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  UUID:
+                    type: string
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  firstName:
+                    type: string
+                    example: John
+                  lastName:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    example: john_doe@hotmail.com
+                  password:
+                    type: string
+                    example: $2b$10$DWgYaN95r8pnh2Q/UC3uas81.eSrWlcggYqVNsLZdsH9k1FD.
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: 2022-03-27T23:03:13.652+00:00
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: 2022-03-28T02:16:03.133+00:00
+                  subscription:
+                    type: string
+                    $ref: "#/components/schemas/Subscription"
+                  list:
+                    type: array
+                    $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+  /users/:uuid/lists:
+    get:
+      tags:
+      - User
+      summary: Get all lists by user uuid
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+  /users/:uuid/subscriptions:
+    get:
+      tags:
+      - User
+      summary: Get all subscriptions by user uuid
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Subscription"
+        "400":
+          description: The request is invalid
+  /lists/:userUUID:
+    get:
+      tags:
+      - Lists
+      summary: Get all lists by user uuid
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+    post:
+      tags:
+      - Lists
+      summary: Create a new list
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: My list
+                movieUUID:
+                  type: array
+                  items:
+                    type: cuevana-uuid
+                    example: 42040/without-remorse
+                isShared:
+                  type: boolean
+                  example: true
+                sharedWith:
+                  type: array
+                  items:
+                    type: uuid
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                imageURL:
+                  type: string
+                  example: https://www.example.com/image.jpg
+      responses:
+        "201":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+  /lists/:userUUID/:listUUID:
+    get:
+      tags:
+      - Lists
+      summary: Get a list by user uuid and list uuid
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: listUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+    put:
+      tags:
+      - Lists
+      summary: Update a list by user uuid and list uuid
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: listUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Watch later
+                isShared:
+                  type: boolean
+                  example: false
+                sharedWith:
+                  type: array
+                  items:
+                    type: uuid
+                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                imageURL:
+                  type: string
+                  example: https://cuevana3.io/wp-content/uploads/2021/04/sin-remordimientos-42040-poster-204x300.jpg
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+    delete:
+      tags:
+      - Lists
+      summary: Delete a list by user uuid and list uuid
+      parameters:
+        - name: userUUID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: listUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/List"
+        "400":
+          description: The request is invalid
+  /movies:
+    get:
+      tags:
+      - Movies
+      summary: Get all movies
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+        "400":
+          description: The request is invalid
+    post:
+      tags:
+      - Movies
+      summary: Create a new movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cuevanaUUID:
+                  type: cuevana-uuid
+                  example: 42040/without-remorse
+                title:
+                  type: string
+                  example: Without Remorse
+                poster:
+                  type: string
+                  example: https://cuevana3.io/wp-content/uploads/2021/04/sin-remordimientos-42040-poster-204x300.jpg
+                year:
+                  type: string
+                  example: 2021
+                synopsis:
+                  type: string
+                  example: Un ex Navy SEAL convertido en agente de la CIA busca venganza después de que su novia es asesinada por un narcotraficante de Baltimore.
+                rating:
+                  type: float
+                  example: 4.43
+                duration:
+                  type: string
+                  example: 1h 49m
+                genres:
+                  type: array
+                  items:
+                    type: string
+                    example: Drama
+                director:
+                  type: array
+                  items:
+                    type: string
+                    example: Stefano Sollima
+                cast:
+                  type: array
+                  items:
+                    type: string
+                    example: Adrian Rawlins, Alec Rosenthal, Artjom Gilz
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "400":
+          description: The request is invalid
+  /movies/search?query=:query:
+    get:
+      tags:
+      - Movies
+      summary: Search movies
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: genre
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: actor
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+        "400":
+          description: The request is invalid  
+  /movies/details/:cuevanaUUID:
+    get:
+      tags:
+      - Movies
+      summary: Get a movie by cuevana uuid
+      parameters:
+        - name: cuevanaUUID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: cuevana-uuid
+                    example: 40366/chaos-walking
+                  poster:
+                    type: string
+                    example: https://image.tmdb.org/t/p/w600_and_h900_bestv2/3W9EpQCVzOfZmeWDMMEiLdtSKSe.jpg
+                  background:
+                    type: string
+                    example: https://image.tmdb.org/t/p/w1280/5NxjLfs7Bi07bfZCRl9CCnUw7AA.jpg
+                  title:
+                    type: string
+                    example: Chaos Walking
+                  original_title:
+                    type: string
+                    example: Chaos Walking
+                  sypnosis:
+                    type: string
+                    example: En Prentisstown, Todd ha crecido creyendo que la «Masilla» fue la responsable de liberar un germen que asesinó a todas las mujeres y contagió con el «ruido» al resto de los hombres. Tras descubrir un remanso de silencio en un pantano, sus padres adoptivos le obligan a huir lo más rápido que pueda, dejando todo atrás salvo un mapa del Nuevo Mundo y un mensaje, así como un sinfín de preguntas sin responder. Pronto descubre la fuente del silencio una chica llamada Viola. Los dos deben avisar lo antes posible sobre la inminente llegada de una nave para que el intendente Prentiss pueda preparar un ejército para la guerra.
+                  year:
+                    type: string
+                    example: 2021
+                  duration:
+                    type: string
+                    example: 1h 49m
+                  rating:
+                    type: float
+                    example: 4.25
+                  director:
+                    type: array
+                    items:
+                      type: string
+                      example: Doug Liman
+                  genres:
+                    type: array
+                    items:
+                      type: string
+                      example: Adventure, SciFi
+                  cast:
+                    type: array
+                    items:
+                      type: string
+                      example: Cynthia Erivo, Daisy Ridley, David Oyelowo, Demián Bichir, Harrison Osterfield, Jad Saikali, Kurt Sutter, Mads Mikkelsen, Marc Primeau, Mylène Dinh-Robic, Nick Jonas, Oluniké Adeliyi, Óscar Jaenada, Ray McKinnon, Tara Nicodemo, Tom Holland, Yannick Lupien 
+                  links:
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        latino:
+                          type: string
+                          example: "https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2M4RnhLZUNYN29TRlh3SWxMbmRvQ2tFc3dkMmNzQm8zREY2bWpkcjJCeEU4eHNLTTFXUkhRUFhtbGtFWjBLSkE0QU5ndlE5TnRPckNvOVBqMmJMRGZ0d0VLcG9YV2o2VEluOUJRaTF4TlVqS1BQQ3VPUXNWN3o0b25uNklBUVZGb3g4Y2tvV05vYTJZRnNQa0ozVG11b1haVTB3TkRtVHZ1aFdSb01iaytDNzl6cm5mRG1NeHY2VUYzdEtTczFDY3VUY0Z6dDZrcGx0RWhJb0J4QzdkamlDUWVEZ1pvZ0w1NDNsSjB4eER5ODZRPT0" 
+                        espanol:
+                          type: string
+                          example: "https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2ZmQmtvQXhtbDVhemFOVFpaa1E3Qmdza3N2WW1oTXhDNWJOdk5BbXIxbEoxSmMvOFlYQlMvbTFlUEtqYVZIczdtMExVVDFQQ01jYXN1MTFTUEZWdWhuYWF5Qm5BVHIzSmh3bGhFVll5NmtkK1RNY01RdDcwQnVTQnpkWXQwMFhESkQxeHd2UVpaSEp4WXVneStIdnB4SVFoWXZsZjRiK0dKUlU2U21jZktIL0VEdWhSbEcxUURrL0k1SURnM0FHYVh4cTMyZXVTYnowelRPOVQzOS9Rd0RRYTg1aGovMjJsWTN6UHBEY1BoOC9nPT0"
+                        sub:
+                          type: string
+                          example: "https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2Z5a0Z5VmNwa0Q4bU1OSnk0UTdUL1pPenVLSHR3WTZaNXhLN05Pd2lKdk5hNnNUQ1k2RTNKODdnTmFpTnk2SFplUHlFR0U1T3VzK2o1QzVRQ2xkeEFWaFQ3ODM2SE0vczZmZDAzc0pzbXQ4TVNzais0NkxXTEJYcEwyYWRlVlhzKzRvNVkwZDJDRVB4Sm5iK3M4UWU5RDFUSWxhckozR0xIWHR0OUFGYW9LLzRVanROWXFrLzVkaklqMmJaWHdGUGlDU2RvS01GL240YUJpdTJnSVZpZFJueGtQSmpMSVp0eitxcXZkS2x4NFBnPT0"
+        "400":
+          description: The request is invalid
+  /movies/movie/:movieUUID:
+    get:
+      tags:
+        - Movies
+      summary: Get a movie
+      description: Get a movie
+      operationId: getMovie
+      parameters:
+        - name: movieUUID
+          in: path
+          description: Movie UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
+      responses:
+        "200":
+          description: Movie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        "400":
+          description: The request is invalid
+    put:
+      tags:
+        - Movies
+      summary: Update a movie
+      description: Update a movie
+      operationId: updateMovie
+      parameters:
+        - name: movieUUID
+          in: path
+          description: Movie UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
         - name: body
           in: body
-          description: The user to update
+          description: Movie
           required: true
           schema:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/Movie'
       responses:
-        200:
-          description: A user
+        "200":
+          description: Movie
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Movie'
+        "400":
+          description: The request is invalid
     delete:
-      summary: Delete a user
       tags:
-        - users
+        - Movies
+      summary: Delete a movie
+      description: Delete a movie
+      operationId: deleteMovie
       parameters:
-        - name: uuid
+        - name: movieUUID
           in: path
-          description: The uuid of the user
+          description: Movie UUID
           required: true
           schema:
             type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
       responses:
-        200:
-          description: A user
+        "200":
+          description: Movie
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        404:
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Movie'
+        "400":
+          description: The request is invalid
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        UUID:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john.doe@hotmail.com
+        password:
+          type: string
+          example: $2b$10$DWgYaN95r8pnh2Q/UC3uas81.eSrWlcggYqVNsLZdsH9k1FD.
+        createdAt:
+          type: string
+          format: date-time
+          example: 2022-03-27T23:03:13.652+00:00
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2022-03-28T02:16:03.133+00:00
+        subscription:
+          type: string
+          $ref: "#/components/schemas/Subscription"
+        list:
+          type: array
+          $ref: "#/components/schemas/List"
+    Payment:
+      type: object
+      properties:
+        UUID:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b5fc-2c963f66afa6
+        userUUID:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4552-b3fc-2c963f66afa6
+        paymentType:
+          type: string
+          enum:
+            - creditCard
+            - paypal
+          example: creditCard
+    Subscription:
+      type: object
+      properties:
+        UUID:
+          type: string
+          format: uuid
+          example: 3fa85f64-5719-4562-b3fc-2c963f66afa6
+        paymentUUID:
+          type: string
+          format: uuid
+          example: 3fa85f64-5718-4562-b3fc-2c963f66afa6
+        subscriptionType:
+          type: string
+          enum:
+            - free
+            - premium
+          example: free
+    List:
+      type: object
+      properties:
+        UUID:
+          type: string
+          format: uuid
+          example: 88ace603-1962-42ec-ad9f-9984789f4d72
+        name:
+          type: string
+          example: Watch later
+        movieUUID:
+          type: array
+          items:
+              type: string
+              format: cuevana-uuid
+              example: 42040/without-remorse
+        isShared:
+          type: boolean
+          example: false
+        sharedWith:
+          type: array
+          items:
+              type: string
+              format: uuid
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        imageURL:
+          type: string
+          example: https://cuevana3.io/wp-content/uploads/2021/04/sin-remordimientos-42040-poster-204x300.jpg
+    Movie:
+      type: object
+      properties:
+        UUID:
+          type: string
+          format: uuid
+          example: 1937a756-f392-4218-b9db-8c078c8bfbc0
+        cuevanaUUID:
+          type: string
+          format: cuevana-uuid
+          example: 42040/without-remorse
+        title:
+          type: string
+          example: Sin remordimientos
+        poster:
+          type: string
+          example: https://cuevana3.io/wp-content/uploads/2021/04/sin-remordimientos-42040-poster-204x300.jpg
+        year:
+          type: string
+          example: 2021
+        synopsis:
+          type: string
+          example: Un ex Navy SEAL convertido en agente de la CIA busca venganza después de que su novia es asesinada por un narcotraficante de Baltimore.
+        rating:
+          type: float
+          example: 4.43
+        duration:
+          type: string
+          example: 1h 49m
+        genres:
+          type: array
+          items:
+              type: string
+              example: Drama
+        director:
+          type: array
+          items:
+              type: string
+              example: Stefano Sollima
+        cast:
+          type: array
+          items:
+              type: string
+              example: Adrian Rawlins, Alec Rosenthal, Artjom Gilz
