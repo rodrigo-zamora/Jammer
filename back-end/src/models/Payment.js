@@ -23,6 +23,19 @@ const paymentSchema = new mongoose.Schema({
     }
 }, { collection : 'payments' });
 
+paymentSchema.virtual('id').get(function () {
+    return this._id;
+});
+
+paymentSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        delete ret.id;
+        delete ret._id;
+        delete ret.__v;
+    }
+});
+
 let Payment = mongoose.model('Payment', paymentSchema);
 
 module.exports = Payment;

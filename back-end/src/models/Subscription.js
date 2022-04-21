@@ -23,6 +23,19 @@ const subscriptionSquema = new mongoose.Schema({
     }
 }, { collection : 'subscriptions' });
 
+subscriptionSquema.virtual('id').get(function () {
+    return this._id;
+});
+
+subscriptionSquema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        delete ret.id;
+        delete ret._id;
+        delete ret.__v;
+    }
+});
+
 let subscription = mongoose.model('subscription', subscriptionSquema);
 
 module.exports = subscription;

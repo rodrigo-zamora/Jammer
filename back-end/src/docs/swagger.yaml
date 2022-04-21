@@ -347,7 +347,7 @@ paths:
               properties:
                 name:
                   type: string
-                  example: Watch later
+                  example: Recently Watched
                 isShared:
                   type: boolean
                   example: false
@@ -731,7 +731,7 @@ components:
           example: 88ace603-1962-42ec-ad9f-9984789f4d72
         name:
           type: string
-          example: Watch later
+          example: Recently Watched
         movieUUID:
           type: array
           items:

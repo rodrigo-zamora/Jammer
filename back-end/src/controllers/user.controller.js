@@ -58,11 +58,20 @@ const userController = {
                     if (existingUser) {
                         reject('User with that email already exists');
                     } else {
+                        // Create default Recently Watched list (aka history)
+                        let list = new List({
+                            name: 'Recently Watched',
+                            movies: null,
+                            isShared: false,
+                            sharedWith: []
+                        });
+                        list.save();
                         // Create new user
                         User.create(user, (err, newUser) => {
                             if (err) {
                                 reject(err);
                             } else {
+                                newUser.list.push(list.UUID);
                                 resolve(newUser);
                             }
                         });
@@ -88,15 +97,7 @@ const userController = {
     delete: function (uuid) {
         console.log(`Deleting user with uuid ${uuid}`);
         return new Promise((resolve, reject) => {
-            User.findOneAndRemove({
-                UUID: uuid
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user);
-                }
-            });
+            
         });
     },
     getLists: async function (uuid) {

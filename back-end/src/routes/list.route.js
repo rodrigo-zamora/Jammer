@@ -6,7 +6,12 @@ const listController = require('../controllers/list.controller');
 
 router.get('/:userUUID', handleError(async (req, res) => {
     console.log('GET /lists/:userUUID');
-    listController.getAll(req.params.uuid, res);
+    let promise = await listController.getAll(req.params.userUUID);
+    if (promise) {
+        res.status(200).send(promise);
+    } else {
+        res.status(404).send('User not found');
+    }
 }));
 
 router.post('/:userUUID', handleError(async (req, res) => {

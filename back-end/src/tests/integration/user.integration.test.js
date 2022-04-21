@@ -60,11 +60,17 @@ describe('/users/:uuid', () => {
             });
         }),
         describe('DELETE', () => {
-            it('should delete a user and return it', async () => {
-
+            it('should delete a user and return it', (done) => {
+                request(app)
+                    .delete('/users/' + userUUID)
+                    .expect(200)
+                    .end(endFunction(done));
             }),
-            it('should return 404 if the user is not found', async () => {
-
+            it('should return 404 if the user is not found', (done) => {
+                request(app)
+                    .delete('/users/' + userUUID + '-not-found')
+                    .expect(404)
+                    .end(endFunction(done));
             });
         });
 });

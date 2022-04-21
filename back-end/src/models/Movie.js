@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Utils = require('../utils/utils');
 
-const movieSquema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
     UUID: {
         type: String,
         required: false,
@@ -56,6 +56,19 @@ const movieSquema = new mongoose.Schema({
     }
 }, { collection : 'movies' });
 
-let Movie = mongoose.model('Movie', movieSquema);
+movieSchema.virtual('id').get(function () {
+    return this._id;
+});
+
+movieSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        delete ret.id;
+        delete ret._id;
+        delete ret.__v;
+    }
+});
+
+let Movie = mongoose.model('Movie', movieSchema);
 
 module.exports = Movie;

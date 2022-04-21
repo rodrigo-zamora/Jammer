@@ -72,11 +72,24 @@ const userSchema = new mongoose.Schema({
         ref: 'subscription'
     },
     list: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'List'
     }]
 }, {
     collection: 'users'
+});
+
+userSchema.virtual('id').get(function () {
+    return this._id;
+});
+
+userSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        delete ret.id;
+        delete ret._id;
+        delete ret.__v;
+    }
 });
 
 userSchema.pre('findOneAndUpdate', function (next) {
