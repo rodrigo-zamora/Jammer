@@ -60,10 +60,10 @@ describe('/users/:uuid', () => {
             });
         }),
         describe('DELETE', () => {
-            it('should delete a user and return it', (done) => {
+            it('should delete a user and return it', async () => {
                 
             }),
-            it('should return 404 if the user is not found', (done) => {
+            it('should return 404 if the user is not found', async () => {
                 
             });
         });
