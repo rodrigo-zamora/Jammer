@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const SALT_WORK_FACTOR = 10;
 
 let Utils = require('../utils/utils');
@@ -71,33 +72,49 @@ const userSchema = new mongoose.Schema({
         ref: 'subscription'
     },
     list: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'List'
     }]
 }, {
     collection: 'users'
 });
 
-userSchema.post('findOneAndUpdate', function (user, next) {
-    user.updatedAt = Date.now();
-    // If the password was updated, rehash it
-    if (user.password) {
-        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-            if (err) return next(err);
+userSchema.virtual('id').get(function () {
+    return this._id;
+});
 
-            // Hash the password using our new salt
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) return next(err);
-
-                // Override the cleartext password with the hashed one
-                user.password = hash;
-                next();
-            });
-        });
-    } else {
-        next();
+userSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        delete ret.id;
+        delete ret._id;
+        delete ret.__v;
     }
 });
+
+userSchema.pre('findOneAndUpdate', function (next) {
+    // Update updatedAt with the current date
+    this.updatedAt = Date.now();
+
+    // TODO: Hash password if it was changed
+
+    next();
+});
+
+userSchema.methods.hashPassword = function (password) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+
+        // Hash the password using our new salt
+        bcrypt.hash(password, salt, function (err, hash) {
+            if (err) return next(err);
+
+            // Override the cleartext password with the hashed one
+            this.password = hash;
+            next();
+        });
+    });
+};
 
 userSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {

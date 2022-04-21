@@ -17,20 +17,25 @@ router.post('/', handleError(async (req, res) => {
 
 router.get('/search', handleError(async (req, res) => {
     console.log('GET /movies/search');
-    movieController.search(req.query.title, res);
+    movieController.search(req.query, res);
 }));
 
-router.get('movie/:uuid', handleError(async (req, res) => {
+router.get('/details', handleError(async (req, res) => {
+    console.log('GET /movies/details');
+    movieController.getDetails(req.query.cuevanaUUID, res);
+}));
+
+router.get('/movie/:uuid', handleError(async (req, res) => {
     console.log('GET /movies/movie/:uuid');
     movieController.get(req.params.uuid, res);
 }));
 
-router.put('movie/:uuid', handleError(async (req, res) => {
+router.put('/movie/:uuid', handleError(async (req, res) => {
     console.log('PUT /movies/movie/:uuid');
     movieController.update(req.params.uuid, req.body, res);
 }));
 
-router.delete('movie/:uuid', handleError(async (req, res) => {
+router.delete('/movie/:uuid', handleError(async (req, res) => {
     console.log('DELETE /movies/movie/:uuid');
     movieController.delete(req.params.uuid, res);
 }));

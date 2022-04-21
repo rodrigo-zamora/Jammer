@@ -1,126 +1,139 @@
 const User = require('../models/User');
+const List = require('../models/List');
+const Subscription = require('../models/Subscription');
 
 const userController = {
     getAllUsers: function () {
         console.log('Get all users');
-        const users = User.find({});
-        return users;
+        return new Promise((resolve, reject) => {
+            User.find({}, (err, users) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(users);
+                }
+            });
+        });
     },
-    get: async function (uuid, res) {
+    get: function (uuid) {
         console.log(`Searching for user with uuid ${uuid}`);
-        return User.findOne({
-            UUID: uuid
-        }).then(user => {
-            if (!user) {
-                console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with uuid ${uuid} found`);
-                res.status(200).send(user);
-            }
+        return new Promise((resolve, reject) => {
+            User.findOne({
+                UUID: uuid
+            }, (err, user) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(user);
+                }
+            });
         });
     },
-    getByEmail: function (email, res) {
+    getByEmail: function (email) {
         console.log(`Searching for user with email ${email}`);
-        return User.findOne({
-            email: email
-        }).then(user => {
-            if (!user) {
-                console.log(`User with email ${email} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with email ${email} found`);
-                res.status(200).send(user);
-            }
+        return new Promise((resolve, reject) => {
+            User.findOne({
+                email: email
+            }, (err, user) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(user);
+                }
+            });
         });
     },
-    create: function (user, res) {
+
+    // TODO: Fix promise rejection
+    create: function (user) {
         console.log('Creating user: ', user);
-        try {
+        return new Promise((resolve, reject) => {
+            // Check if user with that email exists
             User.findOne({
                 email: user.email
-            }).then(newUser => {
-                if (newUser) {
-                    console.log('User already exists');
-                    res.status(400).send('User already exists');
+            }, (err, existingUser) => {
+                if (err) {
+                    reject(err);
                 } else {
-                    User.create(user).then(user => {
-                        console.log('User created');
-                        res.status(201).send(user);
-                    }).catch(err => {
-                        console.log('Error creating user: ' + err.message);
-                        res.status(400).send(err.message);
-                    });
+                    if (existingUser) {
+                        reject('User with that email already exists');
+                    } else {
+                        // Create default Recently Watched list (aka history)
+                        let list = new List({
+                            name: 'Recently Watched',
+                            movies: null,
+                            isShared: false,
+                            sharedWith: []
+                        });
+                        list.save();
+                        // Create new user
+                        User.create(user, (err, newUser) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                newUser.list.push(list.UUID);
+                                resolve(newUser);
+                            }
+                        });
+                    }
                 }
-            })
-        } catch (err) {
-            console.log('Error creating user: ', err);
-            res.status(500).send('Error creating user');
-        }
+            });
+        });
     },
-    update: function (uuid, user, res) {
+    update: function (uuid, user) {
         console.log(`Updating user with uuid ${uuid}`);
-        return User.findOneAndUpdate({
-            UUID: uuid
-        }, user, {
-            new: true
-        }).then(user => {
-            if (!user) {
-                console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with uuid ${uuid} updated`);
-                user.save();
-                res.status(200).send(user);
-            }
+        return new Promise((resolve, reject) => {
+            User.findOneAndUpdate({
+                UUID: uuid
+            }, user, (err, user) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(user);
+                }
+            });
         });
     },
-    delete: function (uuid, res) {
+    delete: function (uuid) {
         console.log(`Deleting user with uuid ${uuid}`);
-        return User.findOneAndDelete({
-            UUID: uuid
-        }).then(user => {
-            if (!user) {
-                console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with uuid ${uuid} deleted`);
-                res.status(200).send(user);
-            }
+        return new Promise((resolve, reject) => {
+            
         });
     },
-    getLists: async function (uuid, res) {
+    getLists: async function (uuid) {
         console.log(`Searching for lists for user with uuid ${uuid}`);
-        return User.findOne({
-            UUID: uuid
-        }).then(user => {
-            if (!user) {
-                console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
-            } else if (!user.lists) {
-                console.log(`User with uuid ${uuid} has no lists`);
-                res.status(200).send([]);
-            } else {
-                console.log(`User with uuid ${uuid} has lists`);
-                res.status(200).send(user.lists);
-            }
+        return new Promise((resolve, reject) => {
+            User.findOne({
+                UUID: uuid
+            }, (err, user) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(List.find({
+                        _id: {
+                            $in: user.list
+                        }
+                    }));
+                }
+            });
         });
     },
-    getsubscription: async function (uuid, res) {
+    getSubscription: async function (uuid) {
         console.log(`Searching for subscription for user with uuid ${uuid}`);
-        return User.findOne({
-            UUID: uuid
-        }).then(user => {
-            if (!user) {
-                console.log(`User with uuid ${uuid} not found`);
-                res.status(404).send('User not found');
-            } else if (!user.subscription) {
-                console.log(`User with uuid ${uuid} has no subscription`);
-                res.status(404).send('User has no subscription');
-            } else {
-                console.log(`subscription of user with uuid ${uuid} found`);
-                res.status(200).send(user.subscription);
-            }
+        return new Promise((resolve, reject) => {
+            User.findOne({
+                UUID: uuid
+            }, (err, user) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(Subscription.find({
+                        _id: {
+                            $in: user.subscription
+                        }
+                    }));
+                }
+            });
         });
     }
 };

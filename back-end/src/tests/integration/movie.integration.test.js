@@ -1,16 +1,7 @@
 const request = require('supertest');
 
-const {
-    restore,
-    getJSON
-} = require('../../utils/fileHelpers');
-
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
-
-afterAll(() => {
-    restore();
-});
 
 // TODO: complete integration tests
 

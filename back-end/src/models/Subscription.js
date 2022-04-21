@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Utils = require('../utils/utils');
 
-const paymentSchema = new mongoose.Schema({
+const subscriptionSquema = new mongoose.Schema({
     UUID: {
         type: String,
         required: false,
@@ -12,22 +12,22 @@ const paymentSchema = new mongoose.Schema({
             return Utils.generateUUID();
         }
     },
-    userUUID: {
-        type: String,
-        required: true
+    paymentUUID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Payment'
     },
-    paymentType: {
+    subscriptionType: {
         type: String,
         required: true,
-        enum: ['creditCard', 'paypal']
+        enum: ['free', 'premium']
     }
-}, { collection : 'payments' });
+}, { collection : 'subscriptions' });
 
-paymentSchema.virtual('id').get(function () {
+subscriptionSquema.virtual('id').get(function () {
     return this._id;
 });
 
-paymentSchema.set('toJSON', {
+subscriptionSquema.set('toJSON', {
     virtuals: true,
     transform: function(doc, ret) {
         delete ret.id;
@@ -36,6 +36,6 @@ paymentSchema.set('toJSON', {
     }
 });
 
-let Payment = mongoose.model('Payment', paymentSchema);
+let subscription = mongoose.model('subscription', subscriptionSquema);
 
-module.exports = Payment;
+module.exports = subscription;

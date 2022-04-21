@@ -6,9 +6,10 @@ name: Node.js CI
 on:
   push:
     branches:    
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
+      - '*'           # matches every branch that doesn't contain a '/'
+      - '*/*'         # matches every branch containing a single '/'
+      - '**'          # matches every branch
+      - '!front-end'  # excludes front-end
   pull_request:
     branches: [ master ]
 
@@ -28,6 +29,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Create env file
+      run: |
+          touch .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_CLUSTER=${{ secrets.DB_CLUSTER }} >> .env
+          echo CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+          cat .env
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
