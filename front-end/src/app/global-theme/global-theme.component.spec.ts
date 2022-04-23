@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GlobalThemeComponent } from './global-theme.component';
+import { CarouselBasicComponent } from '../carousel-basic/carousel-basic.component';
+
 
 describe('GlobalThemeComponent', () => {
   let component: GlobalThemeComponent;
