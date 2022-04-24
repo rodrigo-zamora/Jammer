@@ -10,8 +10,6 @@ tags:
   description: Lists management
 - name: Subscriptions
   description: Subscriptions management
-- name: Payments
-  description: Payments management
 - name: Movies
   description: Search movies, get movie details, get movie links, and movie management
 paths:
@@ -681,23 +679,6 @@ components:
           items:
             type: string
             example: ["5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f", "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"]
-    Payment:
-      type: object
-      properties:
-        UUID:
-          type: string
-          format: uuid
-          example: 3fa85f64-5717-4562-b5fc-2c963f66afa6
-        userUUID:
-          type: string
-          format: uuid
-          example: 3fa85f64-5717-4552-b3fc-2c963f66afa6
-        paymentType:
-          type: string
-          enum:
-            - creditCard
-            - paypal
-          example: creditCard
     Subscription:
       type: object
       properties:
@@ -705,10 +686,12 @@ components:
           type: string
           format: uuid
           example: 3fa85f64-5719-4562-b3fc-2c963f66afa6
-        paymentUUID:
+        paymentType:
           type: string
-          format: uuid
-          example: 3fa85f64-5718-4562-b3fc-2c963f66afa6
+          enum:
+            - credit
+            - debit
+          example: credit
         subscriptionType:
           type: string
           enum:

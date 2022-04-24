@@ -29,11 +29,8 @@
     - genres *string[]*
 - **Subscription**
     - UUID *string*
-    - paymentUUID *string*
+    - paymentType *string enum(credit, debit)*
     - subscriptionType *string, enum(free, premium)*
-- **Payment**
-    - UUID *string*
-    - paymentType *string, enum(paypal, creditCard)*
 ## Routes
 - **User**
     - [GET] /users
@@ -63,9 +60,3 @@
     - [DELETE] /subscription/:subscriptionUUID
     - [PUT] /subscription/:subscriptionUUID
     - [POST] /subscription/:userUUID
-- **Payment**
-    - [GET] /payment/:paymentUUID
-    - [DELETE] /payment/:paymentUUID
-    - [PUT] /payment/:paymentUUID
-    - [GET] /payment/all/:userUUID
-    - [POST] /payment/:userUUID

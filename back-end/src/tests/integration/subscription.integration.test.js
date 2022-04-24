@@ -17,7 +17,7 @@ describe('/subscription/:userUUID', () => {
                 .post(`/subscription/${userUUID}`)
                 .send({
                     UUID: subscriptionUUID + 'new',
-                    paymentUUID: '77p38ay2-m53e-4637-9n57-t8529pt02ion',
+                    paymentType: 'credit',
                     subscriptionType: 'premium'
                 })
                 .expect(201)
@@ -28,7 +28,7 @@ describe('/subscription/:userUUID', () => {
                 .post(`/subscription/not-found`)
                 .send({
                     UUID: subscriptionUUID + 'new',
-                    paymentUUID: '77p38ay2-m53e-4637-9n57-t8529pt02ion',
+                    paymentType: 'credit',
                     subscriptionType: 'premium'
                 })
                 .expect(404)

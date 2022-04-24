@@ -42,7 +42,7 @@ function restoreUser() {
     };
     let subscription = {
         UUID: '77s38ub2-s53c-4637-9r57-i8529pt02ion',
-        paymentUUID: '77p38ay2-m53e-4637-9n57-t8529pt02ion',
+        paymentType: 'credit',
         subscriptionType: 'free'
     };
     backupUser = {

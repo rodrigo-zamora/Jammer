@@ -12,8 +12,10 @@ const subscriptionSquema = new mongoose.Schema({
             return Utils.generateUUID();
         }
     },
-    paymentUUID: {
-        type: String
+    paymentType: {
+        type: String,
+        required: true,
+        enum: ['credit', 'debit']
     },
     subscriptionType: {
         type: String,
