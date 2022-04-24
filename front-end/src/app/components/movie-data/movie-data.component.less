@@ -1,0 +1,65 @@
+.bodyTheme {
+    background-color: #000;
+    app-global-theme {
+        .movieInfo {
+            display: flex;
+            margin: 50px;
+
+            .movieInfoContent {
+                margin: 20px;
+
+                .title {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    color: #fff;
+        
+                    b {
+                        display: flex;
+                        justify-content: center;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        width: 100%;
+                    }
+                }
+        
+                .cardInfo {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    color: #fff;
+        
+                    .duo {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 20px;
+                        width: 100%;
+                        
+        
+                        .duration {
+                            margin: 0;
+                        }
+        
+                        .rating {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+        
+                            .wmargin {
+                                margin: 0 5px;
+                            }
+                            mat-icon {
+                                color: #FFA41C;
+                            }
+                        }
+                    }
+        
+                    .year {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}

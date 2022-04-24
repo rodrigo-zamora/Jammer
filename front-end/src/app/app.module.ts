@@ -15,6 +15,7 @@ import { CardComponent } from './components/card/card.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { MovieDataComponent } from './components/movie-data/movie-data.component';
 import { GlobalThemeComponent } from './components/global-theme/global-theme.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
@@ -29,6 +30,7 @@ import { GenreComponentComponent } from './components/genre-component/genre-comp
     HomeComponent,
     GenreComponentComponent,
     FooterComponent,
+    MovieDataComponent,
   ],
   imports: [
     BrowserModule,
