@@ -642,6 +642,118 @@ paths:
                 $ref: '#/components/schemas/Movie'
         "400":
           description: The request is invalid
+  /subscription/:subscriptionUUID:
+    get:
+      tags:
+        - Subscriptions
+      summary: Get a subscription
+      description: Get a subscription
+      operationId: getSubscription
+      parameters:
+        - name: subscriptionUUID
+          in: path
+          description: Subscription UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
+      responses:
+        "200":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        "404":
+          description: Subscription not found
+        "400":
+          description: The request is invalid
+    put:
+      tags:
+        - Subscriptions
+      summary: Update a subscription
+      description: Update a subscription
+      operationId: updateSubscription
+      parameters:
+        - name: subscriptionUUID
+          in: path
+          description: Subscription UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
+        - name: body
+          in: body
+          description: Subscription
+          required: true
+          schema:
+            $ref: '#/components/schemas/Subscription'
+      responses:
+        "200":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        "404":
+          description: Subscription not found
+        "400":
+          description: The request is invalid
+    delete:
+      tags:
+        - Subscriptions
+      summary: Delete a subscription
+      description: Delete a subscription
+      operationId: deleteSubscription
+      parameters:
+        - name: subscriptionUUID
+          in: path
+          description: Subscription UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
+      responses:
+        "200":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        "404":
+          description: Subscription not found
+        "400":
+          description: The request is invalid
+  /subscription/:userUUID:
+    post:
+      tags:
+        - Subscriptions
+      summary: Create a subscription
+      description: Create a subscription
+      operationId: createSubscription
+      parameters:
+        - name: userUUID
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            example: "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"
+        - name: body
+          in: body
+          description: Subscription
+          required: true
+          schema:
+            $ref: '#/components/schemas/Subscription'
+      responses:
+        "201":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        "400":
+          description: The request is invalid
 components:
   schemas:
     User:
