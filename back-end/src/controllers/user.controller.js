@@ -3,137 +3,155 @@ const List = require('../models/List');
 const Subscription = require('../models/Subscription');
 
 const userController = {
-    getAllUsers: function () {
+    getAllUsers: function (res) {
         console.log('Get all users');
-        return new Promise((resolve, reject) => {
-            User.find({}, (err, users) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(users);
-                }
-            });
+        User.find({}, (err, users) => {
+            if (err) {
+                res.status(500).send(err.message);
+            } else {
+                res.status(200).send(users);
+            }
         });
     },
-    get: function (uuid) {
+    get: function (uuid, res) {
         console.log(`Searching for user with uuid ${uuid}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                UUID: uuid
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user);
-                }
-            });
+        User.findOne({
+            UUID: uuid
+        }).then(user => {
+            if (!user) {
+                console.log(`User with uuid ${uuid} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with uuid ${uuid} found`);
+                res.status(200).send(user);
+            }
         });
     },
-    getByEmail: function (email) {
+    getByEmail: function (email, res) {
         console.log(`Searching for user with email ${email}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                email: email
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user);
-                }
-            });
+        User.findOne({
+            email: email
+        }).then(user => {
+            if (!user) {
+                console.log(`User with email ${email} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with email ${email} found`);
+                res.status(200).send(user);
+            }
         });
     },
 
-    // TODO: Fix promise rejection
-    create: function (user) {
-        console.log('Creating user: ', user);
-        return new Promise((resolve, reject) => {
-            // Check if user with that email exists
-            User.findOne({
-                email: user.email
-            }, (err, existingUser) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    if (existingUser) {
-                        reject('User with that email already exists');
-                    } else {
-                        // Create default Recently Watched list (aka history)
-                        let list = new List({
-                            name: 'Recently Watched',
-                            movies: null,
-                            isShared: false,
-                            sharedWith: []
-                        });
-                        list.save();
-                        // Create new user
-                        User.create(user, (err, newUser) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                newUser.list.push(list.UUID);
-                                resolve(newUser);
-                            }
-                        });
+    create: async function (user, res) {
+        console.log('Creating new user with email: ', user.email);
+        User.findOne({
+            email: user.email
+        }).then(newUser => {
+            if (newUser) {
+                console.log('User already exists');
+                res.status(409).send('User already exists');
+            } else {
+                User.create(user).then(user => {
+                    console.log('User created');
+                    res.status(201).send(user);
+                }).catch(err => {
+                    console.log('Error creating user: ' + err.message);
+                    res.status(400).send(err.message);
+                });
+            }
+        });
+    },
+    update: function (uuid, user, res) {
+        console.log(`Updating user with uuid ${uuid}`);
+        User.findOne({
+            UUID: uuid
+        }).then(newUser => {
+            if (!newUser) {
+                console.log(`User with uuid ${uuid} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with uuid ${uuid} found`);
+                for (let key in user) {
+                    if (user.hasOwnProperty(key)) {
+                        newUser[key] = user[key];
                     }
                 }
-            });
+                newUser.save().then(user => {
+                    console.log('User updated');
+                    res.status(200).send(user);
+                }).catch(err => {
+                    console.log('Error updating user: ' + err.message);
+                    res.status(400).send(err.message);
+                });
+            }
         });
     },
-    update: function (uuid, user) {
-        console.log(`Updating user with uuid ${uuid}`);
-        return new Promise((resolve, reject) => {
-            User.findOneAndUpdate({
-                UUID: uuid
-            }, user, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
-    },
-    delete: function (uuid) {
+    delete: function (uuid, res) {
         console.log(`Deleting user with uuid ${uuid}`);
-        return new Promise((resolve, reject) => {
-            
+        User.findOne({
+            UUID: uuid
+        }).then(newUser => {
+            if (!newUser) {
+                console.log(`User with uuid ${uuid} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with uuid ${uuid} found`);
+                newUser.remove().then(user => {
+                    console.log('User deleted');
+                    res.status(200).send(user);
+                }).catch(err => {
+                    console.log('Error deleting user: ' + err.message);
+                    res.status(400).send(err.message);
+                });
+            }
         });
     },
-    getLists: async function (uuid) {
-        console.log(`Searching for lists for user with uuid ${uuid}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                UUID: uuid
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(List.find({
-                        _id: {
-                            $in: user.list
-                        }
-                    }));
-                }
-            });
+    getLists: function (uuid, res) {
+        console.log(`Searching for lists of user with uuid ${uuid}`);
+        User.findOne({
+            UUID: uuid
+        }).then(user => {
+            if (!user) {
+                console.log(`User with uuid ${uuid} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with uuid ${uuid} found`);
+                List.find({
+                    UUID: {
+                        $in: user.lists
+                    }
+                }).then(lists => {
+                    console.log('Lists found');
+                    res.status(200).send(lists);
+                }).catch(err => {
+                    console.log('Error searching for lists: ' + err.message);
+                    res.status(400).send(err.message);
+                });
+            }
         });
     },
-    getSubscription: async function (uuid) {
-        console.log(`Searching for subscription for user with uuid ${uuid}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                UUID: uuid
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(Subscription.find({
-                        _id: {
-                            $in: user.subscription
-                        }
-                    }));
-                }
-            });
+    getSubscription: function (uuid, res) {
+        console.log(`Searching for subscription of user with uuid ${uuid}`);
+        User.findOne({
+            UUID: uuid
+        }).then(user => {
+            if (!user) {
+                console.log(`User with uuid ${uuid} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with uuid ${uuid} found`);
+                Subscription.findOne({
+                    UUID: {
+                        $in: user.subscription
+                    }
+                }).then(subscription => {
+                    console.log('Subscription found');
+                    res.status(200).send(subscription);
+                }).catch(err => {
+                    console.log('Error searching for subscription: ' + err.message);
+                    res.status(400).send(err.message);
+                });
+            }
         });
     }
 };

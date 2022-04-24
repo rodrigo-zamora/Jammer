@@ -19,6 +19,7 @@
     - imageURL *string*
 - **Movie**
     - UUID *string*
+    - cuevanaUUID *string*
     - title *string*
     - poster *string*
     - year *number*
@@ -26,8 +27,6 @@
     - rating *number*
     - duration *string*
     - genres *string[]*
-    - director *string[]*
-    - cast *string[]*
 - **Subscription**
     - UUID *string*
     - paymentUUID *string*
@@ -47,10 +46,10 @@
 - **List**
     - [GET] /lists/:userUUID
     - [POST] /lists/:userUUID
-    - [GET] /lists/:userUUID/:
-    - [GET] /lists/:userUUID/:listName
-    - [PUT] /lists/:userUUID/:listUUID
-    - [DELETE] /lists/:userUUID/:listUUID
+    
+    - [GET] /lists/:listUUID
+    - [PUT] /lists/:listUUID
+    - [DELETE] /lists/:listUUID
 - **Movie**
     - [GET] /movies
     - [POST] /movies

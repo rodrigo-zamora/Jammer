@@ -2,14 +2,19 @@ const Movie = require('../models/Movie');
 const Cuevana3 = require('../utils/cuevana3');
 
 const movieController = {
-    getAllMovies: function () {
+    getAllMovies: function (res) {
         console.log('Get all movies');
-        const movies = Movie.find({});
-        return movies;
+        Movie.find({}, (err, movies) => {
+            if (err) {
+                res.status(500).send(err.message);
+            } else {
+                res.status(200).send(movies);
+            }
+        });
     },
     get: async function (uuid, res) {
         console.log(`Searching for movie with uuid ${uuid}`);
-        return Movie.findOne({
+        Movie.findOne({
             UUID: uuid
         }).then(movie => {
             if (!movie) {
@@ -22,7 +27,7 @@ const movieController = {
         });
     },
     create: function (movie, res) {
-        console.log('Creating movie: ', movie);
+        console.log('Creating movie: ', movie.title);
         try {
             Movie.findOne({
                 UUID: movie.UUID
@@ -36,7 +41,7 @@ const movieController = {
                         res.status(201).send(movie);
                     }).catch(err => {
                         console.log('Error creating movie: ' + err.message);
-                        res.status(400).send(err.message);
+                        res.status(500).send(err.message);
                     });
                 }
             })
@@ -47,7 +52,7 @@ const movieController = {
     },
     update: function (uuid, movie, res) {
         console.log(`Searching for movie with uuid ${uuid}`);
-        return Movie.findOne({
+        Movie.findOne({
             UUID: uuid
         }).then(newMovie => {
             if (!newMovie) {
@@ -72,7 +77,7 @@ const movieController = {
     },
     delete: function (uuid, res) {
         console.log(`Deleting movie with uuid ${uuid}`);
-        return Movie.findOneAndDelete({
+        Movie.findOneAndDelete({
             UUID: uuid
         }).then(movie => {
             if (!movie) {
@@ -84,60 +89,65 @@ const movieController = {
             }
         });
     },
-    search: function (query, res) {
+    search: function (query, res) {;
         console.log('Searching for movies: ', query);
-        let moviesFound = [];
-
-        for (key in query) {
-            if (query.hasOwnProperty(key)) {
-                if (key === 'query' || key === 'title') {
-                    console.log('Searching for movies using query: ', query[key]);
-                    Cuevana3.getSearch(query[key], 1).then(movies => {
-                        moviesFound = moviesFound.concat(movies);
-                    });
-                } else {
-                    if (key === 'genre') {
-                        console.log('Searching for movies with genre: ', query[key]);
-                    }
-                    if (key === 'actor') {
-                        console.log('Searching for movies with actor: ', query[key]);
-                    }
-                }
-            }
-        }
-
-        setTimeout(() => {
-            console.log('Checking for movies in database');
-            for (let movie in moviesFound) {
-                let modifiedMovie = {
-                    cuevanaUUID: moviesFound[movie].id,
-                    title: moviesFound[movie].title,
-                    poster: moviesFound[movie].poster,
-                    year: moviesFound[movie].year,
-                    sypnosis: moviesFound[movie].sypnosis,
-                    rating: moviesFound[movie].rating,
-                    duration: moviesFound[movie].duration,
-                    genres: moviesFound[movie].genres,
-                    director: moviesFound[movie].director,
-                    cast: moviesFound[movie].cast
-                }
-                moviesFound[movie] = modifiedMovie;
-                Movie.findOne({
-                    cuevanaUUID: moviesFound[movie].cuevanaUUID
-                }).then(newMovie => {
-                    if (!newMovie) {
-                        console.log('Movie with UUID ' + moviesFound[movie].cuevanaUUID + ' not found. Adding to database');
-                        Movie.create(moviesFound[movie]).then(movie => {}).catch(err => {
-                            console.log('Error adding movie to database: ' + err.message);
+        if (Object.keys(query).length === 0) {
+            res.status(400).send('Invalid query');
+        } else {
+            for (key in query) {
+                if (query.hasOwnProperty(key)) {
+                    if (key === 'title') {
+                        console.log('Searching for movies using query: ', query[key]);
+                        Cuevana3.getSearch(query[key], 1).then(movies => {
+                            res.status(200).send(movies);
                         });
                     } else {
-                        console.log('Movie with UUID ' + moviesFound[movie].cuevanaUUID + ' found');
+                        if (key === 'genre') {
+                            console.log('Searching for movies with genre: ', query[key]);
+                            let genres = {
+                                0: "Acción",
+                                1: "Animación",
+                                2: "Aventura",
+                                3: "Bélico guerra",
+                                4: "Biografía",
+                                5: "Ciencia ficción",
+                                6: "Comedia",
+                                7: "Crimen",
+                                8: "Documentales",
+                                9: "Drama",
+                                10: "Familiar",
+                                11: "Fantasía",
+                                12: "Misterio",
+                                13: "Musical",
+                                14: "Romance",
+                                15: "Terror",
+                                16: "Thriller"
+                            };
+                            let genre = genres[query[key]];
+                            Movie.find({
+                                genres: {
+                                    $in: [genre]
+                                }
+                            }).then(movies => {
+                                res.status(200).send(movies);
+                            });
+                        }
+                        else if (key === 'actor') {
+                            console.log('Searching for movies with actor: ', query[key]);
+                            Movie.find({
+                                actors: {
+                                    $in: [query[key]]
+                                }
+                            }).then(movies => {
+                                res.status(200).send(movies);
+                            });
+                        } else {
+                            res.status(400).send('Invalid query');
+                        }
                     }
-                });
+                }
             }
-
-            res.status(200).send(moviesFound);
-        }, 1000);
+        }    
     },
     getDetails: function (cuevanaUUID, res) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);

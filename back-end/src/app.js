@@ -76,11 +76,13 @@ app.use('/movies', movieRoute);
 /*app.use('/subscription', subscriptionRoute);
 app.use('/auth', authRoute);*/
 
-app.use((error, req, res, next) => {
-    console.log('Error', error);
-    if (error.details) return res.status(400).send(error.details[0].message);
-    if (error instanceof NotFoundError) return res.status(404).send(error.message);
-    res.status(503).send('Internal server error');
-});
+app.use((err, req, res, next) => {
+    console.log('Error', err);
+    if (err.details) return res.status(400).send(err.details[0].message);
+    if (err instanceof NotFoundError) {
+      return res.status(404).send(err.message);
+    }
+    res.status(503).send('Something went wrong, try again');
+  });
 
 module.exports = app;

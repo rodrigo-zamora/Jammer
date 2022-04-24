@@ -60,6 +60,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+        "409":
+          description: A user with the same email already exists
         "400":
           description: The request is invalid
   /users/:uuid:
@@ -80,8 +82,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        "400":
-          description: The request is invalid
+        "404":
+          description: The user does not exist
     put:
       tags:
       - User
@@ -187,8 +189,8 @@ paths:
                   list:
                     type: array
                     $ref: "#/components/schemas/List"
-        "400":
-          description: The request is invalid
+        "404":
+          description: The user does not exist
   /users/:uuid/lists:
     get:
       tags:
@@ -209,6 +211,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/List"
+        "404":
+          description: The user does not exist
         "400":
           description: The request is invalid
   /users/:uuid/subscriptions:
@@ -231,6 +235,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Subscription"
+        "404":
+          description: The user does not exist
         "400":
           description: The request is invalid
   /lists/:userUUID:
@@ -253,6 +259,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/List"
+        "404":
+          description: The user does not exist
         "400":
           description: The request is invalid
     post:
@@ -297,19 +305,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/List"
+        "409":
+          description: A list with that name already exists
+        "404":
+          description: The user does not exist
         "400":
           description: The request is invalid
-  /lists/:userUUID/:listUUID:
+  /lists/:listUUID:
     get:
       tags:
       - Lists
-      summary: Get a list by user uuid and list uuid
+      summary: Get a list by list uuid
       parameters:
-        - name: userUUID
-          in: path
-          required: true
-          schema:
-            type: string
         - name: listUUID
           in: path
           required: true
@@ -322,18 +329,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/List"
+        "404":
+          description: The list does not exist
         "400":
           description: The request is invalid
     put:
       tags:
       - Lists
-      summary: Update a list by user uuid and list uuid
+      summary: Update a list by list uuid
       parameters:
-        - name: userUUID
-          in: path
-          required: true
-          schema:
-            type: string
         - name: listUUID
           in: path
           required: true
@@ -366,18 +370,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/List"
+        "404":
+          description: The list does not exist
         "400":
           description: The request is invalid
     delete:
       tags:
       - Lists
-      summary: Delete a list by user uuid and list uuid
+      summary: Delete a list by list uuid
       parameters:
-        - name: userUUID
-          in: path
-          required: true
-          schema:
-            type: string
         - name: listUUID
           in: path
           required: true
@@ -390,13 +391,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/List"
+        "404":
+          description: The list does not exist
         "400":
           description: The request is invalid
   /movies:
     get:
       tags:
       - Movies
-      summary: Get all movies
+      summary: Get all movies from database
       responses:
         "200":
           description: A successful response
@@ -444,11 +447,6 @@ paths:
                   items:
                     type: string
                     example: Drama
-                director:
-                  type: array
-                  items:
-                    type: string
-                    example: Stefano Sollima
                 cast:
                   type: array
                   items:
@@ -463,32 +461,25 @@ paths:
                 $ref: "#/components/schemas/Movie"
         "400":
           description: The request is invalid
-  /movies/search?query=:query:
+  /movies/search?query=:toSearch:
     get:
       tags:
       - Movies
       summary: Search movies
+      description: Search by title, genre, actor or year. If you want to search by multiple fields, separate them by comma.
       parameters:
         - name: query
+          in: path
+          required: true
+          schema:
+            type: string
+            example: title, genre, actor, year
+        - name: toSearch
           in: query
           required: true
           schema:
             type: string
-        - name: title
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: genre
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: actor
-          in: query
-          required: false
-          schema:
-            type: string
+            example: Without Remorse
       responses:
         "200":
           description: A successful response
@@ -684,10 +675,12 @@ components:
           example: 2022-03-28T02:16:03.133+00:00
         subscription:
           type: string
-          $ref: "#/components/schemas/Subscription"
+          example: 5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f
         list:
           type: array
-          $ref: "#/components/schemas/List"
+          items:
+            type: string
+            example: ["5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f", "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f"]
     Payment:
       type: object
       properties:
@@ -784,11 +777,6 @@ components:
           items:
               type: string
               example: Drama
-        director:
-          type: array
-          items:
-              type: string
-              example: Stefano Sollima
         cast:
           type: array
           items:
