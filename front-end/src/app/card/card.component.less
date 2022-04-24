@@ -1,0 +1,68 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 200px;
+    margin: 25px;
+    cursor: pointer;
+
+    .card-body {
+        height: 150px;
+
+        .title {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            b {
+                display: flex;
+                justify-content: center;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                width: 100%;
+            }
+        }
+
+        .cardInfo {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .duo {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+
+                .duration {
+                    margin: 0;
+                }
+
+                .rating {
+                    display: flex;
+                    align-items: center;
+
+                    .wmargin {
+                        margin: 0 5px;
+                    }
+                    mat-icon {
+                        color: #FFA41C;
+                    }
+                }
+            }
+
+            .year {
+                margin: 0;
+                display: flex;
+                justify-content: end;
+                align-content: end;
+            }
+        }
+    }
+}

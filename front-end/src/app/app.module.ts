@@ -16,6 +16,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { GlobalThemeComponent } from './global-theme/global-theme.component';
 import { CarouselBasicComponent } from './carousel-basic/carousel-basic.component';
 import { HomeComponent } from './home/home.component';
+import { GenreComponentComponent } from './genre-component/genre-component.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { HomeComponent } from './home/home.component';
     GlobalThemeComponent,
     CarouselBasicComponent,
     HomeComponent,
+    GenreComponentComponent,
   ],
   imports: [
     BrowserModule,
