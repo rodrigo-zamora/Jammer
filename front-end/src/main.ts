@@ -5,7 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 
-import {CarouselBasicComponent} from './app/carousel-basic/carousel-basic.component';
+import {CarouselBasicComponent} from './app/components/carousel-basic/carousel-basic.component';
 /*
 platformBrowserDynamic()
     .bootstrapModule(CarouselBasicComponent)
