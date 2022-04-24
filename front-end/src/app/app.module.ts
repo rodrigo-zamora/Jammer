@@ -17,6 +17,7 @@ import { GlobalThemeComponent } from './global-theme/global-theme.component';
 import { CarouselBasicComponent } from './carousel-basic/carousel-basic.component';
 import { HomeComponent } from './home/home.component';
 import { GenreComponentComponent } from './genre-component/genre-component.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { GenreComponentComponent } from './genre-component/genre-component.compo
     CarouselBasicComponent,
     HomeComponent,
     GenreComponentComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
