@@ -59,6 +59,7 @@ const listRoute = require('./routes/list.route');
 const movieRoute = require('./routes/movie.route');
 const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');
+
 const {NotFoundError} = require('./utils/errors');
 
 const swaggerDocument = YAML.load(path.resolve('./src/docs/swagger.yaml'));
