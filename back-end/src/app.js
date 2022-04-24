@@ -57,7 +57,7 @@ app.use(cors());
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
 const movieRoute = require('./routes/movie.route');
-/*const subscriptionRoute = require('./routes/subscription.route');*/
+const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');
 const {NotFoundError} = require('./utils/errors');
 
@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
 app.use('/users', userRoute);
 app.use('/lists', listRoute);
 app.use('/movies', movieRoute);
-/*app.use('/subscription', subscriptionRoute);
+app.use('/subscription', subscriptionRoute);/*
 app.use('/auth', authRoute);*/
 
 app.use((err, req, res, next) => {

@@ -12,10 +12,6 @@ const paymentSchema = new mongoose.Schema({
             return Utils.generateUUID();
         }
     },
-    userUUID: {
-        type: String,
-        required: true
-    },
     paymentType: {
         type: String,
         required: true,

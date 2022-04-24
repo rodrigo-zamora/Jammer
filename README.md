@@ -62,7 +62,6 @@
     - [GET] /subscription/:subscriptionUUID
     - [DELETE] /subscription/:subscriptionUUID
     - [PUT] /subscription/:subscriptionUUID
-    - [GET] /subscription/all/:userUUID
     - [POST] /subscription/:userUUID
 - **Payment**
     - [GET] /payment/:paymentUUID

@@ -13,8 +13,7 @@ const subscriptionSquema = new mongoose.Schema({
         }
     },
     paymentUUID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Payment'
+        type: String
     },
     subscriptionType: {
         type: String,
@@ -36,6 +35,6 @@ subscriptionSquema.set('toJSON', {
     }
 });
 
-let subscription = mongoose.model('subscription', subscriptionSquema);
+let Subscription = mongoose.model('subscription', subscriptionSquema);
 
-module.exports = subscription;
+module.exports = Subscription;

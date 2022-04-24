@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const List = require('../models/List');
 const Movie = require('../models/Movie');
+const Subscription = require('../models/Subscription');
 
 function restoreList() {
     List.deleteOne({
@@ -39,6 +40,11 @@ function restoreUser() {
         sharedWith: [],
         imageURL: ''
     };
+    let subscription = {
+        UUID: '77s38ub2-s53c-4637-9r57-i8529pt02ion',
+        paymentUUID: '77p38ay2-m53e-4637-9n57-t8529pt02ion',
+        subscriptionType: 'free'
+    };
     backupUser = {
         UUID: '77f38fc2-c53f-4637-9c57-d8529cc02bc1',
         firstName: 'Rodrigo',
@@ -46,22 +52,29 @@ function restoreUser() {
         email: 'rodrigo.zamora@hotmail.com',
         password: '123456',
         lists: [list.UUID],
-        subscription: '',
+        subscription: subscription.UUID,
         createdAt: Date.parse('2022-03-27T23:03:13.652+00:00'),
         updatedAt: Date.parse('2022-03-28T02:16:03.133+00:00')
     };
-    List.create(list, (err, newList) => {
-        if (err) {
-            console.log(err);
-        } else {
-            backupUser.lists.push(newList.UUID);
-        }
-    });
     User.create(backupUser, (err, newUser) => {
         if (err) {
             console.log(err);
         } else {
             console.log('Restored user: ', newUser);
+        }
+    });
+    Subscription.create(subscription, (err, subscription) => {
+        if (err) {
+            console.log('Error creating subscription: ', err);
+        } else {
+            console.log('Subscription created: ', subscription);
+        }
+    });
+    List.create(list, (err, newList) => {
+        if (err) {
+            console.log(err);
+        } else {
+            backupUser.lists.push(newList.UUID);
         }
     });
     User.deleteOne({
@@ -71,6 +84,15 @@ function restoreUser() {
             console.log(err)
         } else {
             console.log('Deleted user: ', user);
+        }
+    });
+    Subscription.deleteOne({
+        UUID: ('77s38ub2-s53c-4637-9r57-i8529pt02ion' + 'new')
+    }, (err, subscription) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('Deleted subscription: ', subscription);
         }
     });
 }
