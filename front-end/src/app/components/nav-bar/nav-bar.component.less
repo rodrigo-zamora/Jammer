@@ -1,0 +1,43 @@
+.toolbar {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(20, 20, 20);
+  color: white;
+  font-weight: 600;
+  z-index: 999;
+
+  .spacer {
+    flex: 1;
+  }
+
+  .primary-navigation {
+    display: flex;
+    align-items: center;
+
+    img { 
+      margin: 0 16px;
+    }
+  }
+
+  .secondary-navigation {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    .search-input {
+      background-color: #000;
+      height: 30px;
+      width: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      margin-right: 10px;
+      padding: 0 10px;
+      border-radius: 5px;
+      color: #fff;
+    }
+  }
+}
