@@ -14,18 +14,16 @@ const listSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
-        match: /^[a-zA-Z0-9\s]+$/
+        required: true
     },
     movies: [{
         movieUUID: {
             type: String,
-            required: true
+            required: false
         },
         time: {
-            type: Date,
-            required: false,
-            default: null
+            type: String,
+            required: false
         }
     }],
     isShared: {

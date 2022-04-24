@@ -68,12 +68,10 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
     subscription: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'subscription'
+        type: String
     },
-    list: [{
-        type: String,
-        ref: 'List'
+    lists: [{
+        type: String
     }]
 }, {
     collection: 'users'

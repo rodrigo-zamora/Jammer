@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
 const {handleError} = require('../utils/hof');
+
 const movieController = require('../controllers/movie.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /movies');
-    const movies = await movieController.getAllMovies();
-    res.send(movies);
+    movieController.getAllMovies(res);
 }));
 
 router.post('/', handleError(async (req, res) => {

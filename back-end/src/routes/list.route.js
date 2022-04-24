@@ -6,36 +6,27 @@ const listController = require('../controllers/list.controller');
 
 router.get('/:userUUID', handleError(async (req, res) => {
     console.log('GET /lists/:userUUID');
-    let promise = await listController.getAll(req.params.userUUID);
-    if (promise) {
-        res.status(200).send(promise);
-    } else {
-        res.status(404).send('User not found');
-    }
+    listController.getAll(req.params.userUUID, res);
 }));
 
 router.post('/:userUUID', handleError(async (req, res) => {
     console.log('POST /lists/:userUUID');
-    listController.create(req.params.uuid, req.body, res);
+    listController.create(req.params.userUUID, req.body, res);
 }));
 
-router.put('/:userUUID', handleError(async (req, res) => {
-    console.log('PUT /lists/:userUUID');
-    listController.update(req.params.uuid, req.body, res);
+router.get('/list/:listUUID', handleError(async (req, res) => {
+    console.log('GET /lists/list/:listUUID');
+    listController.get(req.params.listUUID, res);
 }));
 
-router.delete('/:userUUID', handleError(async (req, res) => {
-    console.log('DELETE /lists/:userUUID');
-    listController.delete(req.params.uuid, res);
+router.put('/list/:listUUID', handleError(async (req, res) => {
+    console.log('PUT /lists/list/:listUUID');
+    listController.update(req.params.listUUID, req.body, res);
 }));
 
-router.get('/:userUUID/:listQuery', handleError(async (req, res) => {
-    console.log('GET /lists/:userUUID/:listQuery');
-    if (req.params.listQuery.includes('-')) {
-        listController.get(req.params.userUUID, req.params.listQuery, res);
-    } else {
-        listController.getByName(req.params.userUUID, req.params.listQuery, res);
-    }
+router.delete('/list/:listUUID', handleError(async (req, res) => {
+    console.log('DELETE /lists/list/:listUUID');
+    listController.delete(req.params.listUUID, res);
 }));
 
 module.exports = router;

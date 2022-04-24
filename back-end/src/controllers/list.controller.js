@@ -2,41 +2,34 @@ const List = require('../models/List');
 const User = require('../models/User');
 
 const listController = {
-
-    // TODO: Fix promise rejection
-    getAll: function (userUUID) {
+    getAll: function (userUUID, res) {
         console.log(`Searching for list with userUUID ${userUUID}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                UUID: userUUID
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    if (user) {
-                        List.find({
-                            _id: {
-                                $in: user.list
-                            }
-                        }, (err, lists) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve(lists);
-                            }
-                        });
+        User.findOne({
+            UUID: userUUID
+        }).then(user => {
+            if (!user) {
+                console.log(`User with userUUID ${userUUID} not found`);
+                res.status(404).send('User not found');
+            } else {
+                console.log(`User with userUUID ${userUUID} found`);
+                List.find({
+                    user: user._id
+                }).then(lists => {
+                    if (lists.length === 0) {
+                        console.log(`User with userUUID ${userUUID} has no lists`);
+                        res.status(404).send('User has no lists');
                     } else {
-                        reject('User not found');
+                        console.log(`User with userUUID ${userUUID} has ${lists.length} lists`);
+                        res.status(200).send(lists);
                     }
-                }
-            });
-            reject('User not found');
+                });
+            }
         });
     },
     get: function (listUUID, res) {
         console.log(`Searching for list with listUUID ${listUUID}`);
-        return List.findOne({
-            listUUID: listUUID
+        List.findOne({
+            UUID: listUUID
         }).then(list => {
             if (!list) {
                 console.log(`List with listUUID ${listUUID} not found`);
@@ -47,62 +40,41 @@ const listController = {
             }
         });
     },
-    getByName: function (userUUID, listName, res) {
-        console.log(`Searching for list with name ${listName}`);
-        return List.findOne({
-            userUUID: userUUID,
-            name: listName
-        }).then(list => {
-            if (!list) {
-                console.log(`List with name ${listName} not found`);
-                res.status(404).send('List not found');
+    create: function (userUUID, listBody, res) {
+        console.log(`Creating list with userUUID ${userUUID} and listName ${listBody.name}`);
+        User.findOne({
+            UUID: userUUID
+        }).then(user => {
+            if (!user) {
+                console.log(`User with userUUID ${userUUID} not found`);
+                res.status(404).send('User not found');
             } else {
-                console.log(`List with name ${listName} found`);
-                res.status(200).send(list);
-            }
-        });
-    },
-    create: function (userUUID, listBody) {
-        console.log(`Creating list with userUUID ${userUUID} and listName ${listBody.listName}`);
-        return new Promise((resolve, reject) => {
-            User.findOne({
-                UUID: userUUID
-            }, (err, user) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    if (user) {
-                        List.findOne({
-                            name: listBody.listName
-                        }, (err, list) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                if (list) {
-                                    reject('List with that name already exists');
-                                } else {
-                                    List.create(listBody, (err, list) => {
-                                        if (err) {
-                                            reject(err);
-                                        } else {
-                                            user.list.push(list.UUID);
-                                            user.save();
-                                            resolve(list);
-                                        }
-                                    });
-                                }
-                            }
-                        });
+                console.log(`User with userUUID ${userUUID} found`);
+                List.findOne({
+                    name: listBody.name
+                }).then(newList => {
+                    if (newList) {
+                        console.log('List already exists');
+                        res.status(409).send('List already exists');
                     } else {
-                        reject('User not found');
+                        List.create(listBody).then(list => {
+                            console.log('List created');
+                            list.save();
+                            user.lists.push(list.UUID);
+                            user.save();
+                            res.status(201).send(list);
+                        }).catch(err => {
+                            console.log('Error creating list: ' + err.message);
+                            res.status(500).send(err.message);
+                        });
                     }
-                }
-            });
+                });
+            }
         });
     },
     update: function (listUUID, listBody, res) {
         console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
-        return List.findOne({
+        List.findOne({
             UUID: listUUID
         }).then(list => {
             if (!list) {
@@ -122,22 +94,16 @@ const listController = {
     delete: function (listUUID, res) {
         console.log(`Deleting list with listUUID ${listUUID}`);
         List.findOne({
-            listUUID: listUUID
-        }).then(list => {
-            if (list.name === 'Recently Watched') {
-                console.log(`List with listUUID ${listUUID} can't be deleted`);
-                res.status(400).send('List can\'t be deleted');
-            }
-        });
-        return List.findOneAndDelete({
-            listUUID: listUUID
+            UUID: listUUID
         }).then(list => {
             if (!list) {
                 console.log(`List with listUUID ${listUUID} not found`);
                 res.status(404).send('List not found');
             } else {
-                console.log(`List with listUUID ${listUUID} found`);
-                res.status(200).send(list);
+                list.remove().then(list => {
+                    console.log(`List with listUUID ${listUUID} deleted`);
+                    res.status(200).send(list);
+                });
             }
         });
     }

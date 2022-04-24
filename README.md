@@ -19,6 +19,7 @@
     - imageURL *string*
 - **Movie**
     - UUID *string*
+    - cuevanaUUID *string*
     - title *string*
     - poster *string*
     - year *number*
@@ -26,15 +27,10 @@
     - rating *number*
     - duration *string*
     - genres *string[]*
-    - director *string[]*
-    - cast *string[]*
 - **Subscription**
     - UUID *string*
-    - paymentUUID *string*
+    - paymentType *string enum(credit, debit)*
     - subscriptionType *string, enum(free, premium)*
-- **Payment**
-    - UUID *string*
-    - paymentType *string, enum(paypal, creditCard)*
 ## Routes
 - **User**
     - [GET] /users
@@ -47,10 +43,10 @@
 - **List**
     - [GET] /lists/:userUUID
     - [POST] /lists/:userUUID
-    - [GET] /lists/:userUUID/:
-    - [GET] /lists/:userUUID/:listName
-    - [PUT] /lists/:userUUID/:listUUID
-    - [DELETE] /lists/:userUUID/:listUUID
+    
+    - [GET] /lists/:listUUID
+    - [PUT] /lists/:listUUID
+    - [DELETE] /lists/:listUUID
 - **Movie**
     - [GET] /movies
     - [POST] /movies
@@ -63,11 +59,4 @@
     - [GET] /subscription/:subscriptionUUID
     - [DELETE] /subscription/:subscriptionUUID
     - [PUT] /subscription/:subscriptionUUID
-    - [GET] /subscription/all/:userUUID
     - [POST] /subscription/:userUUID
-- **Payment**
-    - [GET] /payment/:paymentUUID
-    - [DELETE] /payment/:paymentUUID
-    - [PUT] /payment/:paymentUUID
-    - [GET] /payment/all/:userUUID
-    - [POST] /payment/:userUUID
