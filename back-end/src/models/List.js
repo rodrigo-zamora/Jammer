@@ -19,21 +19,21 @@ const listSchema = new mongoose.Schema({
     movies: [{
         movieUUID: {
             type: String,
-            required: false
+            required: true
         },
         time: {
             type: String,
-            required: false
+            required: true
         }
     }],
     isShared: {
         type: Boolean,
-        required: false,
+        required: true,
         default: false
     },
     sharedWith: [{
         type: String,
-        required: false,
+        required: true,
         default: []
     }],
     imageURL: {

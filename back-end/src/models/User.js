@@ -68,7 +68,9 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
     subscription: {
-        type: String
+        type: String,
+        required: false,
+        default: null
     },
     lists: [{
         type: String

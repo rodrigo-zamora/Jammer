@@ -1,22 +1,10 @@
 const request = require('supertest');
 
-const {
-    restoreList
-} = require('../../utils/fileHelpers');
-
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
 
-const userUUID = '77f38fc2-c53f-4637-9c57-d8529cc02bc1';
-const listUUID = '77l38is2-t53s-4637-9c57-d8529cc02bc1';
-
-beforeAll(function() {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
-});
-
-afterAll(() => {
-    restoreList();
-})
+const userUUID = '1f967358-d9b2-46d3-ae34-db9fd6d90c6e';
+const listUUID = '1f967358-list-46d3-ae34-db9fd6d90c6e';
 
 describe('/lists/:userUUID', () => {
     describe('GET', () => {
@@ -28,7 +16,7 @@ describe('/lists/:userUUID', () => {
         }),
         it('should return 404 if the user does not exist', (done) => {
             request(app)
-                .get('/lists/' + 'not-a-uuid')
+                .get('/lists/' + '-not-found')
                 .expect(404)
                 .end(endFunction(done));
         });
@@ -45,42 +33,37 @@ describe('/lists/:userUUID', () => {
                             time: '1h'
                         }],
                     isShared: false,
-                    sharedWith: [],
-                    imageURL: ''
+                    sharedWith: []
                 })
-                .expect(201)
+                .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 409 if the list already exists', (done) => {
             request(app)
                 .post('/lists/' + userUUID)
                 .send({
-                    UUID: listUUID,
                     name: 'Test List',
                     movies: [{
                             movieUUID: '1937a756-f392-4218-b9db-8c078c8bfbc0',
                             time: '1h'
                         }],
                     isShared: false,
-                    sharedWith: [],
-                    imageURL: ''
+                    sharedWith: []
                 })
                 .expect(409)
                 .end(endFunction(done));
         }),
         it('should return 404 if the user does not exist', (done) => {
             request(app)
-                .post('/lists/' + 'not-a-uuid')
+                .post('/lists/' + '-not-found')
                 .send({
-                    UUID: listUUID,
                     name: 'Test List',
                     movies: [{
                             movieUUID: '1937a756-f392-4218-b9db-8c078c8bfbc0',
                             time: '1h'
                         }],
                     isShared: false,
-                    sharedWith: [],
-                    imageURL: ''
+                    sharedWith: []
                 })
                 .expect(404)
                 .end(endFunction(done));
@@ -98,7 +81,7 @@ describe('/lists/list/:listUUID', () => {
         }),
         it('should return 404 if the list is not found', (done) => {
             request(app)
-                .get('/lists/list/' + 'not-a-uuid')
+                .get('/lists/list/' + '-not-found')
                 .expect(404)
                 .end(endFunction(done));
         });
@@ -115,7 +98,7 @@ describe('/lists/list/:listUUID', () => {
         }),
         it('should return 404 if the list is not found', (done) => {
             request(app)
-                .put('/lists/list/' + 'not-a-uuid')
+                .put('/lists/list/' + '-not-found')
                 .send({
                     isShared: true
                 })
@@ -132,7 +115,7 @@ describe('/lists/list/:listUUID', () => {
         }),
         it('should return 404 if the list is not found', (done) => {
             request(app)
-                .delete('/lists/list/' + 'not-a-uuid')
+                .delete('/lists/list/' + '-not-found')
                 .expect(404)
                 .end(endFunction(done));
         });

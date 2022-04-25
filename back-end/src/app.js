@@ -26,20 +26,20 @@ const DB_URI = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUSTER}/${DB_N
 
 mongoose.connect(DB_URI);
 
-mongoose.connection.on('connected', function() {
+mongoose.connection.on('connected', function () {
     console.log('Mongoose connection open to ' + DB_URI);
 });
 
-mongoose.connection.on('error', function(err) {
+mongoose.connection.on('error', function (err) {
     console.log('Mongoose connection error: ' + err);
 });
 
-mongoose.connection.on('disconnected', function() {
+mongoose.connection.on('disconnected', function () {
     console.log('Mongoose connection disconnected');
 });
 
-process.on('SIGINT', function() {
-    mongoose.connection.close(function() {
+process.on('SIGINT', function () {
+    mongoose.connection.close(function () {
         console.log('Mongoose connection disconnected through app termination');
         process.exit(0);
     });
@@ -60,8 +60,6 @@ const movieRoute = require('./routes/movie.route');
 const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');
 
-const {NotFoundError} = require('./utils/errors');
-
 const swaggerDocument = YAML.load(path.resolve('./src/docs/swagger.yaml'));
 
 app.use(express.json());
@@ -74,16 +72,28 @@ app.get('/', (req, res) => {
 app.use('/users', userRoute);
 app.use('/lists', listRoute);
 app.use('/movies', movieRoute);
-app.use('/subscription', subscriptionRoute);/*
+app.use('/subscription', subscriptionRoute);
+/*
 app.use('/auth', authRoute);*/
 
+const {
+    NotFoundError,
+    ConflictError,
+    BadRequestError,
+    ForbiddenError,
+    UnauthorizedError
+} = require('./utils/errors');
+
 app.use((err, req, res, next) => {
-    console.log('Error', err);
     if (err.details) return res.status(400).send(err.details[0].message);
-    if (err instanceof NotFoundError) {
-      return res.status(404).send(err.message);
-    }
+
+    if (err instanceof NotFoundError) return res.status(404).send(err.message);
+    if (err instanceof ConflictError) return res.status(409).send(err.message);
+    if (err instanceof BadRequestError) return res.status(400).send(err.message);
+    if (err instanceof ForbiddenError) return res.status(403).send(err.message);
+    if (err instanceof UnauthorizedError) return res.status(401).send(err.message);
+
     res.status(503).send('Something went wrong, try again');
-  });
+});
 
 module.exports = app;

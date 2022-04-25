@@ -6,27 +6,32 @@ const listController = require('../controllers/list.controller');
 
 router.get('/:userUUID', handleError(async (req, res) => {
     console.log('GET /lists/:userUUID');
-    listController.getAll(req.params.userUUID, res);
+    let lists = await listController.getAll(req.params.userUUID);
+    res.send(lists);
 }));
 
 router.post('/:userUUID', handleError(async (req, res) => {
     console.log('POST /lists/:userUUID');
-    listController.create(req.params.userUUID, req.body, res);
+    let list = await listController.create(req.params.userUUID, req.body);
+    res.send(list);
 }));
 
 router.get('/list/:listUUID', handleError(async (req, res) => {
     console.log('GET /lists/list/:listUUID');
-    listController.get(req.params.listUUID, res);
+    let list = await listController.get(req.params.listUUID);
+    res.send(list);
 }));
 
 router.put('/list/:listUUID', handleError(async (req, res) => {
     console.log('PUT /lists/list/:listUUID');
-    listController.update(req.params.listUUID, req.body, res);
+    let list = await listController.update(req.params.listUUID, req.body);
+    res.send(list);
 }));
 
 router.delete('/list/:listUUID', handleError(async (req, res) => {
     console.log('DELETE /lists/list/:listUUID');
-    listController.delete(req.params.listUUID, res);
+    let list = await listController.delete(req.params.listUUID);
+    res.send(list);
 }));
 
 module.exports = router;

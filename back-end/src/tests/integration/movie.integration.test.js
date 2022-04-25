@@ -1,21 +1,9 @@
 const request = require('supertest');
 
-const {
-    restoreMovie
-} = require('../../utils/fileHelpers');
-
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
 
-const UUID = '77m38ov2-i53e-4637-9c57-d8529cc02bc1';
-
-beforeAll(function() {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-});
-
-afterAll(() => {
-    restoreMovie();
-})
+const movieUUID = "77m38ov2-i53e-4637-9c57-d8529cc02bc1";
 
 describe('/movies', () => {
     describe('GET', () => {
@@ -31,7 +19,7 @@ describe('/movies', () => {
             request(app)
                 .post('/movies')
                 .send({
-                    UUID: UUID,
+                    UUID: movieUUID,
                     cuevanaUUID: '55555/movie',
                     title: 'New Movie',
                     poster: '',
@@ -42,7 +30,7 @@ describe('/movies', () => {
                     genres: ['Acción', 'Drama'],
                     cast: ['Actor 1', 'Actor 2']
                 })
-                .expect(201)
+                .expect(200)
                 .end(endFunction(done));
         });
     });
@@ -69,13 +57,13 @@ describe('/movies/movie/:movieUUID', () => {
     describe('GET', () => {
         it('should return a movie', (done) => {
             request(app)
-                .get('/movies/movie/' + UUID)
+                .get('/movies/movie/' + movieUUID)
                 .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 404 if movie does not exist', (done) => {
             request(app)
-                .get('/movies/movie/' + UUID + '-not-found')
+                .get('/movies/movie/' + movieUUID + '-not-found')
                 .expect(404)
                 .end(endFunction(done));
         });
@@ -83,7 +71,7 @@ describe('/movies/movie/:movieUUID', () => {
     describe('PUT', () => {
         it('should update a movie and return it', (done) => {
             request(app)
-                .put('/movies/movie/' + UUID)
+                .put('/movies/movie/' + movieUUID)
                 .send({
                     title: 'New title'
                 })
@@ -92,9 +80,9 @@ describe('/movies/movie/:movieUUID', () => {
         }),
         it('should return 404 if movie does not exist', (done) => {
             request(app)
-                .put('/movies/movie/' + UUID + '-not-found')
+                .put('/movies/movie/' + movieUUID + '-not-found')
                 .send({
-                    title: 'New title'
+                    title: 'New title v2'
                 })
                 .expect(404)
                 .end(endFunction(done));
@@ -103,13 +91,13 @@ describe('/movies/movie/:movieUUID', () => {
     describe('DELETE', () => {
         it('should delete a movie and return it', (done) => {
             request(app)
-                .delete('/movies/movie/' + UUID)
+                .delete('/movies/movie/' + movieUUID)
                 .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 404 if movie does not exist', (done) => {
             request(app)
-                .delete('/movies/movie/' + UUID + '-not-found')
+                .delete('/movies/movie/' + movieUUID + '-not-found')
                 .expect(404)
                 .end(endFunction(done));
         });
