@@ -14,11 +14,27 @@ const listSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 50,
+        validate: {
+            validator: (name) => {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+        }
     },
     description: {
         type: String,
-        required: false
+        required: false,
+        trim: true,
+        minlength: 2,
+        maxlength: 500,
+        validate: {
+            validator: (description) => {
+                return /^[a-zA-Z]+$/.test(description);
+            }
+        }
     },
     movies: [{
         movieUUID: {
@@ -32,37 +48,6 @@ const listSchema = new mongoose.Schema({
         comments: [{
             commentUUID: {
                 type: String,
-                required: true
-            },
-            authorUUID: {
-                type: String,
-                required: true
-            },
-            tags: [{
-                tagUUID: {
-                    type: String,
-                    required: true
-                },
-                name: {
-                    type: String,
-                    required: true
-                }
-            }],
-            text: {
-                type: String,
-                required: true
-            },
-            isPrivate: {
-                type: Boolean,
-                required: false,
-                default: false
-            },
-            createdAt: {
-                type: Date,
-                required: true
-            },
-            updatedAt: {
-                type: Date,
                 required: true
             }
         }]

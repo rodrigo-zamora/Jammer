@@ -1,62 +1,50 @@
-## Models
-- **User**
-    - UUID *string*
-    - firstName *string*
-    - lastName *string*
-    - imageURL *string*
-    - email *string*
-    - password *string*
-    - createdAt *date*
-    - updatedAt *date*
-    - subscription *string*
-    - list *string[]*
-- **List**
-    - UUID *string*
-    - name *string*
-    - movieUUID *string[]*
-    - isShared *boolean*
-    - sharedWith *string[]*
-    - imageURL *string*
-- **Movie**
-    - UUID *string*
-    - cuevanaUUID *string*
-    - title *string*
-    - poster *string*
-    - year *number*
-    - sypnosis *string*
-    - rating *number*
-    - duration *string*
-    - genres *string[]*
-- **Subscription**
-    - UUID *string*
-    - paymentType *string enum(credit, debit)*
-    - subscriptionType *string, enum(free, premium)*
 ## Routes
 - **User**
-    - [GET] /users
-    - [POST] /users
-    - [GET] /users/:UUID
-    - [PUT] /users/:UUID
-    - [DELETE] /users/:UUID
-    - [GET] /users/:UUID/lists
-    - [GET] /users/:UUID/subscriptions
-- **List**
-    - [GET] /lists/:userUUID
-    - [POST] /lists/:userUUID
+    - [GET] /users -> Get all users
+    - [POST] /users -> Create a new user
     
-    - [GET] /lists/:listUUID
-    - [PUT] /lists/:listUUID
-    - [DELETE] /lists/:listUUID
+    - [GET] /users/:UUID -> Get a user by UUID
+    - [PUT] /users/:UUID -> Update a user by UUID
+    - [DELETE] /users/:UUID -> Delete a user by UUID
+
+    - [GET] /users/:UUID/lists -> Get all lists UUID's of a user by UUID
+    - [GET] /users/:UUID/subscription -> Get the subscription UUID of a user by UUID
+
+- **List**
+    - [GET] /lists/:userUUID -> Get all lists of a user by UUID
+    - [POST] /lists/:userUUID -> Create a new list for a user by UUID
+
+    - [GET] /lists/:listUUID/:userUUID -> Get a list by UUID and user UUID to check if the user has permission to access the list
+
+    - [PUT] /lists/:listUUID -> Update a list by UUID
+    - [DELETE] /lists/:listUUID -> Delete a list by UUID
+
 - **Movie**
-    - [GET] /movies
-    - [POST] /movies
-    - [GET] /movies/search
-    - [GET] /movies/details/:cuevanaUUID
-    - [GET] /movies/movie/:movieUUID
-    - [PUT] /movies/movie/:movieUUID
-    - [DELETE] /movies/movie/:movieUUID
+    - [GET] /movies -> Get all movies from the database
+    - [POST] /movies -> Create a new movie in the database
+    - [GET] /movies/search -> Search for a movie using the API
+    - [GET] /movies/details/:cuevanaUUID -> Get the details of a movie using the API
+    - [GET] /movies/movie/:movieUUID -> Get a movie by UUID
+    - [PUT] /movies/movie/:movieUUID -> Update a movie by UUID
+    - [DELETE] /movies/movie/:movieUUID -> Delete a movie by UUID
+
 - **Subscription**
-    - [GET] /subscription/:subscriptionUUID
-    - [DELETE] /subscription/:subscriptionUUID
-    - [PUT] /subscription/:subscriptionUUID
-    - [POST] /subscription/:userUUID
+    - [GET] /subscription/:subscriptionUUID -> Get a subscription by UUID
+    - [DELETE] /subscription/:subscriptionUUID -> Delete a subscription by UUID
+    - [PUT] /subscription/:subscriptionUUID -> Update a subscription by UUID
+    - [POST] /subscription/:userUUID -> Create a new subscription for a user by UUID
+
+- **Comment**
+    - [GET] /comments/:movieUUID -> Get all comments of a movie by UUID
+    - [POST] /comments/:movieUUID -> Create a new comment for a movie by UUID
+
+    - [PUT] /comments/:commentUUID/:userUUID -> Update a comment by UUID and user UUID to check if the user has permission to access the comment
+    - [DELETE] /comments/:commentUUID/:userUUID -> Delete a comment by UUID and user UUID to check if the user has permission to access the comment
+
+- **Tags**
+    - [GET] /tags -> Get all tags from the database
+    - [POST] /tags -> Create a new tag in the database
+
+    - [GET] /tags/:tagUUID -> Get a tag by UUID
+    - [PUT] /tags/:tagUUID -> Update a tag by UUID
+    - [DELETE] /tags/:tagUUID -> Delete a tag by UUID

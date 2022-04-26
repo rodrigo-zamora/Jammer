@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 let Utils = require('../utils/utils');
+let Passport = require('../config/passport');
 
 const userSchema = new mongoose.Schema({
     UUID: {
@@ -17,11 +18,29 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 50,
+        validate: {
+            validator: (firstName) => {
+                return /^[a-zA-Z]+$/.test(firstName);
+            },
+            message: (props) => `${props.value} is not a valid first name!`
+        }
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 50,
+        validate: {
+            validator: (firstName) => {
+                return /^[a-zA-Z]+$/.test(firstName);
+            },
+            message: (props) => `${props.value} is not a valid first name!`
+        }
     },
     imageURL: {
         type: String,
@@ -41,6 +60,14 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        minlength: 8,
+        maxlength: 50,
+        validate: {
+            validator: (password) => {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/.test(password);
+            },
+            message: (props) => `${props.value} is not a valid password!`
+        },
         default: function () {
             // Generate a salt
             bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
@@ -74,10 +101,11 @@ const userSchema = new mongoose.Schema({
     },
     lists: [{
         type: String
+    }],
+    sharedLists: [{
+        type: String
     }]
-}, {
-    collection: 'users'
-});
+}, { collection: 'users' });
 
 userSchema.virtual('id').get(function () {
     return this._id;
@@ -92,12 +120,27 @@ userSchema.set('toJSON', {
     }
 });
 
-userSchema.pre('findOneAndUpdate', function (next) {
+userSchema.pre('save', function (next) {
     // Update updatedAt with the current date
     this.updatedAt = Date.now();
 
-    // TODO: Hash password if it was changed
+    // Hash password if it was changed
+    if (this.isModified('password')) {
+        // Generate a salt
+        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+            if (err) return next(err);
+            
+            // Hash the password using our new salt
+            bcrypt.hash(this.password, salt, function (err, hash) {
+                if (err) return next(err);
 
+                // Override the cleartext password with the hashed one
+                this.password = hash;
+                next();
+            });
+        });
+    }
+    
     next();
 });
 
@@ -122,6 +165,13 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
+
+userSchema.statics.deserialize = function (token, cb) {
+    Passport.deserializeUser(token, function (err, user) {
+        if (err) return cb(err);
+        cb(null, user);
+    });
+}
 
 let User = mongoose.model('User', userSchema);
 

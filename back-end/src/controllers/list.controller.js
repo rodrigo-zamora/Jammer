@@ -5,6 +5,7 @@ const {
     NotFoundError,
     ConflictError,
     BadRequestError,
+    ForbiddenError,
     UnauthorizedError
 } = require('../utils/errors');
 
@@ -25,7 +26,7 @@ const listController = {
             return lists;
         }
     },
-    get: async function (listUUID, userUUID) {
+    get: async function (listUUID, token) {
         console.log(`Searching for list with listUUID ${listUUID}`);
         let list = await List.findOne({
             UUID: listUUID
@@ -34,10 +35,23 @@ const listController = {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
             if (list.isShared) {
-                if (list.sharedWith.includes(userUUID)) {
-                    return list;
+                if (Object.keys(token).length === 0) {
+                    throw new ForbiddenError('You need to provide a token');
                 } else {
-                    throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to access this list`);
+                    let user = await User.deserialize(token);
+                    if (list.isShared) {
+                        if (list.sharedWith.includes(user.UUID)) {
+                            return list;
+                        } else {
+                            throw new UnauthorizedError('You are not allowed to access this list');
+                        }
+                    } else {
+                        if (user.lists.includes(list.UUID)) {
+                            return list;
+                        } else {
+                            throw new UnauthorizedError('You are not allowed to access this list');
+                        }
+                    }
                 }
             } else {
                 throw new UnauthorizedError(`List with uuid ${listUUID} is private`);

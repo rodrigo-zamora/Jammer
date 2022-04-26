@@ -14,7 +14,20 @@ const tagSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 25,
+        validate: {
+            validator: (name) => {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+        }
+    },
+    count: {
+        type: Number,
+        required: false,
+        default: 0
     }
 }, { collection : 'tags' });
 

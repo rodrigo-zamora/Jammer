@@ -57,6 +57,8 @@ app.use(cors());
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
 const movieRoute = require('./routes/movie.route');
+const tagRoute = require('./routes/tags.route');
+const commentRoute = require('./routes/comment.route');
 const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');
 
@@ -69,10 +71,13 @@ app.get('/', (req, res) => {
     res.send('Jammer Service API');
 });
 
+app.use('/auth', authRoute);
 app.use('/users', userRoute);
 app.use('/lists', listRoute);
 app.use('/movies', movieRoute);
 app.use('/subscription', subscriptionRoute);
+app.use('/tags', tagRoute);
+app.use('/comments', commentRoute);
 
 const {
     NotFoundError,
