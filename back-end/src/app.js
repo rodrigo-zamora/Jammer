@@ -66,15 +66,13 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Jammer Service API');
 });
 
 app.use('/users', userRoute);
 app.use('/lists', listRoute);
 app.use('/movies', movieRoute);
 app.use('/subscription', subscriptionRoute);
-/*
-app.use('/auth', authRoute);*/
 
 const {
     NotFoundError,

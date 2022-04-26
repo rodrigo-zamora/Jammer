@@ -16,6 +16,10 @@ const listSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: false
+    },
     movies: [{
         movieUUID: {
             type: String,
@@ -24,7 +28,44 @@ const listSchema = new mongoose.Schema({
         time: {
             type: String,
             required: true
-        }
+        },
+        comments: [{
+            commentUUID: {
+                type: String,
+                required: true
+            },
+            authorUUID: {
+                type: String,
+                required: true
+            },
+            tags: [{
+                tagUUID: {
+                    type: String,
+                    required: true
+                },
+                name: {
+                    type: String,
+                    required: true
+                }
+            }],
+            text: {
+                type: String,
+                required: true
+            },
+            isPrivate: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            createdAt: {
+                type: Date,
+                required: true
+            },
+            updatedAt: {
+                type: Date,
+                required: true
+            }
+        }]
     }],
     isShared: {
         type: Boolean,

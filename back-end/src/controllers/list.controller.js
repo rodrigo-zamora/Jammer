@@ -5,7 +5,6 @@ const {
     NotFoundError,
     ConflictError,
     BadRequestError,
-    ForbiddenError,
     UnauthorizedError
 } = require('../utils/errors');
 
@@ -26,7 +25,7 @@ const listController = {
             return lists;
         }
     },
-    get: async function (listUUID) {
+    get: async function (listUUID, userUUID) {
         console.log(`Searching for list with listUUID ${listUUID}`);
         let list = await List.findOne({
             UUID: listUUID
@@ -34,7 +33,11 @@ const listController = {
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
-            return list;
+            if (list.sharedWith.includes(userUUID)) {
+                return list;
+            } else {
+                throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to access list with uuid ${listUUID}`);
+            }
         }
     },
     create: async function (userUUID, listBody) {
@@ -45,6 +48,11 @@ const listController = {
         if (!user) {
             throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
+            let subscription = user.subscription;
+            if (subscription == '') {
+                throw new UnauthorizedError(`User with uuid ${userUUID} is not subscribed to any plan`);
+            }
+
             let lists = await List.find({
                 UUID: {
                     $in: user.lists
