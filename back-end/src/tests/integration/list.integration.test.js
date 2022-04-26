@@ -6,7 +6,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 const userUUID = '1f967358-d9b2-46d3-ae34-db9fd6d90c6e';
 const listUUID = '1f967358-list-46d3-ae34-db9fd6d90c6e';
 
-describe('/lists/:userUUID', () => {
+/*describe('/lists/:userUUID', () => {
     describe('GET', () => {
         it('should return all lists of the user', (done) => {
             request(app)
@@ -120,4 +120,4 @@ describe('/lists/list/:listUUID', () => {
                 .end(endFunction(done));
         });
     });
-});
+});*/

@@ -6,7 +6,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 const userUUID = "1f967358-d9b2-46d3-ae34-db9fd6d90c6e";
 const subscriptionUUID = '77s38ub2-s53c-4637-9r57-i8529pt02ion';
 
-describe('/subscription/:userUUID', () => {
+/*describe('/subscription/:userUUID', () => {
     describe('POST', () => {
         it('should create a new subscription', (done) => {
             request(app)
@@ -85,4 +85,4 @@ describe('/subscription/:subscriptionUUID', () => {
                 .end(endFunction(done));
         });
     })
-});
+});*/
