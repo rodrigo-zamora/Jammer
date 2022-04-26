@@ -6,37 +6,44 @@ const movieController = require('../controllers/movie.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /movies');
-    movieController.getAllMovies(res);
+    let movies = await movieController.getAllMovies();
+    res.send(movies);
 }));
 
 router.post('/', handleError(async (req, res) => {
     console.log('POST /movies');
-    movieController.create(req.body, res);
+    let movie = await movieController.create(req.body);
+    res.send(movie);
 }));
 
 router.get('/search', handleError(async (req, res) => {
     console.log('GET /movies/search');
-    movieController.search(req.query, res);
+    let movie = await movieController.search(req.query);
+    res.send(movie);
 }));
 
-router.get('/details', handleError(async (req, res) => {
-    console.log('GET /movies/details');
-    movieController.getDetails(req.query.cuevanaUUID, res);
+router.get('/details/:cuevanaUUID', handleError(async (req, res) => {
+    console.log('GET /movies/details/:cuevanaUUID');
+    let movieDetails = await movieController.getDetails(req.params.cuevanaUUID);
+    res.send(movieDetails);
 }));
 
 router.get('/movie/:uuid', handleError(async (req, res) => {
     console.log('GET /movies/movie/:uuid');
-    movieController.get(req.params.uuid, res);
+    let movie = await movieController.get(req.params.uuid);
+    res.send(movie);
 }));
 
 router.put('/movie/:uuid', handleError(async (req, res) => {
     console.log('PUT /movies/movie/:uuid');
-    movieController.update(req.params.uuid, req.body, res);
+    let movie = await movieController.update(req.params.uuid, req.body);
+    res.send(movie);
 }));
 
 router.delete('/movie/:uuid', handleError(async (req, res) => {
     console.log('DELETE /movies/movie/:uuid');
-    movieController.delete(req.params.uuid, res);
+    let movie = await movieController.delete(req.params.uuid);
+    res.send(movie);
 }));
 
 module.exports = router;

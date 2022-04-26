@@ -6,23 +6,27 @@ const subscriptionController = require('../controllers/subscription.controller')
 
 router.get('/:subscriptionUUID', handleError(async (req, res) => {
     console.log(`GET /subscriptions/${req.params.subscriptionUUID}`);
-    subscriptionController.getSubscription(req.params.subscriptionUUID, res);
+    let subscription = await subscriptionController.get(req.params.subscriptionUUID);
+    res.send(subscription);
 }));
 
 router.put('/:subscriptionUUID', handleError(async (req, res) => {
     console.log(`PUT /subscriptions/${req.params.subscriptionUUID}`);
-    subscriptionController.updateSubscription(req.params.subscriptionUUID, req.body, res);
+    let subscription = await subscriptionController.update(req.params.subscriptionUUID, req.body);
+    res.send(subscription);
 }));
 
 router.post('/:userUUID', handleError(async (req, res) => {
     console.log(`POST /subscriptions/${req.params.userUUID}`);
-    subscriptionController.createSubscription(req.params.userUUID, req.body, res);
+    let subscription = await subscriptionController.create(req.params.userUUID, req.body);
+    res.send(subscription);
 }));
 
 
-router.delete('/:subscriptionUUID/:userUUID', handleError(async (req, res) => {
+router.delete('/:subscriptionUUID', handleError(async (req, res) => {
     console.log(`DELETE /subscriptions/${req.params.subscriptionUUID}`);
-    subscriptionController.deleteSubscription(req.params.subscriptionUUID, req.params.userUUID, res);
+    let subscription = await subscriptionController.delete(req.params.subscriptionUUID);
+    res.send(subscription);
 }));
 
 module.exports = router;

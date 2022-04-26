@@ -1,33 +1,29 @@
 const request = require('supertest');
 
-const {
-    restoreSubscription
-} = require('../../utils/fileHelpers');
-
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
 
-const userUUID = '77f38fc2-c53f-4637-9c57-d8529cc02bc1';
+const userUUID = "1f967358-d9b2-46d3-ae34-db9fd6d90c6e";
 const subscriptionUUID = '77s38ub2-s53c-4637-9r57-i8529pt02ion';
 
-describe('/subscription/:userUUID', () => {
+/*describe('/subscription/:userUUID', () => {
     describe('POST', () => {
         it('should create a new subscription', (done) => {
             request(app)
                 .post(`/subscription/${userUUID}`)
                 .send({
-                    UUID: subscriptionUUID + 'new',
+                    UUID: subscriptionUUID,
                     paymentType: 'credit',
                     subscriptionType: 'premium'
                 })
-                .expect(201)
+                .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 404 if the user does not exist', (done) => {
             request(app)
                 .post(`/subscription/not-found`)
                 .send({
-                    UUID: subscriptionUUID + 'new',
+                    UUID: subscriptionUUID,
                     paymentType: 'credit',
                     subscriptionType: 'premium'
                 })
@@ -47,7 +43,7 @@ describe('/subscription/:subscriptionUUID', () => {
         }),
         it('should return 404 if the subscription does not exist', (done) => {
             request(app)
-                .get(`/subscription/not-a-uuid`)
+                .get(`/subscription/-not-found`)
                 .expect(404)
                 .end(endFunction(done));
         });
@@ -64,7 +60,7 @@ describe('/subscription/:subscriptionUUID', () => {
         }),
         it('should return 404 if the subscription does not exist', (done) => {
             request(app)
-                .put(`/subscription/not-a-uuid`)
+                .put(`/subscription/-not-found`)
                 .send({
                     subscriptionType: 'premium'
                 })
@@ -74,19 +70,19 @@ describe('/subscription/:subscriptionUUID', () => {
     });
 });
 
-describe('/subscription/:subscriptionUUID/:userUUID', () => {
+describe('/subscription/:subscriptionUUID', () => {
     describe('DELETE', () => {
         it('should delete a subscription', (done) => {
             request(app)
-                .delete(`/subscription/${subscriptionUUID}new/${userUUID}`)
+                .delete(`/subscription/${subscriptionUUID}`)
                 .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 404 if the subscription does not exist', (done) => {
             request(app)
-                .delete(`/subscription/not-a-uuid/not-a-uuid`)
+                .delete(`/subscription/-not-found`)
                 .expect(404)
                 .end(endFunction(done));
         });
     })
-});
+});*/

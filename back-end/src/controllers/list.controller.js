@@ -1,111 +1,146 @@
 const List = require('../models/List');
 const User = require('../models/User');
 
+const {
+    NotFoundError,
+    ConflictError,
+    BadRequestError,
+    ForbiddenError,
+    UnauthorizedError
+} = require('../utils/errors');
+
 const listController = {
-    getAll: function (userUUID, res) {
+    getAll: async function (userUUID) {
         console.log(`Searching for list with userUUID ${userUUID}`);
-        User.findOne({
+        let user = await User.findOne({
             UUID: userUUID
-        }).then(user => {
-            if (!user) {
-                console.log(`User with userUUID ${userUUID} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with userUUID ${userUUID} found`);
-                List.find({
-                    user: user._id
-                }).then(lists => {
-                    if (lists.length === 0) {
-                        console.log(`User with userUUID ${userUUID} has no lists`);
-                        res.status(404).send('User has no lists');
-                    } else {
-                        console.log(`User with userUUID ${userUUID} has ${lists.length} lists`);
-                        res.status(200).send(lists);
-                    }
-                });
-            }
         });
-    },
-    get: function (listUUID, res) {
-        console.log(`Searching for list with listUUID ${listUUID}`);
-        List.findOne({
-            UUID: listUUID
-        }).then(list => {
-            if (!list) {
-                console.log(`List with listUUID ${listUUID} not found`);
-                res.status(404).send('List not found');
-            } else {
-                console.log(`List with listUUID ${listUUID} found`);
-                res.status(200).send(list);
-            }
-        });
-    },
-    create: function (userUUID, listBody, res) {
-        console.log(`Creating list with userUUID ${userUUID} and listName ${listBody.name}`);
-        User.findOne({
-            UUID: userUUID
-        }).then(user => {
-            if (!user) {
-                console.log(`User with userUUID ${userUUID} not found`);
-                res.status(404).send('User not found');
-            } else {
-                console.log(`User with userUUID ${userUUID} found`);
-                List.findOne({
-                    name: listBody.name
-                }).then(newList => {
-                    if (newList) {
-                        console.log('List already exists');
-                        res.status(409).send('List already exists');
-                    } else {
-                        List.create(listBody).then(list => {
-                            console.log('List created');
-                            list.save();
-                            user.lists.push(list.UUID);
-                            user.save();
-                            res.status(201).send(list);
-                        }).catch(err => {
-                            console.log('Error creating list: ' + err.message);
-                            res.status(500).send(err.message);
-                        });
-                    }
-                });
-            }
-        });
-    },
-    update: function (listUUID, listBody, res) {
-        console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
-        List.findOne({
-            UUID: listUUID
-        }).then(list => {
-            if (!list) {
-                console.log(`List with listUUID ${listUUID} not found`);
-                res.status(404).send('List not found');
-            } else {
-                for (let key in listBody) {
-                    list[key] = listBody[key];
+        if (!user) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
+        } else {
+            let lists = await List.find({
+                UUID: {
+                    $in: user.lists
                 }
-                list.save().then(list => {
-                    console.log(`List with listUUID ${listUUID} updated`);
-                    res.status(200).send(list);
-                });
-            }
-        });
+            });
+            return lists;
+        }
     },
-    delete: function (listUUID, res) {
-        console.log(`Deleting list with listUUID ${listUUID}`);
-        List.findOne({
+    get: async function (listUUID, token) {
+        console.log(`Searching for list with listUUID ${listUUID}`);
+        let list = await List.findOne({
             UUID: listUUID
-        }).then(list => {
-            if (!list) {
-                console.log(`List with listUUID ${listUUID} not found`);
-                res.status(404).send('List not found');
-            } else {
-                list.remove().then(list => {
-                    console.log(`List with listUUID ${listUUID} deleted`);
-                    res.status(200).send(list);
-                });
-            }
         });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            if (list.isShared) {
+                if (Object.keys(token).length === 0) {
+                    throw new ForbiddenError('You need to provide a token');
+                } else {
+                    let user = await User.deserialize(token);
+                    if (list.isShared) {
+                        if (list.sharedWith.includes(user.UUID)) {
+                            return list;
+                        } else {
+                            throw new UnauthorizedError('You are not allowed to access this list');
+                        }
+                    } else {
+                        if (user.lists.includes(list.UUID)) {
+                            return list;
+                        } else {
+                            throw new UnauthorizedError('You are not allowed to access this list');
+                        }
+                    }
+                }
+            } else {
+                throw new UnauthorizedError(`List with uuid ${listUUID} is private`);
+            }
+        }
+    },
+    create: async function (userUUID, listBody) {
+        console.log(`Creating list with userUUID ${userUUID} and listName ${listBody.name}`);
+        let user = await User.findOne({
+            UUID: userUUID
+        });
+        if (!user) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
+        } else {
+            let subscription = user.subscription;
+            if (subscription == '') {
+                throw new UnauthorizedError(`User with uuid ${userUUID} is not subscribed to any plan`);
+            }
+
+            let lists = await List.find({
+                UUID: {
+                    $in: user.lists
+                }
+            });
+
+            for (let list of lists) {
+                if (list.name === listBody.name) {
+                    throw new ConflictError(`List with name ${listBody.name} already exists`);
+                }
+            }
+
+            try {
+                let newList = await new List(listBody);
+                user.lists.push(newList.UUID);
+                let savedUser = await user.save();
+                await newList.save();
+                return savedUser;
+
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
+    },
+    update: async function (listUUID, listBody) {
+        console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            try {
+                for (let key in listBody) {
+                    if (listBody.hasOwnProperty(key)) {
+                        list[key] = listBody[key];
+                    }
+                }
+                let savedList = await list.save();
+                return savedList;
+            }
+            catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
+    },
+    delete: async function (listUUID) {
+        console.log(`Deleting list with listUUID ${listUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            try {
+                let user = await User.findOne({
+                    lists: listUUID
+                });
+                if (!user) {
+                    throw new NotFoundError(`User with list ${listUUID} not found`);
+                } else {
+                    user.lists.splice(user.lists.indexOf(listUUID), 1);
+                    await user.save();
+                    await list.remove();
+                    return list;
+                }
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
     }
 };
 

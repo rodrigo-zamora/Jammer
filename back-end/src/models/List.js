@@ -14,26 +14,52 @@ const listSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 50,
+        validate: {
+            validator: (name) => {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+        }
+    },
+    description: {
+        type: String,
+        required: false,
+        trim: true,
+        minlength: 2,
+        maxlength: 500,
+        validate: {
+            validator: (description) => {
+                return /^[a-zA-Z]+$/.test(description);
+            }
+        }
     },
     movies: [{
         movieUUID: {
             type: String,
-            required: false
+            required: true
         },
         time: {
             type: String,
-            required: false
-        }
+            required: true
+        },
+        comments: [{
+            commentUUID: {
+                type: String,
+                required: true
+            }
+        }]
     }],
     isShared: {
         type: Boolean,
-        required: false,
+        required: true,
         default: false
     },
     sharedWith: [{
         type: String,
-        required: false,
+        required: true,
         default: []
     }],
     imageURL: {

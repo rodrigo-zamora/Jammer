@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Utils = require('../utils/utils');
 
-const subscriptionSchema = new mongoose.Schema({
+const tagSchema = new mongoose.Schema({
     UUID: {
         type: String,
         required: false,
@@ -12,23 +12,30 @@ const subscriptionSchema = new mongoose.Schema({
             return Utils.generateUUID();
         }
     },
-    paymentType: {
+    name: {
         type: String,
         required: true,
-        enum: ['credit', 'debit']
+        trim: true,
+        minlength: 2,
+        maxlength: 25,
+        validate: {
+            validator: (name) => {
+                return /^[a-zA-Z]+$/.test(name);
+            }
+        }
     },
-    subscriptionType: {
-        type: String,
-        required: true,
-        enum: ['premium']
+    count: {
+        type: Number,
+        required: false,
+        default: 0
     }
-}, { collection : 'subscriptions' });
+}, { collection : 'tags' });
 
-subscriptionSchema.virtual('id').get(function () {
+tagSchema.virtual('id').get(function () {
     return this._id;
 });
 
-subscriptionSchema.set('toJSON', {
+tagSchema.set('toJSON', {
     virtuals: true,
     transform: function(doc, ret) {
         delete ret.id;
@@ -37,6 +44,6 @@ subscriptionSchema.set('toJSON', {
     }
 });
 
-let Subscription = mongoose.model('subscription', subscriptionSchema);
+let Tag = mongoose.model('tag', tagSchema);
 
-module.exports = Subscription;
+module.exports = Tag;

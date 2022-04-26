@@ -1,23 +1,12 @@
 const request = require('supertest');
 
-const {
-    restoreUser
-} = require('../../utils/fileHelpers');
-
 const app = require('../../app');
 const endFunction = require('./helpers/supertest-jasmine');
 
-const userUUID = '77f38fc2-c53f-4637-9c57-d8529cc02bc1';
+const userUUID = "77f38fc2-c53f-4637-9c57-d8529cc02bc1";
+const userEmail = "test.user@notanemail.com"; 
 
-beforeAll(function() {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
-});
-
-afterAll(() => {
-    restoreUser();
-})
-
-describe('/users', () => {
+/*describe('/users', () => {
     describe('GET', () => {
         it('should return all users', (done) => {
             request(app)
@@ -31,26 +20,45 @@ describe('/users', () => {
             request(app)
                 .post('/users')
                 .send({
-                    firstName: 'Miriam',
-                    lastName: 'Malta',
-                    email: 'miriam.malta@hotmail.com',
-                    password: '123456'  
+                    UUID: userUUID,
+                    firstName: "Test",
+                    lastName: "User",
+                    email: userEmail,
+                    password: "notasecurepassword12345_A"
                 })
-                .expect(201)
+                .expect(200)
                 .end(endFunction(done));
         }),
         it('should return 409 if the user already exists', (done) => {
             request(app)
                 .post('/users')
                 .send({
-                    firstName: 'Miriam',
-                    lastName: 'Malta',
-                    email: 'miriam.malta@hotmail.com',
-                    password: '123456'
+                    UUID: userUUID,
+                    firstName: "Test",
+                    lastName: "User",
+                    email: userEmail,
+                    password: "notasecurepassword12345_A"
                 })
                 .expect(409)
                 .end(endFunction(done));
         })
+    });
+});
+
+describe('/users/:email', () => {
+    describe('GET', () => {
+        it('should return a user by email', (done) => {
+            request(app)
+                .get(`/users/${userEmail}`)
+                .expect(200)
+                .end(endFunction(done));
+        }),
+        it('should return 404 if the user does not exist', (done) => {
+            request(app)
+                .get(`/users/${userEmail}` + '-not-found')
+                .expect(404)
+                .end(endFunction(done));
+        });
     });
 });
 
@@ -74,7 +82,7 @@ describe('/users/:uuid', () => {
             request(app)
                 .put('/users/' + userUUID)
                 .send({
-                    name: 'New name'
+                    firstName: 'New name'
                 })
                 .expect(200)
                 .end(endFunction(done));
@@ -83,7 +91,7 @@ describe('/users/:uuid', () => {
             request(app)
                 .put('/users/' + userUUID + '-not-found')
                 .send({
-                    name: 'New name'
+                    firstName: 'New name'
                 })
                 .expect(404)
                 .end(endFunction(done));
@@ -131,11 +139,6 @@ describe('/users/:uuid/subscription', () => {
             request(app)
                 .get('/users/' + userUUID + '-not-found/subscription')
                 .expect(404);
-        }),
-        it('should return 404 if the user has no subscriptions', () => {
-            request(app)
-                .get('/users/' + userUUID + '/subscription')
-                .expect(404);
         });
     });
-});
+});*/

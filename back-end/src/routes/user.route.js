@@ -6,41 +6,49 @@ const userController = require('../controllers/user.controller');
 
 router.get('/', handleError(async (req, res) => {
     console.log('GET /users');
-    userController.getAllUsers(res);
+    let users = await userController.getAllUsers();
+    res.send(users);
 }));
 
 router.post('/', handleError(async (req, res) => {
     console.log('POST /users');
-    userController.create(req.body, res);
+    let user = await userController.create(req.body);
+    res.send(user);
 }));
 
 router.get('/:query', handleError(async (req, res) => {
     console.log('GET /users/:query');
+    let user = [];
     if (req.params.query.includes('@')) {
-        userController.getByEmail(req.params.query, res);
+        user = await userController.getByEmail(req.params.query);
     } else {
-        userController.get(req.params.query, res);
+        user = await userController.get(req.params.query);
     }
+    res.send(user);
 }));
 
 router.put('/:uuid', handleError(async (req, res) => {
     console.log('PUT /users/:uuid');
-    userController.update(req.params.uuid, req.body, res);
+    let user = await userController.update(req.params.uuid, req.body);
+    res.send(user);
 }));
 
 router.delete('/:uuid', handleError(async (req, res) => {
     console.log('DELETE /users/:uuid');
-    userController.delete(req.params.uuid, res);
+    let user = await userController.delete(req.params.uuid);
+    res.send(user);
 }));
 
 router.get('/:uuid/lists', handleError(async (req, res) => {
     console.log('GET /users/:uuid/lists');
-    userController.getLists(req.params.uuid, res);
+    let lists = await userController.getLists(req.params.uuid);
+    res.send(lists);
 }));
 
 router.get('/:uuid/subscription', handleError(async (req, res) => {
     console.log('GET /users/:uuid/subscription');
-    userController.getSubscription(req.params.uuid, res);
+    let subscription = await userController.getSubscription(req.params.uuid);
+    res.send(subscription);
 }));
 
 module.exports = router;

@@ -10,15 +10,28 @@ class BadRequestError extends Error {
     }
 }
 
-
 class ConflictError extends Error {
     constructor(message, options) {
         super(`409 conflict: ${message}`, options);
     }
 }
 
+class ForbiddenError extends Error {
+    constructor(message, options) {
+        super(`403 forbidden: ${message}`, options);
+    }
+}
+
+class UnauthorizedError extends Error {
+    constructor(message, options) {
+        super(`401 unauthorized: ${message}`, options);
+    }
+}
+
 module.exports = {
     NotFoundError,
     BadRequestError,
-    ConflictError
+    ConflictError,
+    ForbiddenError,
+    UnauthorizedError
 };

@@ -1,22 +1,23 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+
 const passport = require('passport');
 
 module.exports = router;
 
 router.get('/login', (req, res) => {
-    // Login page    
+    res.send('login');
 });
 
-router.get('google/login', passport.authenticate('google', {
+router.get('/login/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
 router.get(
-    '/google/callback',
+    '/login/google/callback',
     passport.authenticate('google'),
     function (req, res) {
         console.log(req.query.code);
-        // Successful authentication, redirect to “/”
         res.redirect('/');
     }
 );

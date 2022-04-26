@@ -1,165 +1,155 @@
 const Movie = require('../models/Movie');
 const Cuevana3 = require('../utils/cuevana3');
 
+const {
+    NotFoundError,
+    ConflictError,
+    BadRequestError
+} = require('../utils/errors');
+
 const movieController = {
-    getAllMovies: function (res) {
+    getAllMovies: function () {
         console.log('Get all movies');
-        Movie.find({}, (err, movies) => {
-            if (err) {
-                res.status(500).send(err.message);
-            } else {
-                res.status(200).send(movies);
-            }
-        });
+        return Movie.find({});
     },
-    get: async function (uuid, res) {
+    get: async function (uuid) {
         console.log(`Searching for movie with uuid ${uuid}`);
-        Movie.findOne({
+        let movie = await Movie.findOne({
             UUID: uuid
-        }).then(movie => {
-            if (!movie) {
-                console.log(`Movie with uuid ${uuid} not found`);
-                res.status(404).send('Movie not found');
-            } else {
-                console.log(`Movie with uuid ${uuid} found`);
-                res.status(200).send(movie);
-            }
         });
-    },
-    create: function (movie, res) {
-        console.log('Creating movie: ', movie.title);
-        try {
-            Movie.findOne({
-                UUID: movie.UUID
-            }).then(newMovie => {
-                if (newMovie) {
-                    console.log('Movie already exists');
-                    res.status(400).send('Movie already exists');
-                } else {
-                    Movie.create(movie).then(movie => {
-                        console.log('Movie created');
-                        res.status(201).send(movie);
-                    }).catch(err => {
-                        console.log('Error creating movie: ' + err.message);
-                        res.status(500).send(err.message);
-                    });
-                }
-            })
-        } catch (err) {
-            console.log('Error creating movie: ', err);
-            res.status(500).send('Error creating movie');
+        if (!movie) {
+            throw new NotFoundError(`Movie with uuid ${uuid} not found`);
+        } else {
+            return movie;
         }
     },
-    update: function (uuid, movie, res) {
+    create: async function (movie) {
+        console.log('Creating movie: ', movie.title);
+        let toCreate = await Movie.findOne({
+            title: movie.title
+        });
+        if (toCreate) {
+            throw new ConflictError(`Movie with title ${movie.title} already exists`);
+        } else {
+            try {
+                let newMovie = await new Movie(movie);
+                let savedMovie = await newMovie.save();
+                return savedMovie;
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
+    },
+    update: async function (uuid, movie) {
         console.log(`Searching for movie with uuid ${uuid}`);
-        Movie.findOne({
+        let toUpdate = await Movie.findOne({
             UUID: uuid
-        }).then(newMovie => {
-            if (!newMovie) {
-                console.log(`Movie with uuid ${uuid} not found`);
-                res.status(404).send('Movie not found');
-            } else {
-                console.log(`Movie with uuid ${uuid} found`);
+        });
+        if (!toUpdate) {
+            throw new NotFoundError(`Movie with uuid ${uuid} not found`);
+        } else {
+            try {
                 for (let key in movie) {
                     if (movie.hasOwnProperty(key)) {
-                        newMovie[key] = movie[key];
+                        toUpdate[key] = movie[key];
                     }
                 }
-                newMovie.save().then(movie => {
-                    console.log('Movie updated');
-                    res.status(200).send(movie);
-                }).catch(err => {
-                    console.log('Error updating movie: ' + err.message);
-                    res.status(400).send(err.message);
-                });
+                let savedMovie = await toUpdate.save();
+                return savedMovie;
+            } catch (err) {
+                throw new BadRequestError(err.message);
             }
-        });
+        }
     },
-    delete: function (uuid, res) {
+    delete: async function (uuid) {
         console.log(`Deleting movie with uuid ${uuid}`);
-        Movie.findOneAndDelete({
+        let toDelete = await Movie.findOne({
             UUID: uuid
-        }).then(movie => {
-            if (!movie) {
-                console.log(`Movie with uuid ${uuid} not found`);
-                res.status(404).send('Movie not found');
-            } else {
-                console.log(`Movie with uuid ${uuid} deleted`);
-                res.status(200).send(movie);
-            }
         });
+        if (!toDelete) {
+            throw new NotFoundError(`Movie with uuid ${uuid} not found`);
+        } else {
+            try {
+                await toDelete.remove();
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
     },
-    search: function (query, res) {;
+    search: async function (query) {;
         console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
-            res.status(400).send('Invalid query');
+            throw new BadRequestError('Query is empty');
         } else {
+            let moviesList = [];
             for (key in query) {
                 if (query.hasOwnProperty(key)) {
-                    if (key === 'title') {
-                        console.log('Searching for movies using query: ', query[key]);
+                    if (key == 'title') {
+                        console.log('Searching for movies with title: ', query[key]);
                         Cuevana3.getSearch(query[key], 1).then(movies => {
-                            res.status(200).send(movies);
+                            moviesList = moviesList.concat(movies);
                         });
-                    } else {
-                        if (key === 'genre') {
-                            console.log('Searching for movies with genre: ', query[key]);
-                            let genres = {
-                                0: "Acción",
-                                1: "Animación",
-                                2: "Aventura",
-                                3: "Bélico guerra",
-                                4: "Biografía",
-                                5: "Ciencia ficción",
-                                6: "Comedia",
-                                7: "Crimen",
-                                8: "Documentales",
-                                9: "Drama",
-                                10: "Familiar",
-                                11: "Fantasía",
-                                12: "Misterio",
-                                13: "Musical",
-                                14: "Romance",
-                                15: "Terror",
-                                16: "Thriller"
-                            };
-                            let genre = genres[query[key]];
-                            Movie.find({
-                                genres: {
-                                    $in: [genre]
-                                }
-                            }).then(movies => {
-                                res.status(200).send(movies);
-                            });
-                        }
-                        else if (key === 'actor') {
-                            console.log('Searching for movies with actor: ', query[key]);
-                            Movie.find({
-                                actors: {
-                                    $in: [query[key]]
-                                }
-                            }).then(movies => {
-                                res.status(200).send(movies);
-                            });
-                        } else {
-                            res.status(400).send('Invalid query');
-                        }
+                    }
+                    if (key == 'genre') {
+                        let genres = {
+                            0: "Acción",
+                            1: "Animación",
+                            2: "Aventura",
+                            3: "Bélico guerra",
+                            4: "Biografía",
+                            5: "Ciencia ficción",
+                            6: "Comedia",
+                            7: "Crimen",
+                            8: "Documentales",
+                            9: "Drama",
+                            10: "Familiar",
+                            11: "Fantasía",
+                            12: "Misterio",
+                            13: "Musical",
+                            14: "Romance",
+                            15: "Terror",
+                            16: "Thriller"
+                        };
+                        let genre = genres[query[key]];
+                        console.log('Searching for movies with genre: ', genre);
+                        let movies = await Movie.find({
+                            genre: {
+                                $in: [genre]
+                            }
+                        });
+                        moviesList = moviesList.concat(movies);
+                    }
+                    if (key == 'actor') {
+                        console.log('Searching for movies with actor: ', query[key]);
+                        let movies = await Movie.find({
+                            actors: {
+                                $in: [query[key]]
+                            }
+                        });
+                        moviesList = moviesList.concat(movies);
+                    }
+                    if (key == 'year') {
+                        console.log('Searching for movies with year: ', query[key]);
+                        let movies = await Movie.find({
+                            year: {
+                                $in: [query[key]]
+                            }
+                        });
+                        moviesList = moviesList.concat(movies);
                     }
                 }
             }
-        }    
+            return moviesList;
+        }
+            
     },
-    getDetails: function (cuevanaUUID, res) {
+    getDetails: async function (cuevanaUUID) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
-        Cuevana3.getDetail(cuevanaUUID).then(movie => {
-            if (!movie) {
-                console.log('Movie with cuevanaUUID ' + cuevanaUUID + ' not found');
-                res.status(404).send('Movie not found');
-            } else {
-                console.log('Movie with cuevanaUUID ' + cuevanaUUID + ' found');
-                res.status(200).send(movie);
-            }
+        let movieDetails;
+        await Cuevana3.getDetail(cuevanaUUID).then(movie => {
+            movieDetails = movie;
         });
+        return movieDetails;
     }
 };
 
