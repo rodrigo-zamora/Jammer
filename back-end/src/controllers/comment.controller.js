@@ -2,7 +2,8 @@ const Comment = require('../models/Comment');
 
 const {
     NotFoundError,
-    BadRequestError
+    BadRequestError,
+    UnauthorizedError
 } = require('../utils/errors');
 
 const commentController = {
@@ -38,39 +39,61 @@ const commentController = {
             return comments;
         }
     },
-    // Update with userUUID
     delete: async function (commentUUID, userUUID) {
         console.log(`Deleting comment with uuid ${commentUUID}`);
-        let comment = await Comment.findOne({
-            UUID: commentUUID
+        let user = await User.findOne({
+            UUID: userUUID
         });
-        if (!comment) {
-            throw new NotFoundError(`Comment with uuid ${commentUUID} not found`);
+        if (!user) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
-            await comment.remove();
-            return comment;
+            let comment = await Comment.findOne({
+                UUID: commentUUID
+            });
+            if (!comment) {
+                throw new NotFoundError(`Comment with uuid ${commentUUID} not found`);
+            } else {
+                if (comment.authorUUID !== userUUID) {
+                    throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to delete comment with uuid ${commentUUID}`);
+                } else {
+                    let deletedComment = await Comment.findOneAndDelete({
+                        UUID: commentUUID
+                    });
+                    return deletedComment;
+                }
+            }
         }
     },
-    // Update with userUUID
     update: async function (commentUUID, userUUID, comment) {
         console.log(`Updating comment with uuid ${commentUUID}`);
-        let commentToUpdate = await Comment.findOne({
-            UUID: commentUUID
+        let user = await User.findOne({
+            UUID: userUUID
         });
-        if (!commentToUpdate) {
-            throw new NotFoundError(`Comment with uuid ${commentUUID} not found`);
+        if (!user) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
-            try {
-                for (key in comment) {
-                    if (comment.hasOwnProperty(key)) {
-                        commentToUpdate[key] = comment[key];
+            let toUpdate = await Comment.findOne({
+                UUID: commentUUID
+            });
+            if (!toUpdate) {
+                throw new NotFoundError(`Comment with uuid ${commentUUID} not found`);
+            } else {
+                if (comment.authorUUID !== userUUID) {
+                    throw new UnauthorizedError('You are not authorized to update this comment');
+                } else {
+                    try {
+                        for (let key in comment) {
+                            if (comment.hasOwnProperty(key)) {
+                                toUpdate[key] = comment[key];
+                            }
+                        }
+                        let savedComment = await toUpdate.save();
+                        return savedComment;
+                    } catch (err) {
+                        throw new BadRequestError(err.message);
                     }
                 }
-                let savedComment = await commentToUpdate.save();
-                return savedComment;
-            } catch (err) {
-                throw new BadRequestError(err.message);
-            }
+            }  
         }
     },
     getAllForUser: async function (userUUID) {
@@ -85,3 +108,5 @@ const commentController = {
         }
     }
 };
+
+module.exports = commentController;

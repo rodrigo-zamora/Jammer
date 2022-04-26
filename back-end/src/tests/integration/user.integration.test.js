@@ -24,7 +24,7 @@ describe('/users', () => {
                     firstName: "Test",
                     lastName: "User",
                     email: userEmail,
-                    password: "notasecurepassword12345"
+                    password: "notasecurepassword12345_A"
                 })
                 .expect(200)
                 .end(endFunction(done));
@@ -37,7 +37,7 @@ describe('/users', () => {
                     firstName: "Test",
                     lastName: "User",
                     email: userEmail,
-                    password: "notasecurepassword12345"
+                    password: "notasecurepassword12345_A"
                 })
                 .expect(409)
                 .end(endFunction(done));
