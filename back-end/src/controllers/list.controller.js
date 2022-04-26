@@ -33,10 +33,14 @@ const listController = {
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
-            if (list.sharedWith.includes(userUUID)) {
-                return list;
+            if (list.isShared) {
+                if (list.sharedWith.includes(userUUID)) {
+                    return list;
+                } else {
+                    throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to access this list`);
+                }
             } else {
-                throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to access list with uuid ${listUUID}`);
+                throw new UnauthorizedError(`List with uuid ${listUUID} is private`);
             }
         }
     },
