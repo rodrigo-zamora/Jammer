@@ -20,6 +20,8 @@ import { MovieDataComponent } from './components/movie-data/movie-data.component
 import { GlobalThemeComponent } from './components/global-theme/global-theme.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { GenreComponentComponent } from './components/genre-component/genre-comp
     GenreComponentComponent,
     FooterComponent,
     MovieDataComponent,
-    SearchComponent
+    SearchComponent,
+    SubscriptionComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
