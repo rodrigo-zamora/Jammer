@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CardComponent } from './components/card/card.component';
 import { HomeComponent } from './components/home/home.component';
+import { SearchComponent } from './components/search/search.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { MovieDataComponent } from './components/movie-data/movie-data.component';
@@ -31,6 +32,7 @@ import { GenreComponentComponent } from './components/genre-component/genre-comp
     GenreComponentComponent,
     FooterComponent,
     MovieDataComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
