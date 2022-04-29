@@ -36,7 +36,7 @@ import { PaymentComponent } from './components/payment/payment.component';
     MovieDataComponent,
     SearchComponent,
     SubscriptionComponent,
-    PaymentComponent
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
