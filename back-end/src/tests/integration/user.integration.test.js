@@ -6,7 +6,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 const userUUID = "77f38fc2-c53f-4637-9c57-d8529cc02bc1";
 const userEmail = "test.user@notanemail.com"; 
 
-/*describe('/users', () => {
+describe('/users', () => {
     describe('GET', () => {
         it('should return all users', (done) => {
             request(app)
@@ -24,7 +24,7 @@ const userEmail = "test.user@notanemail.com";
                     firstName: "Test",
                     lastName: "User",
                     email: userEmail,
-                    password: "notasecurepassword12345_A"
+                    password: "notasecurepassw?ord12345_A"
                 })
                 .expect(200)
                 .end(endFunction(done));
@@ -82,7 +82,7 @@ describe('/users/:uuid', () => {
             request(app)
                 .put('/users/' + userUUID)
                 .send({
-                    firstName: 'New name'
+                    firstName: 'newName'
                 })
                 .expect(200)
                 .end(endFunction(done));
@@ -91,7 +91,7 @@ describe('/users/:uuid', () => {
             request(app)
                 .put('/users/' + userUUID + '-not-found')
                 .send({
-                    firstName: 'New name'
+                    firstName: 'newName'
                 })
                 .expect(404)
                 .end(endFunction(done));
@@ -141,4 +141,4 @@ describe('/users/:uuid/subscription', () => {
                 .expect(404);
         });
     });
-});*/
+});

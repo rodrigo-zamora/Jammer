@@ -1,4 +1,6 @@
 const Comment = require('../models/Comment');
+const Movie = require('../models/Movie');
+const User = require('../models/User');
 
 const {
     NotFoundError,
@@ -7,14 +9,22 @@ const {
 } = require('../utils/errors');
 
 const commentController = {
-    create: async function (userUUID, movieUUID, comment) {
+    create: async function (movieUUID, comment) {
         console.log(`Creating new comment for movie with uuid ${movieUUID}`);
-        try {
-            let newComment = await new Comment(comment);
-            let savedComment = await newComment.save();
-            return savedComment;
-        } catch (err) {
-            throw new BadRequestError(err.message);
+        let movie = await Movie.findOne({
+            UUID: movieUUID
+        });
+        if (!movie) {
+            throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
+        } else {
+            try {
+                let newComment = await new Comment(comment);
+                newComment.movie = movieUUID;
+                let savedComment = await newComment.save();
+                return savedComment;
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
         }
     },
     get: async function (commentUUID) {
@@ -30,13 +40,20 @@ const commentController = {
     },
     getAll: async function (movieUUID) {
         console.log(`Searching for comments for movie with uuid ${movieUUID}`);
-        let comments = await Comment.find({
-            movieUUID: movieUUID
+        let movie = await Movie.findOne({
+            UUID: movieUUID
         });
-        if (!comments) {
-            throw new NotFoundError(`Comments for movie with uuid ${movieUUID} not found`);
+        if (!movie) {
+            throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
         } else {
-            return comments;
+            let comments = await Comment.find({
+                movieUUID: movieUUID
+            });
+            if (!comments) {
+                throw new NotFoundError(`Comments for movie with uuid ${movieUUID} not found`);
+            } else {
+                return comments;
+            }
         }
     },
     delete: async function (commentUUID, userUUID) {
@@ -78,7 +95,7 @@ const commentController = {
             if (!toUpdate) {
                 throw new NotFoundError(`Comment with uuid ${commentUUID} not found`);
             } else {
-                if (comment.authorUUID !== userUUID) {
+                if (toUpdate.authorUUID !== userUUID) {
                     throw new UnauthorizedError('You are not authorized to update this comment');
                 } else {
                     try {

@@ -20,7 +20,7 @@ const listSchema = new mongoose.Schema({
         maxlength: 50,
         validate: {
             validator: (name) => {
-                return /^[a-zA-Z]+$/.test(name);
+                return /^[a-zA-Z ]+$/.test(name);
             }
         }
     },
@@ -32,7 +32,7 @@ const listSchema = new mongoose.Schema({
         maxlength: 500,
         validate: {
             validator: (description) => {
-                return /^[a-zA-Z]+$/.test(description);
+                return /^[a-zA-Z ]+$/.test(name);
             }
         }
     },

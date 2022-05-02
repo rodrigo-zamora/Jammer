@@ -63,7 +63,7 @@ const tagController = {
             return tag;
         }
     },
-    getAll: async function () {
+    getAllTags: async function () {
         console.log(`Searching for all tags`);
         let tags = await Tag.find({});
         return tags;
