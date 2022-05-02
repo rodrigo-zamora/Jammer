@@ -22,13 +22,13 @@ const subscriptionController = {
                 }
             });
             if (toCreate) {
-                throw new ConflictError(`Subscription with uuid ${userUUID} already exists`);
+                throw new ConflictError(`User with uuid ${userUUID} already has a subscription`);
             } else {
                 let newSubscription = await new Subscription(subscription);
-                let savedSubscription = await newSubscription.save();
-                user.subscription = savedSubscription.UUID;
-                await user.save();
-                return savedSubscription;
+                user.subscription = newSubscription.UUID;
+                let savedUser = await user.save();
+                await newSubscription.save();
+                return savedUser;
             }
         }
     },

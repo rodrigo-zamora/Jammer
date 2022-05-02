@@ -20,7 +20,7 @@ const tagSchema = new mongoose.Schema({
         maxlength: 25,
         validate: {
             validator: (name) => {
-                return /^[a-zA-Z]+$/.test(name);
+                return /^[a-zA-Z ]+$/.test(name);
             }
         }
     },

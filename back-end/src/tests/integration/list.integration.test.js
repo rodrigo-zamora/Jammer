@@ -6,7 +6,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 const userUUID = '1f967358-d9b2-46d3-ae34-db9fd6d90c6e';
 const listUUID = '1f967358-list-46d3-ae34-db9fd6d90c6e';
 
-/*describe('/lists/:userUUID', () => {
+describe('/lists/:userUUID', () => {
     describe('GET', () => {
         it('should return all lists of the user', (done) => {
             request(app)
@@ -72,20 +72,6 @@ const listUUID = '1f967358-list-46d3-ae34-db9fd6d90c6e';
 });
 
 describe('/lists/list/:listUUID', () => {
-    describe('GET', () => {
-        it('should return a list', (done) => {
-            request(app)
-                .get('/lists/list/' + listUUID)
-                .expect(200)
-                .end(endFunction(done));
-        }),
-        it('should return 404 if the list is not found', (done) => {
-            request(app)
-                .get('/lists/list/' + '-not-found')
-                .expect(404)
-                .end(endFunction(done));
-        });
-    }),
     describe('PUT', () => {
         it('should update a list', (done) => {
             request(app)
@@ -120,4 +106,4 @@ describe('/lists/list/:listUUID', () => {
                 .end(endFunction(done));
         });
     });
-});*/
+});

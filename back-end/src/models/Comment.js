@@ -34,7 +34,7 @@ const commentSchema = new mongoose.Schema({
         maxlength: 500,
         validate: {
             validator: (text) => {
-                return /^[a-zA-Z]+$/.test(text);
+                return /^[a-zA-Z ]+$/.test(text);
             }
         }
     },
