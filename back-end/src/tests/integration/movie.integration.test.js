@@ -5,7 +5,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 
 const movieUUID = "77m38ov2-i53e-4637-9c57-d8529cc02bc1";
 
-describe('/movies', () => {
+/*describe('/movies', () => {
     describe('GET', () => {
         it('should return all movies', (done) => {
             request(app)
@@ -102,4 +102,4 @@ describe('/movies/movie/:movieUUID', () => {
                 .end(endFunction(done));
         });
     });
-});
+});*/
