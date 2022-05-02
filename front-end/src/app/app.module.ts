@@ -22,6 +22,7 @@ import { CarouselBasicComponent } from './components/carousel-basic/carousel-bas
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { PaymentComponent } from './components/payment/payment.component';
     SearchComponent,
     SubscriptionComponent,
     PaymentComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
