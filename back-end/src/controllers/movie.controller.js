@@ -48,6 +48,7 @@ const movieController = {
         if (!toUpdate) {
             throw new NotFoundError(`Movie with uuid ${uuid} not found`);
         } else {
+            toUpdate = new Movie(toUpdate);
             try {
                 for (let key in movie) {
                     if (movie.hasOwnProperty(key)) {
@@ -70,7 +71,10 @@ const movieController = {
             throw new NotFoundError(`Movie with uuid ${uuid} not found`);
         } else {
             try {
-                await toDelete.remove();
+                await Movie.deleteOne({
+                    UUID: uuid
+                });
+                return toDelete;
             } catch (err) {
                 throw new BadRequestError(err.message);
             }
@@ -86,7 +90,7 @@ const movieController = {
                 if (query.hasOwnProperty(key)) {
                     if (key == 'title') {
                         console.log('Searching for movies with title: ', query[key]);
-                        Cuevana3.getSearch(query[key], 1).then(movies => {
+                        await Cuevana3.getSearch(query[key], 1).then(movies => {
                             moviesList = moviesList.concat(movies);
                         });
                     }

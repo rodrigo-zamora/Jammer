@@ -18,43 +18,56 @@ const listController = {
         if (!user) {
             throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
-            let lists = await List.find({
-                UUID: {
-                    $in: user.lists
-                }
-            });
-            return lists;
+            let toReturn = {
+                lists: [],
+                sharedLists: []
+            }
+            for (let list of user.lists) {
+                let listToAdd = await List.findOne({
+                    UUID: list
+                });
+                toReturn.lists.push(listToAdd);
+            }
+            for (let list of user.sharedLists) {
+                let listToAdd = await List.findOne({
+                    UUID: list
+                });
+                toReturn.sharedLists.push(listToAdd);
+            }
+            return toReturn;
         }
     },
-    get: async function (listUUID, token) {
+    get: async function (listUUID, userUUID) {
         console.log(`Searching for list with listUUID ${listUUID}`);
-        let list = await List.findOne({
-            UUID: listUUID
-        });
-        if (!list) {
-            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        if (!userUUID) {
+            throw new ForbiddenError('User not logged in');
         } else {
-            if (list.isShared) {
-                if (Object.keys(token).length === 0) {
-                    throw new ForbiddenError('You need to provide a token');
+            let user = await User.findOne({
+                UUID: userUUID
+            });
+            if (!user) {
+                throw new NotFoundError(`User with uuid ${userUUID} not found`);
+            } else {
+                let list = await List.findOne({
+                    UUID: listUUID
+                });
+                if (!list) {
+                    throw new NotFoundError(`List with uuid ${listUUID} not found`);
                 } else {
-                    let user = await User.deserialize(token);
-                    if (list.isShared) {
-                        if (list.sharedWith.includes(user.UUID)) {
-                            return list;
-                        } else {
-                            throw new UnauthorizedError('You are not allowed to access this list');
-                        }
+                    if (user.lists.includes(listUUID)) {
+                        return list;
                     } else {
-                        if (user.lists.includes(list.UUID)) {
-                            return list;
+                        if (!list.isShared) {
+                            throw new UnauthorizedError('List is not shared');
                         } else {
-                            throw new UnauthorizedError('You are not allowed to access this list');
+                            if (user.sharedLists.includes(listUUID)) {
+                                return list;
+                            } else {
+                                throw new UnauthorizedError('User not allowed to access this list');
+                            }
                         }
                     }
                 }
-            } else {
-                throw new UnauthorizedError(`List with uuid ${listUUID} is private`);
             }
         }
     },
@@ -66,29 +79,27 @@ const listController = {
         if (!user) {
             throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
+            user = new User(user);
             let subscription = user.subscription;
             if (subscription == '') {
                 throw new UnauthorizedError(`User with uuid ${userUUID} is not subscribed to any plan`);
             }
-
             let lists = await List.find({
                 UUID: {
                     $in: user.lists
                 }
             });
-
             for (let list of lists) {
                 if (list.name === listBody.name) {
                     throw new ConflictError(`List with name ${listBody.name} already exists`);
                 }
             }
-
             try {
                 let newList = await new List(listBody);
                 user.lists.push(newList.UUID);
-                let savedUser = await user.save();
+                await user.save();
                 await newList.save();
-                return savedUser;
+                return newList;
 
             } catch (err) {
                 throw new BadRequestError(err.message);
@@ -103,16 +114,20 @@ const listController = {
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
+            list = new List(list);
             try {
                 for (let key in listBody) {
                     if (listBody.hasOwnProperty(key)) {
-                        list[key] = listBody[key];
+                        if (key == 'sharedWith') {
+                            throw new BadRequestError('You cannot update sharedWith field using this method');
+                        } else {
+                            list[key] = listBody[key];
+                        }
                     }
                 }
                 let savedList = await list.save();
                 return savedList;
-            }
-            catch (err) {
+            } catch (err) {
                 throw new BadRequestError(err.message);
             }
         }
@@ -127,11 +142,16 @@ const listController = {
         } else {
             try {
                 let user = await User.findOne({
-                    lists: listUUID
+                    lists: {
+                        $in: listUUID
+                    }
                 });
                 if (!user) {
                     throw new NotFoundError(`User with list ${listUUID} not found`);
                 } else {
+                    // TODO: delete all sharedWith lists
+                    user = new User(user);
+                    list = new List(list);
                     user.lists.splice(user.lists.indexOf(listUUID), 1);
                     await user.save();
                     await list.remove();
@@ -139,6 +159,36 @@ const listController = {
                 }
             } catch (err) {
                 throw new BadRequestError(err.message);
+            }
+        }
+    },
+    addUserToList: async function (listUUID, userUUID) {
+        console.log(`Adding user with userUUID ${userUUID} to list with listUUID ${listUUID}`);
+        let toAdd = await User.findOne({
+            UUID: userUUID
+        });
+        if (!toAdd) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
+        } else {
+            if (toAdd.lists.includes(listUUID)) {
+                throw new ConflictError(`User with uuid ${userUUID} is already in list with uuid ${listUUID}`);
+            } else {
+                let list = await List.findOne({
+                    UUID: listUUID
+                });
+                if (!list) {
+                    throw new NotFoundError(`List with uuid ${listUUID} not found`);
+                } else {
+                    if (!list.isShared) {
+                        throw new UnauthorizedError(`List with uuid ${listUUID} is not shared`);
+                    } else {
+                        list.sharedWith.push(userUUID);
+                        await list.save();
+                        toAdd.sharedLists.push(listUUID);
+                        await toAdd.save();
+                        return list;
+                    }
+                }
             }
         }
     }

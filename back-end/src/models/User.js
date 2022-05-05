@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt');
 
 const SALT_WORK_FACTOR = 10;
 
-let Utils = require('../utils/utils');
-let Passport = require('../config/passport');
+const Utils = require('../utils/utils');
+//let Passport = require('../config/passport');
 
 const userSchema = new mongoose.Schema({
     UUID: {
@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
         minlength: 8,
         maxlength: 50,
         validate: {
@@ -67,21 +67,6 @@ const userSchema = new mongoose.Schema({
                 return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/.test(password);
             },
             message: (props) => `${props.value} is not a valid password!`
-        },
-        default: function () {
-            // Generate a salt
-            bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-                if (err) return next(err);
-
-                // Hash the password using our new salt
-                bcrypt.hash(user.password, salt, function (err, hash) {
-                    if (err) return next(err);
-
-                    // Override the cleartext password with the hashed one
-                    user.password = hash;
-                    next();
-                });
-            });
         }
     },
     createdAt: {
@@ -107,6 +92,36 @@ const userSchema = new mongoose.Schema({
     }]
 }, { collection: 'users' });
 
+userSchema.pre('save', function (next) {
+    let user = this;
+
+    // Update updatedAt with the current date
+    user.updatedAt = Date.now();
+
+    // Generate a salt
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+        
+        // Hash the password using our new salt
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            if (err) return next(err);
+
+            // Override the cleartext password with the hashed one
+            user.password = hash;
+            next();
+        });
+    });
+    
+    next();
+});
+
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
+
 userSchema.virtual('id').get(function () {
     return this._id;
 });
@@ -119,59 +134,6 @@ userSchema.set('toJSON', {
         delete ret.__v;
     }
 });
-
-userSchema.pre('save', function (next) {
-    // Update updatedAt with the current date
-    this.updatedAt = Date.now();
-
-    // Hash password if it was changed
-    if (this.isModified('password')) {
-        // Generate a salt
-        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-            if (err) return next(err);
-            
-            // Hash the password using our new salt
-            bcrypt.hash(this.password, salt, function (err, hash) {
-                if (err) return next(err);
-
-                // Override the cleartext password with the hashed one
-                this.password = hash;
-                next();
-            });
-        });
-    }
-    
-    next();
-});
-
-userSchema.methods.hashPassword = function (password) {
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-
-        // Hash the password using our new salt
-        bcrypt.hash(password, salt, function (err, hash) {
-            if (err) return next(err);
-
-            // Override the cleartext password with the hashed one
-            this.password = hash;
-            next();
-        });
-    });
-};
-
-userSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
-
-userSchema.statics.deserialize = function (token, cb) {
-    Passport.deserializeUser(token, function (err, user) {
-        if (err) return cb(err);
-        cb(null, user);
-    });
-}
 
 let User = mongoose.model('User', userSchema);
 

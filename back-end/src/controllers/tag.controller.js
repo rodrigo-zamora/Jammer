@@ -46,9 +46,18 @@ const tagController = {
         if (!toUpdate) {
             throw new NotFoundError(`Tag with uuid ${tagUUID} not found`);
         } else {
-            toUpdate.name = tag.name;
-            let savedTag = await toUpdate.save();
-            return savedTag;
+            toUpdate = new Tag(toUpdate);
+            try {
+                for (let key in tag) {
+                    if (tag.hasOwnProperty(key)) {
+                        toUpdate[key] = tag[key];
+                    }
+                }
+                let savedTag = await toUpdate.save();
+                return savedTag;
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
         }
     },
     delete: async function (tagUUID) {
@@ -59,7 +68,9 @@ const tagController = {
         if (!tag) {
             throw new NotFoundError(`Tag with uuid ${tagUUID} not found`);
         } else {
-            await tag.remove();
+            await Tag.deleteOne({
+                UUID: tagUUID
+            });
             return tag;
         }
     },

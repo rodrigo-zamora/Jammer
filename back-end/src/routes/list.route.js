@@ -34,4 +34,10 @@ router.delete('/list/:listUUID', handleError(async (req, res) => {
     res.send(list);
 }));
 
+router.post('/list/:listUUID/share', handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/share');
+    let list = await listController.addUserToList(req.params.listUUID, req.body);
+    res.send(list);
+}));
+
 module.exports = router;
