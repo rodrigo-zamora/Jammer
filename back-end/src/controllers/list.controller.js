@@ -149,7 +149,18 @@ const listController = {
                 if (!user) {
                     throw new NotFoundError(`User with list ${listUUID} not found`);
                 } else {
-                    // TODO: delete all sharedWith lists
+                    let sharedUsers = await User.find({
+                        sharedLists: {
+                            $in: listUUID
+                        }
+                    });
+                    if (sharedUsers.length > 0) {
+                        for (let userList of sharedUsers) {
+                            userList.sharedLists.splice(userList.sharedLists.indexOf(listUUID), 1);
+                            userList = new User(userList);
+                            await userList.save();
+                        }
+                    }
                     user = new User(user);
                     list = new List(list);
                     user.lists.splice(user.lists.indexOf(listUUID), 1);
