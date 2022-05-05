@@ -9,16 +9,7 @@ import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { } // search
-
-  onSubmit(f: any) { // only f before.
-    console.log('param : ' + f)
-    location.reload();
-    this.router.navigate(['search/' + f.value.search])
-      .then(() => {
-        window.location.reload();
-      });
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }
