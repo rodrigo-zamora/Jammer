@@ -4,24 +4,36 @@ div {
     
     app-global-theme {
         .pnf {
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
 
             img {
-                margin: auto auto 25px auto;
-                opacity: 0.5;
+                background: url("200.gif");
+                opacity: 0.4;
+                width: 100%;
             }
-    
-            h1 {
-                text-align: center;
-                margin: 0 auto auto auto;
-                color: #fff;
-                font-size: 5em;
 
-                h2 {
-                    font-size: 0.5em;
+            .text404 {
+                height: auto;
+                position: absolute;
+                top: 60%;
+                text-align: center;
+                color: #fff;
+
+                h1 {
+                    font-size: 7em;
+                    font-family: 'Roboto', sans-serif;
                 }
+                h2 {
+                    font-size: 5em;
+    
+                    h3 {
+                        font-size: 0.5em;
+                    }
+                }
+    
             }
         }
     }
