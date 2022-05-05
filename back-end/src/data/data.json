@@ -1,0 +1,142 @@
+{
+    "users": [
+        {
+            "UUID": "1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@hotmail.com",
+            "password": "notAPassword123!#%",
+            "createdAt": "2022-04-25T19:19:02.334+00:00",
+            "updatedAt": "2022-05-03T01:34:33.999+00:00",
+            "subscription": "SUB-1967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "lists": [
+                "LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+            ],
+            "sharedLists": [
+                "SHARED-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+            ]
+        },
+        {
+            "UUID": "2f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "firstName": "Jane",
+            "lastName": "Doe",
+            "email": "jane.doe@hotmail.com",
+            "password": "notAPassword123!#%",
+            "createdAt": "2022-04-25T19:19:02.334+00:00",
+            "updatedAt": "2022-05-03T01:34:33.999+00:00",
+            "subscription": null,
+            "lists": [
+                "SHARED-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+            ],
+            "sharedLists": []
+        }
+    ],
+    "lists": [
+        {
+            "UUID": "LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "name": "Recently Watched",
+            "description": "Movies I've recently watched",
+            "movies": [
+                {
+                    "movieUUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+                    "time": "56",
+                    "comments": [
+                        "COMMENT1-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+                        "COMMENT2-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+                        "COMMENT3-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+                    ]
+                }
+            ],
+            "isShared": false,
+            "sharedWith": [],
+            "imageURL": null
+        },
+        {
+            "UUID": "SHARED-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "name": "Shared list",
+            "description": "This list is shared with John Doe",
+            "movies": [
+                {
+                    "movieUUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+                    "time": "56",
+                    "comments": [
+                        "COMMENT1-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+                    ]
+                }
+            ],
+            "isShared": true,
+            "sharedWith": [
+                "1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+            ],
+            "imageURL": null
+        }
+    ],
+    "subscriptions": [
+        {
+            "UUID": "SUB-1967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "paymentType": "credit",
+            "subscriptionType": "premium"
+        }
+    ],
+    "movies": [
+        {
+            "UUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "cuevanaUUID": "testMOVIE/12345",
+            "title": "Test movie",
+            "poster": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+            "year": "2020",
+            "sypnosis": "This is a test movie",
+            "rating": 5,
+            "duration" : "1h 30m",
+            "genres": [
+                "Action",
+                "Drama"
+            ],
+            "cast": [
+                "John Doe",
+                "Jane Doe"
+            ]
+        }
+    ],
+    "comments": [
+        {
+            "UUID": "COMMENT1-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "authorUUID": "1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "movieUUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "tags": [],
+            "text": "This is a test comment",
+            "isPrivate": true,
+            "createdAt": "2022-04-25T19:19:02.334+00:00",
+            "updatedAt": "2022-05-03T01:34:33.999+00:00"
+        },
+        {
+            "UUID": "COMMENT2-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "authorUUID": "1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "movieUUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "tags": [],
+            "text": "This is a test comment",
+            "isPrivate": false,
+            "createdAt": "2022-04-25T19:19:02.334+00:00",
+            "updatedAt": "2022-05-03T01:34:33.999+00:00"
+        },
+        {
+            "UUID": "COMMENT3-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "authorUUID": "2f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "movieUUID": "MOVIE-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "tags": [
+                "TAG-1f967358-d9b2-46d3-ae34-db9fd6d90c6e"
+            ],
+            "text": "This is a test comment",
+            "isPrivate": false,
+            "createdAt": "2022-04-25T19:19:02.334+00:00",
+            "updatedAt": "2022-05-03T01:34:33.999+00:00"
+        }
+    ],
+    "tags": [
+        {
+            "UUID": "TAG-1f967358-d9b2-46d3-ae34-db9fd6d90c6e",
+            "name": "Test tag",
+            "count": 10
+        }
+    ]
+}

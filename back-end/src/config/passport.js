@@ -11,41 +11,32 @@ passport.use(
         },
         function (accessToken, refreshToken, profile, done) {
             console.log('Creating user with profile: ', profile);
-            try {
-                User.findOne({
-                    email: profile.emails[0].value
-                }).then(newUser => {
-                    if (newUser) {
-                        console.log('User already exists');
-                        done(null, newUser);
-                    } else {
-                        User.create({
-                            firstName: profile.name.givenName,
-                            lastName: profile.name.familyName,
-                            email: profile.emails[0].value,
-                            imageURL: profile.photos[0].value
-                        }).then(user => {
-                            console.log('User created');
-                            done(null, user);
-                        }).catch(err => {
-                            console.log('Error creating user: ' + err.message);
-                            done(err);
-                        });
-                    }
-                })
-            } catch (err) {
-                console.log('Error creating user: ', err);
-                done(err);
-            }
+            let user = User.findOne({
+                email: profile.emails[0].value
+            });
+            user.then(user => {
+                if (user) {
+                    console.log('A user with that email already exist: ', user);
+                    return done(null, user);
+                } else {
+                    console.log('Creating new user');
+                    User.create({
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        email: profile.emails[0].value,
+                        imageURL: profile.photos[0].value
+                    });
+                }
+            })
         }
     )
 );
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user.UUID);
 });
-passport.deserializeUser(function (id, done) {
-    User.find(id)
+passport.deserializeUser(function (UUID, done) {
+    User.findOne(UUID)
         .then(user => done(null, user))
         .catch(err => done(err));
 });

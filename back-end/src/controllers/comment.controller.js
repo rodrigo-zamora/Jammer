@@ -19,7 +19,7 @@ const commentController = {
         } else {
             try {
                 let newComment = await new Comment(comment);
-                newComment.movie = movieUUID;
+                newComment.movieUUID = movieUUID;
                 let savedComment = await newComment.save();
                 return savedComment;
             } catch (err) {
@@ -73,10 +73,10 @@ const commentController = {
                 if (comment.authorUUID !== userUUID) {
                     throw new UnauthorizedError(`User with uuid ${userUUID} is not authorized to delete comment with uuid ${commentUUID}`);
                 } else {
-                    let deletedComment = await Comment.findOneAndDelete({
+                    await Comment.deleteOne({
                         UUID: commentUUID
                     });
-                    return deletedComment;
+                    return comment;
                 }
             }
         }
@@ -98,6 +98,7 @@ const commentController = {
                 if (toUpdate.authorUUID !== userUUID) {
                     throw new UnauthorizedError('You are not authorized to update this comment');
                 } else {
+                    toUpdate = new Comment(toUpdate);
                     try {
                         for (let key in comment) {
                             if (comment.hasOwnProperty(key)) {
