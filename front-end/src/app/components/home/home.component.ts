@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalThemeComponent } from '../global-theme/global-theme.component';
-import { NavBarComponent } from '../nav-bar/nav-bar.component';
-import { AppRoutingModule } from '../../app-routing.module';
+import { MoviesService } from '../movies.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +8,9 @@ import { AppRoutingModule } from '../../app-routing.module';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(public pelis: MoviesService) {
+    
+  }
 
   ngOnInit(): void {
   }
