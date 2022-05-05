@@ -117,9 +117,7 @@ const movieController = {
                         let genre = genres[query[key]];
                         console.log('Searching for movies with genre: ', genre);
                         let movies = await Movie.find({
-                            genre: {
-                                $in: [genre]
-                            }
+                            genres: genre
                         });
                         moviesList = moviesList.concat(movies);
                     }
