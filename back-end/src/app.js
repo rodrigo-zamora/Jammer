@@ -122,7 +122,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get('*', (req, res) => {
-    res.send('Jammer Service API');
+    res.send('404 Not found');
 });
 
 module.exports = app;
