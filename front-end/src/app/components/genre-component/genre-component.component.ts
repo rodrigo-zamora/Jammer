@@ -7,9 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class GenreComponentComponent implements OnInit {
 
-  genreName = 'Genero';
+  @Input() genre: string = 'Sin género';
 
-  constructor() { }
+  constructor() {
+    
+  }
 
   ngOnInit(): void {
   }
