@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -13,7 +12,7 @@ export class NavBarComponent implements OnInit {
   // @Output() clicked = new EventEmitter();
   @Output() clicked = new EventEmitter<string>();
 
-  constructor(private http: HttpClient, private router: Router, private searchComponent: SearchComponent) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   isLogged: boolean = false;
 
