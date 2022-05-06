@@ -99,4 +99,8 @@ app.use((err, req, res, next) => {
     res.status(503).send('Something went wrong, try again');
 });
 
+app.get('*', (req, res) => {
+    res.send('404 Not found');
+});
+
 module.exports = app;

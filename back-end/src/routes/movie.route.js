@@ -22,9 +22,9 @@ router.get('/search', handleError(async (req, res) => {
     res.send(movie);
 }));
 
-router.get('/details/:cuevanaUUID', handleError(async (req, res) => {
+router.get('/details/:cuevanaUUID/:cuevanaName', handleError(async (req, res) => {
     console.log('GET /movies/details/:cuevanaUUID');
-    let movieDetails = await movieController.getDetails(req.params.cuevanaUUID);
+    let movieDetails = await movieController.getDetails(req.params.cuevanaUUID + '/' + req.params.cuevanaName);
     res.send(movieDetails);
 }));
 
