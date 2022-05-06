@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 
 
@@ -9,9 +9,15 @@ import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
+  // get value from input
+  @Output() clicked = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  onClick() {
+    //console.log('clicked');
+    this.clicked.emit();
+  }
 }

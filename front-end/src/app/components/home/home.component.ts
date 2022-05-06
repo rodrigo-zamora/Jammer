@@ -27,5 +27,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroyed.next();
     this.destroyed.complete();
   }
+  
+  onClickedAlert() {
+    console.log('clicked');
+  }
 
 }

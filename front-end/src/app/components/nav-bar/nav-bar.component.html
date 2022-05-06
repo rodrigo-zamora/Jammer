@@ -23,7 +23,7 @@
       aria-describedby="basic-addon2"
       class="search-input"
     >
-    <button mat-raised-button class="searchButton" routerLink="/search">Search</button>
+    <button mat-raised-button class="searchButton" routerLink="/search" (click)="onClick()">Search</button>
     <button mat-button [matMenuTriggerFor]="menu">Login</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>Jaime</button>
