@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-genre-component',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GenreComponentComponent implements OnInit {
 
-  constructor() { }
+  @Input() genre: string = 'Sin género';
+
+  constructor() {
+    
+  }
 
   ngOnInit(): void {
   }
-
 }

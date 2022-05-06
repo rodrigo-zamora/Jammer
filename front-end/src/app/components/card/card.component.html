@@ -1,16 +1,15 @@
 <div class="card" routerLink="/movie-data">
-    <img class="card-img-top" src="https://ww3.cuevana.pro/resize/200/storage/17109/jm8JXQBfUtpSNvnerBQdKKEMjMPDfKo7zvtgr0FC.jpg"
-        alt="Card image cap">
+    <img class="card-img-top" src="{{movie?.poster}}" alt="Card image">
     <div class="card-body">
-        <h3 class="title"><b>{{"Sonic 2"}}</b></h3>
+        <h3 class="title"><b>{{movie?.title}}</b></h3>
         <div class="cardInfo">
             <div class="duo">
-                <p class="duration">{{"1h 3m"}}</p>
+                <p class="duration">{{movie?.duration}}</p>
                 <div class="rating">
-                    <p class="wmargin">{{"4.43"}}</p><mat-icon>star</mat-icon>
+                    <p class="wmargin">{{movie?.rating}}</p><mat-icon>star</mat-icon>
                 </div>
             </div>
-            <p class="year">{{"2021"}}</p>
+            <p class="year">{{movie?.year}}</p>
         </div>
     </div>
 </div>

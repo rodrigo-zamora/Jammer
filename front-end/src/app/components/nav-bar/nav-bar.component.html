@@ -1,35 +1,30 @@
 <div class="toolbar" role="banner">
   <div class="primary-navigation" routerLink="/home">
-    <img
-      width="40"
-      alt="Jammer Logo"
-      src="https://cdn-icons-png.flaticon.com/512/3600/3600926.png"
-    />
+    <img width="40" alt="Jammer Logo" src="https://cdn-icons-png.flaticon.com/512/3600/3600926.png" />
     <span>Jammer</span>
   </div>
-  <div class="listButton" routerLink="/myList">
+
+  <div *ngIf="isLogged" class="myListButton" routerLink="/myList">
     <ul class="navigation-links navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link">Mis listas</a>
       </li>
     </ul>
   </div>
+
   <div class="spacer"></div>
+
   <div class="secondary-navigation">
-    <input
-      type="text"
-      placeholder="Search movie"
-      aria-label="Search"
-      aria-describedby="basic-addon2"
-      class="search-input"
-    >
-    <button mat-raised-button class="searchButton" routerLink="/search">Search</button>
-    <button mat-button [matMenuTriggerFor]="menu">Login</button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Jaime</button>
-        <button mat-menu-item>Anmol</button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item class="Subscripcion" routerLink="/subscription">Subscripcion</button>
-      </mat-menu>
+    <input type="text" placeholder="Search movie" aria-label="Search" aria-describedby="basic-addon2"
+      class="search-input">
+    <button mat-raised-button class="searchButton" [routerLink]="['/search', movieName]">Search</button>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+  <div *ngIf="!isLogged" class="google-btn" (click)="login()">
+    <div class="google-icon-wrapper">
+      <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+      </div>
+    <p class="btn-text"><b>Sign in with google</b></p>
+    </div>
   </div>
 </div>

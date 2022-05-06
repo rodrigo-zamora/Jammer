@@ -8,21 +8,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CardComponent } from './components/card/card.component';
 import { HomeComponent } from './components/home/home.component';
+import { ListComponent } from './components/list/list.component';
 import { SearchComponent } from './components/search/search.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { MyListComponent } from './components/my-list/my-list.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { ListCardComponent } from './components/list-card/list-card.component';
 import { MovieDataComponent } from './components/movie-data/movie-data.component';
 import { GlobalThemeComponent } from './components/global-theme/global-theme.component';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
-import { SubscriptionComponent } from './components/subscription/subscription.component';
-import { PaymentComponent } from './components/payment/payment.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     SubscriptionComponent,
     PaymentComponent,
     PageNotFoundComponent,
+    MyListComponent,
+    ListComponent,
+    ListCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +58,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     NgbModule,
     MatDividerModule,
     MDBBootstrapModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
