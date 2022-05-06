@@ -3,7 +3,7 @@
         <app-nav-bar></app-nav-bar>
         <app-carousel-basic></app-carousel-basic>
         <app-genre-component>
-            <app-card></app-card>
+            <app-card *ngFor="let movie of actionMovies" [movie]="movie"></app-card>
         </app-genre-component>
         <app-footer></app-footer>
     </app-global-theme>

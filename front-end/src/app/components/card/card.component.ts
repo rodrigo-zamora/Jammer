@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MoviesService } from '../movies.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { MoviesService, movie } from '../movies.service';
 
 @Component({
   selector: 'app-card', // Etiqueta html del componente
@@ -8,22 +8,14 @@ import { MoviesService } from '../movies.service';
 })
 
 export class CardComponent implements OnInit {
+  @Input() movie: movie | undefined;
 
-  // destructuring de la variable pelis
-  //arr: any[] = [];
-  allPelis: any[] = [];
   constructor(public pelis: MoviesService) {
-    this.allPelis = this.pelis.getMovies();
-    console.log(this.pelis.getMovies());
-    console.log(this.allPelis);
-    console.log(this.allPelis[0]);
-    // mostrar el titulo de la pelicula mediante this.pelis.accion y mostrarlo
-    /*this.arr = this.pelis.accion;
-    console.log(this.arr);*/
 
   }
 
   ngOnInit(): void {
+
   }
 
 }
