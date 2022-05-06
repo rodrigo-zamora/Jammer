@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const {uploadCloud} = require('../utils/multer');
+
 const {handleError} = require('../utils/hof');
 const listController = require('../controllers/list.controller');
 
@@ -37,6 +39,18 @@ router.delete('/list/:listUUID', handleError(async (req, res) => {
 router.post('/list/:listUUID/share', handleError(async (req, res) => {
     console.log('POST /lists/list/:listUUID/share');
     let list = await listController.addUserToList(req.params.listUUID, req.body);
+    res.send(list);
+}));
+
+router.post('/list/:listUUID/upload', uploadCloud.single('image'), handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/upload');
+    let list = await listController.uploadImage(req.params.listUUID, req.file.path);
+    res.send(list);
+}));
+
+router.get('/list/:listUUID/image', handleError(async (req, res) => {
+    console.log('GET /lists/list/:listUUID/image');
+    let list = await listController.getImage(req.params.listUUID);
     res.send(list);
 }));
 

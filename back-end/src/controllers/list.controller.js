@@ -149,7 +149,18 @@ const listController = {
                 if (!user) {
                     throw new NotFoundError(`User with list ${listUUID} not found`);
                 } else {
-                    // TODO: delete all sharedWith lists
+                    let sharedUsers = await User.find({
+                        sharedLists: {
+                            $in: listUUID
+                        }
+                    });
+                    if (sharedUsers.length > 0) {
+                        for (let userList of sharedUsers) {
+                            userList.sharedLists.splice(userList.sharedLists.indexOf(listUUID), 1);
+                            userList = new User(userList);
+                            await userList.save();
+                        }
+                    }
                     user = new User(user);
                     list = new List(list);
                     user.lists.splice(user.lists.indexOf(listUUID), 1);
@@ -191,6 +202,64 @@ const listController = {
                 }
             }
         }
+    },
+    removeUserFromList: async function (listUUID, userUUID) {
+        console.log(`Removing user with userUUID ${userUUID} from list with listUUID ${listUUID}`);
+        let toRemove = await User.findOne({
+            UUID: userUUID
+        });
+        if (!toRemove) {
+            throw new NotFoundError(`User with uuid ${userUUID} not found`);
+        } else {
+            if (!toRemove.sharedLists.includes(listUUID)) {
+                throw new NotFoundError(`User with uuid ${userUUID} is not in list with uuid ${listUUID}`);
+            } else {
+                let list = await List.findOne({
+                    UUID: listUUID
+                });
+                if (!list) {
+                    throw new NotFoundError(`List with uuid ${listUUID} not found`);
+                } else {
+                    if (!list.isShared) {
+                        throw new UnauthorizedError(`List with uuid ${listUUID} is not shared`);
+                    } else {
+                        list.sharedWith.splice(list.sharedWith.indexOf(userUUID), 1);
+                        await list.save();
+                        toRemove.sharedLists.splice(toRemove.sharedLists.indexOf(listUUID), 1);
+                        await toRemove.save();
+                        return list;
+                    }
+                }
+            }
+        }
+    },
+    uploadImage: async function (listUUID, image) {
+        console.log(`Uploading image to list with listUUID ${listUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            list = new List(list);
+            try {
+                list.imageURL = image;
+                let savedList = await list.save();
+                return savedList;
+            } catch (err) {
+                throw new BadRequestError(err.message);
+            }
+        }
+    },
+    getImage: async function (listUUID) {
+        console.log(`Getting image from list with listUUID ${listUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        }
+        return list.imageURL;
     }
 };
 

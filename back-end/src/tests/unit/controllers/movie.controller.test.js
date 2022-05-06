@@ -149,13 +149,6 @@ describe('Movie controller', () => {
             let expectedMovies = await Cuevana3.getSearch('Coco', 1);
             let movies = await movieController.search(query);
             expect(movies).toEqual(expectedMovies);
-        }),
-        it('should return all movies that match the query genre', async () => {
-            let query = {
-                genre: 0
-            };
-            let movies = await movieController.search(query);
-            expect(movies).toBeInstanceOf(Array);
-       })
+        })
     })
 })

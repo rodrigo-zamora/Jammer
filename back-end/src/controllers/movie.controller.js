@@ -80,7 +80,7 @@ const movieController = {
             }
         }
     },
-    search: async function (query) {;
+    search: async function (query) {
         console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
             throw new BadRequestError('Query is empty');
@@ -99,9 +99,9 @@ const movieController = {
                             0: "Acción",
                             1: "Animación",
                             2: "Aventura",
-                            3: "Bélico guerra",
-                            4: "Biografía",
-                            5: "Ciencia ficción",
+                            3: "Bélico Guerra",
+                            4: "Biográfia",
+                            5: "Ciencia Ficción",
                             6: "Comedia",
                             7: "Crimen",
                             8: "Documentales",
@@ -117,35 +117,43 @@ const movieController = {
                         let genre = genres[query[key]];
                         console.log('Searching for movies with genre: ', genre);
                         let movies = await Movie.find({
-                            genre: {
-                                $in: [genre]
+                            genre: genre
+                        }).sort({
+                            title: 1
+                        }).limit(50);
+                        let randomMovies = [];
+                        while (randomMovies.length < 20) {
+                            let randomIndex = Math.floor(Math.random() * movies.length);
+                            if (!randomMovies.includes(movies[randomIndex])) {
+                                randomMovies.push(movies[randomIndex]);
                             }
-                        });
-                        moviesList = moviesList.concat(movies);
+                        }
+                        moviesList = moviesList.concat(randomMovies);
                     }
                     if (key == 'actor') {
                         console.log('Searching for movies with actor: ', query[key]);
                         let movies = await Movie.find({
-                            actors: {
-                                $in: [query[key]]
-                            }
-                        });
+                                actors: {
+                                    $in: [query[key]]
+                                }
+                            })
+                            .limit(20);
                         moviesList = moviesList.concat(movies);
                     }
                     if (key == 'year') {
                         console.log('Searching for movies with year: ', query[key]);
                         let movies = await Movie.find({
-                            year: {
-                                $in: [query[key]]
-                            }
-                        });
+                                year: {
+                                    $in: [query[key]]
+                                }
+                            })
+                            .limit(20);
                         moviesList = moviesList.concat(movies);
                     }
                 }
             }
             return moviesList;
         }
-            
     },
     getDetails: async function (cuevanaUUID) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);

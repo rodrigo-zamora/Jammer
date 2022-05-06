@@ -8,6 +8,9 @@ const YAML = require('yamljs');
 require('dotenv').config();
 require('./config/passport');
 
+const http = require('http');
+const { Server } = require('socket.io'); 
+
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
@@ -51,6 +54,25 @@ app.use(cookieSession({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*'
+    }
+})
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('addComment', (data) => {
+        if (!data.isPrivate) {
+            console.log('New comment added: ', data);
+            io.emit('newComment', data);
+        }
+    });
+
+});
 
 app.use(cors());
 
@@ -100,7 +122,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get('*', (req, res) => {
-    res.send('Jammer Service API');
+    res.send('404 Not found');
 });
 
 module.exports = app;
