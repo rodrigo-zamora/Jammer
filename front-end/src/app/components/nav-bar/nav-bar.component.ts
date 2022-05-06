@@ -9,15 +9,18 @@ import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
+  //valor = (<HTMLInputElement>document.getElementById("searchInput")).value;
   // get value from input
   @Output() clicked = new EventEmitter();
+
+  movieName: string = '';
 
   constructor() { }
 
   ngOnInit(): void {
   }
   onClick() {
-    //console.log('clicked');
+    console.log(this.movieName);
     this.clicked.emit();
   }
 }

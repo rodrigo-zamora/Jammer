@@ -22,8 +22,10 @@
       aria-label="Search"
       aria-describedby="basic-addon2"
       class="search-input"
+      id="searchInput"
+      [(ngModel)]="movieName"
     >
-    <button mat-raised-button class="searchButton" routerLink="/search" (click)="onClick()">Search</button>
+    <button mat-raised-button id="searchButton" class="searchButton" routerLink="/search" (click)="onClick()">Search</button>
     <button mat-button [matMenuTriggerFor]="menu">Login</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>Jaime</button>
