@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,9 +13,7 @@ export class NavBarComponent implements OnInit {
   // @Output() clicked = new EventEmitter();
   @Output() clicked = new EventEmitter<string>();
 
-  movieName: string = '';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router, private searchComponent: SearchComponent) { }
 
   isLogged: boolean = false;
 
@@ -22,11 +21,11 @@ export class NavBarComponent implements OnInit {
     this.isLoggedIn();
   }
 
-  onClick() {
-    //console.log(this.movieName);
-    this.clicked.emit(this.movieName);
+  searchMovies() {
+    let name = (<HTMLInputElement>document.getElementById("search")).value;
+    this.router.navigate(['/search/', name]);
   }
-
+ 
   login() {
     window.location.replace('https://backend-jammer.herokuapp.com/auth/google/login');
   }

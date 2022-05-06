@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { SearchService, movie } from '../search.service';
+import { SearchService } from '../search.service';
+import { Router } from '@angular/router';
+import { movie } from '../movies.service';
 
 @Component({
   selector: 'app-search',
@@ -10,29 +12,22 @@ import { SearchService, movie } from '../search.service';
 export class SearchComponent implements OnInit, OnDestroy {
   searchMovieTitle: movie[] = [];
   destroyed = new ReplaySubject<void>(1);
-  //
-  @Output() search: string | undefined;
 
-  constructor(public pelis: SearchService) { }
+  movies: movie[] = [];
 
-  //movieName: string = '';
+  constructor(public pelis: SearchService, private router: Router) { }
 
   ngOnInit(): void {
-    // this.pelis.getSearchMovies(`${this.search}`); AQUI SE NECESITA OBTENER LOS DATOS DE LA BUSQUEDA
-    this.pelis.getSearchMovies(`batman`);
+    var url = this.router.url;
+    var query = url.split('/')[2];
+    this.pelis.getSearchMovies(query);
     this.pelis.searchMovieTitle$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.searchMovieTitle = movies;
     });
-    //console.log(this.movieName);
   }
 
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
   }
-
-  onClickedAlert() {
-    console.log('clickeddddd');
-  }
-
 }

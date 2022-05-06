@@ -40,6 +40,7 @@ export class SearchService {
             rating: data[i].rating,
             duration: data[i].duration
           };
+          console.log(film);
           this.searchTitle.push(film);
         }
         this.searchMovieTitle$.next(this.searchTitle);
