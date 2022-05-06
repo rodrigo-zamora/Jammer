@@ -1,6 +1,6 @@
 <div>
     <app-global-theme>
-        <app-nav-bar></app-nav-bar>
+        <app-nav-bar (clicked)="onClickedAlert()"></app-nav-bar>
         <div class="allCards">
             <app-card *ngFor="let movie of searchMovieTitle" [movie]="movie"></app-card>
         </div>

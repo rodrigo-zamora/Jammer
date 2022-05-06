@@ -11,7 +11,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'list', component: ListComponent },
-  { path: 'search', component: SearchComponent },
+  { path: 'search/:id', component: SearchComponent },
   { path: 'myList', component: MyListComponent },
   { path: '404', component: PageNotFoundComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },

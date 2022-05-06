@@ -25,7 +25,7 @@
       id="searchInput"
       [(ngModel)]="movieName"
     >
-    <button mat-raised-button id="searchButton" class="searchButton" routerLink="/search" (click)="onClick()">Search</button>
+    <button mat-raised-button id="searchButton" class="searchButton" [routerLink]="['/search/', movieName]" (click)="onClick()">Search</button>
     <button mat-button [matMenuTriggerFor]="menu">Login</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>Jaime</button>

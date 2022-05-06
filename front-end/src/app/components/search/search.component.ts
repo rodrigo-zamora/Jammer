@@ -15,16 +15,24 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(public pelis: SearchService) { }
 
+  //movieName: string = '';
+
   ngOnInit(): void {
-    this.pelis.getSearchMovies(`${this.search}`);
+    // this.pelis.getSearchMovies(`${this.search}`); AQUI SE NECESITA OBTENER LOS DATOS DE LA BUSQUEDA
+    this.pelis.getSearchMovies(`batman`);
     this.pelis.searchMovieTitle$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.searchMovieTitle = movies;
     });
+    //console.log(this.movieName);
   }
 
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
+  }
+
+  onClickedAlert() {
+    console.log('clickeddddd');
   }
 
 }

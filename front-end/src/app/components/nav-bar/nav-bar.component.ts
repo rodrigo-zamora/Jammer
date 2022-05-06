@@ -9,9 +9,8 @@ import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
-  //valor = (<HTMLInputElement>document.getElementById("searchInput")).value;
-  // get value from input
-  @Output() clicked = new EventEmitter();
+  // @Output() clicked = new EventEmitter();
+  @Output() clicked = new EventEmitter<string>();
 
   movieName: string = '';
 
@@ -20,7 +19,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
   }
   onClick() {
-    console.log(this.movieName);
-    this.clicked.emit();
+    //console.log(this.movieName);
+    this.clicked.emit(this.movieName);
   }
 }
