@@ -12,54 +12,52 @@
     width: 200px;
     margin: 25px;
     cursor: pointer;
+    position: relative;
+    transition: 0.3s ease-in-out;
+
+    &:hover .buttonOnList{
+        display: block;
+        transition: 0.3s ease-in-out;
+    }
+
+
+    .buttonOnList {
+        position: absolute;
+        display: none;
+        transition: 0.3s ease-in-out;
+        
+        button {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+
+            mat-icon {
+                margin-top: -29px;
+                color: #B62519;
+            }
+        }
+    }
+
+    .delete {
+        right: 5px;
+        top: 5px;
+    }
+
+    .edit {
+        left: 5px;
+        top: 5px;
+    }
+
+    .share {
+        right: 5px;
+        bottom: 5px;
+    }
 
     .card-body {
-        position: relative;
         height: 150px;
         background-color: rgba(255, 255, 255, 0.04);
         color: #fff;
-        transition: 3s ease-in-out;
-
-        &:hover .buttonOnList{
-            display: block;
-            transition: 3s ease-in-out;
-        }
-
-        .buttonOnList {
-            position: absolute;
-            display: none;
-            transition: 3s ease-in-out;
-            
-            button {
-                width: 30px;
-                height: 30px;
-                background-color: rgba(255, 255, 255, 0.1);
-
-                mat-icon {
-                    margin-top: -27px;
-                    color: #B62519;
-                }
-            }
-        }
-
-        .buttonOnList:hover {
-            display: block;
-        }
-
-        .delete {
-            right: 5px;
-            top: 5px;
-        }
-
-        .edit {
-            left: 5px;
-            top: 5px;
-        }
-
-        .share {
-            right: 5px;
-            bottom: 5px;
-        }
+        transition: 0.3s ease-in-out;
 
         .title {
             display: flex;
