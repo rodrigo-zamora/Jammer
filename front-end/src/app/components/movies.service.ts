@@ -37,6 +37,7 @@ export class MoviesService {
   terrorMovies$ = new Subject<movie[]>();
   thrillerMovies$ = new Subject<movie[]>();
   movieDetails$ = new Subject<any>();
+  searchMovies$ = new Subject<movie[]>();
 
   action: movie[] = [];
   animation: movie[] = [];
@@ -56,9 +57,18 @@ export class MoviesService {
   terror: movie[] = [];
   thriller: movie[] = [];
   movieDetails: any;
+  searchMovies: movie[] = [];
 
   constructor(private http: HttpClient) {
 
+  }
+
+  getSearchMovies(search: string) {
+    this.http.get(this.api + 'search?title=' + search)
+      .subscribe((data: any) => {
+        this.searchMovies = data.movies;
+        this.searchMovies$.next(this.searchMovies);
+      });
   }
 
   getMovieDetails(uuid: string) {

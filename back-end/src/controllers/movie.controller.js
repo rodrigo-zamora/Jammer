@@ -76,7 +76,8 @@ const movieController = {
             }
         }
     },
-    search: async function (query) {;
+    search: async function (query) {
+        ;
         console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
             throw new BadRequestError('Query is empty');
@@ -86,7 +87,7 @@ const movieController = {
                 if (query.hasOwnProperty(key)) {
                     if (key == 'title') {
                         console.log('Searching for movies with title: ', query[key]);
-                        Cuevana3.getSearch(query[key], 1).then(movies => {
+                        await Cuevana3.getSearch(query[key], 1).then(movies => {
                             moviesList = moviesList.concat(movies);
                         });
                     }
@@ -113,11 +114,19 @@ const movieController = {
                         let genre = genres[query[key]];
                         console.log('Searching for movies with genre: ', genre);
                         let movies = await Movie.find({
-                            genre: {
-                                $in: [genre]
-                            }
-                        });
-                        moviesList = moviesList.concat(movies);
+                                genre: genre
+                            })
+                            .limit(50)
+                            .sort({
+                                title: 1
+                            });
+                        let randomMovies = [];
+                        for (let i = 0; i < 10; i++) {
+                            let random = Math.floor(Math.random() * movies.length);
+                            randomMovies.push(movies[random]);
+                            movies.splice(random, 1);
+                        }
+                        moviesList = moviesList.concat(randomMovies);
                     }
                     if (key == 'actor') {
                         console.log('Searching for movies with actor: ', query[key]);
@@ -141,15 +150,24 @@ const movieController = {
             }
             return moviesList;
         }
-            
+
     },
     getDetails: async function (cuevanaUUID) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
         let movieDetails;
         await Cuevana3.getDetail(cuevanaUUID).then(movie => {
+            console.log('Movie found: ', movie);
             movieDetails = movie;
         });
         return movieDetails;
+    },
+    getLinks: async function (cuevanaUUID) {
+        console.log('Searching for links of movie with cuevanaUUID: ', cuevanaUUID);
+        let movieLinks;
+        await Cuevana3.getLinks(cuevanaUUID).then(movie => {
+            movieLinks = movie;
+        });
+        return movieLinks;
     }
 };
 

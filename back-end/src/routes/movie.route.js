@@ -24,8 +24,16 @@ router.get('/search', handleError(async (req, res) => {
 
 router.get('/details/:cuevanaUUID/:cuevanaName', handleError(async (req, res) => {
     console.log('GET /movies/details/:cuevanaUUID');
-    let movieDetails = await movieController.getDetails(req.params.cuevanaUUID + '/' + req.params.cuevanaName);
+    let cuevanaUUID = req.params.cuevanaUUID + '/' + req.params.cuevanaName
+    let movieDetails = await movieController.getDetails(cuevanaUUID);
     res.send(movieDetails);
+}));
+
+router.get('/details/:cuevanaUUID/:cuevanaName/links', handleError(async (req, res) => {
+    console.log('GET /movies/details/:cuevanaUUID/links');
+    let cuevanaUUID = req.params.cuevanaUUID + '/' + req.params.cuevanaName
+    let movieLinks = await movieController.getLinks(cuevanaUUID);
+    res.send(movieLinks);
 }));
 
 router.get('/movie/:uuid', handleError(async (req, res) => {
