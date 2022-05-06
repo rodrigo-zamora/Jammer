@@ -81,7 +81,6 @@ const movieController = {
         }
     },
     search: async function (query) {
-        ;
         console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
             throw new BadRequestError('Query is empty');
@@ -155,7 +154,6 @@ const movieController = {
             }
             return moviesList;
         }
-
     },
     getDetails: async function (cuevanaUUID) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
