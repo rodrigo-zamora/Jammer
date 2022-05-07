@@ -10,6 +10,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 import { AppComponent } from './app.component';
@@ -29,6 +31,9 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
+import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+
+
 
 @NgModule({
   declarations: [
@@ -48,6 +53,7 @@ import { GenreComponentComponent } from './components/genre-component/genre-comp
     MyListComponent,
     ListComponent,
     ListCardComponent,
+    DialogOverviewExampleDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +67,11 @@ import { GenreComponentComponent } from './components/genre-component/genre-comp
     MatDividerModule,
     MDBBootstrapModule.forRoot(),
     HttpClientModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    MatFormFieldModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, ListComponent]
 })
 export class AppModule { }
