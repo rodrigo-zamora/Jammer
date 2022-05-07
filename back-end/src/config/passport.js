@@ -1,6 +1,7 @@
 const passport = require('passport');
 
 const User = require('../models/User');
+const List = require('../models/List');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.use(
@@ -9,48 +10,53 @@ passport.use(
             clientSecret: process.env.CLIENT_SECRET || '',
             callbackURL: 'http://localhost:3000/auth/google/callback',
         },
-        function (accessToken, refreshToken, profile, done) {
-            console.log('Creating user with profile: ', profile);
-            try {
-                User.findOne({
-                    email: profile.emails[0].value
-                }).then(newUser => {
-                    if (newUser) {
-                        console.log('User already exists');
-                        done(null, newUser);
-                    } else {
-                        User.create({
-                            firstName: profile.name.givenName,
-                            lastName: profile.name.familyName,
-                            email: profile.emails[0].value,
-                            imageURL: profile.photos[0].value
-                        }).then(user => {
-                            console.log('User created');
-                            done(null, user);
-                        }).catch(err => {
-                            console.log('Error creating user: ' + err.message);
-                            done(err);
-                        });
-                    }
-                })
-            } catch (err) {
-                console.log('Error creating user: ', err);
-                done(err);
+        async function (accessToken, refreshToken, profile, done) {
+            console.log('working');
+            console.log('accessToken', accessToken);
+            console.log('refreshToken', refreshToken);
+            console.log('profile', profile);
+            let user = await User.findOne({
+                UUID: profile.id
+            });
+            if (user) {
+                console.log('user found');
+                return done(null, user);
+            } else {
+                console.log('Creating new user');
+                let list = {
+                    name: 'Recently Watched',
+                    movies: [],
+                    isShared: false,
+                    sharedWith: []
+                }
+                let recentlyWatchedList = await new List(list);
+                let newUser = await new User({
+                    UUID: profile.id,
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    email: profile.emails[0].value,
+                    imageURL: profile.photos[0].value
+                });
+                newUser.lists.push(recentlyWatchedList.UUID);
+                await recentlyWatchedList.save();
+                await newUser.save();
+                console.log('New user created');
+                return done(null, newUser);
             }
         }
     )
 );
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
-passport.deserializeUser(function (id, done) {
-    User.find(id)
-        .then(user => done(null, user))
-        .catch(err => done(err));
+    done(null, user.UUID);
 });
 
-module.exports = {
-    serializeUser: passport.serializeUser,
-    deserializeUser: passport.deserializeUser
-}
+passport.deserializeUser(function (id, done) {
+    User.findOne({
+        UUID: id
+    }).then(user => {
+        done(null, user);
+    }).catch(err => {
+        done(err, null);
+    });
+});

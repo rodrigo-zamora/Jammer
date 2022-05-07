@@ -5,16 +5,12 @@ const passport = require('passport');
 
 module.exports = router;
 
-router.get('/login', (req, res) => {
-    res.send('login');
-});
-
-router.get('/login/google', passport.authenticate('google', {
+router.get('/google/login', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
 router.get(
-    '/login/google/callback',
+    '/google/callback',
     passport.authenticate('google'),
     function (req, res) {
         console.log(req.query.code);
@@ -24,8 +20,6 @@ router.get(
 
 router.get('/verifyLogin', (req, res) => {
     if (req.isAuthenticated()) {
-        res.header('name', req.user.name);
-        res.header('img', req.user.imageUrl);
         res.status(200).send(req.user);
     } else {
         res.status(401).send('Not authorized');
@@ -33,9 +27,12 @@ router.get('/verifyLogin', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.logout();
-    req.session = null;
-    res.render('home');
+    if (req.isAuthenticated()) {
+        req.logout();
+        res.status(200).send('Logged out');
+    } else {
+        res.status(401).send('Not authorized');
+    }
 });
 
 module.exports = router;

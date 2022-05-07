@@ -9,9 +9,10 @@ const {
 } = require('../utils/errors');
 
 const userController = {
-    getAllUsers: function () {
+    getAllUsers: async function () {
         console.log('Get all users');
-        return User.find({});
+        let users = await User.find({});
+        return users;
     },
     get: async function (uuid) {
         console.log(`Searching for user with uuid ${uuid}`);
@@ -54,8 +55,8 @@ const userController = {
                 let newUser = await new User(user);
                 let recentlyWatchedList = await new List(list);
                 newUser.lists.push(recentlyWatchedList.UUID);
-                let savedUser = await newUser.save();
                 await recentlyWatchedList.save();
+                let savedUser = await newUser.save();
                 return savedUser;
             } catch (err) {
                 throw new BadRequestError(err.message);
@@ -70,6 +71,7 @@ const userController = {
         if (!toUpdate) {
             throw new NotFoundError(`User with uuid ${uuid} not found`);
         } else {
+            toUpdate = new User(toUpdate);
             try {
                 for (let key in user) {
                     if (user.hasOwnProperty(key)) {
@@ -91,7 +93,7 @@ const userController = {
         if (!toDelete) {
             throw new NotFoundError(`User with uuid ${uuid} not found`);
         } else {
-            let deletedUser = await User.deleteOne({
+            await User.deleteOne({
                 UUID: uuid
             });
             await List.deleteMany({
@@ -100,7 +102,7 @@ const userController = {
                 }
             });
             await Subscription.deleteOne({
-                UUID: toDelete.subscriptions
+                UUID: toDelete.subscription
             });
             return toDelete;
         }

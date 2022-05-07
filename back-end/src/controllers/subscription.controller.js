@@ -16,19 +16,15 @@ const subscriptionController = {
         if (!user) {
             throw new NotFoundError(`User with uuid ${userUUID} not found`);
         } else {
-            let toCreate = await Subscription.findOne({
-                UUID: {
-                    $in: user.subscription
-                }
-            });
-            if (toCreate) {
+            if (user.subscription) {
                 throw new ConflictError(`User with uuid ${userUUID} already has a subscription`);
-            } else {
+            } else { 
+                user = new User(user);
                 let newSubscription = await new Subscription(subscription);
                 user.subscription = newSubscription.UUID;
-                let savedUser = await user.save();
+                await user.save();
                 await newSubscription.save();
-                return savedUser;
+                return newSubscription;
             }
         }
     },
@@ -69,6 +65,7 @@ const subscriptionController = {
             throw new NotFoundError(`Subscription with uuid ${subscriptionUUID} not found`);
         } else {
             try {
+                toUpdate = new Subscription(toUpdate);
                 for (let key in subscription) {
                     if (subscription.hasOwnProperty(key)) {
                         toUpdate[key] = subscription[key];
