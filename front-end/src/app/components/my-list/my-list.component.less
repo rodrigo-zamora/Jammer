@@ -1,20 +1,32 @@
-div app-global-theme .button-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin: 20px;
+div app-global-theme {
+    
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 20px;
 
-    .addButton {
-        background-color: #B62519;
+        .addButton {
+            background-color: #B62519;
+        }
+
+        .listNameInput {
+            background-color: #000;
+            height: 30px;
+            width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin-right: 10px;
+            padding: 0 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
     }
-    .listNameInput {
-        background-color: #000;
-        height: 30px;
-        width: 200px;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        margin-right: 10px;
-        padding: 0 10px;
-        border-radius: 5px;
+    .myLists, .sharedLists {
+        margin: 30px;
         color: #fff;
+
+        .allLists {
+            display: flex;
+        }
     }
 }
