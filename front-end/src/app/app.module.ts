@@ -34,6 +34,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
 import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 
 
@@ -55,7 +56,8 @@ import { DialogOverviewExampleDialogComponent } from './components/dialog-overvi
     MyListComponent,
     ListComponent,
     ListCardComponent,
-    DialogOverviewExampleDialogComponent
+    DialogOverviewExampleDialogComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

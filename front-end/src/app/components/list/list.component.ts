@@ -26,10 +26,6 @@ export class ListComponent implements OnInit {
     });
   }
 
-  saveComment() {
-    // post a la seccion de comentarios del usuario
-  }
-
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
