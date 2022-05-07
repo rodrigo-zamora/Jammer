@@ -52,4 +52,9 @@ export class MyListComponent implements OnInit {
     this.destroyed.complete();
   }
 
+  createList(listName: string, isPrivate: boolean) {
+    let userUUID = localStorage.getItem('UUID');
+    this.lists.createList(listName, isPrivate, userUUID);
+  }
+
 }

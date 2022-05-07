@@ -57,6 +57,20 @@ export class ListService {
     );
   }
 
+  createList(listName: string, isPrivate: boolean, userUUID: string | null) {
+    console.log('Creating list with name: ' + listName + ' and isPrivate: ' + isPrivate);
+    let listBody = {
+      name: listName,
+      isPrivate: isPrivate
+    };
+    this.http.post(this.listAPI + userUUID, listBody).subscribe(
+      (data: any) => {
+        console.log('List created with UUID: ' + data.UUID);
+        this.getLists();
+      }
+    );
+  }
+
   addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
     console.log('Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
     this.http.get(this.listAPI + 'list/' + listUUID + '/' + userUUID).subscribe(

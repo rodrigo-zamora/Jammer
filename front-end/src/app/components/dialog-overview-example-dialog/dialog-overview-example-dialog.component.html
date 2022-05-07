@@ -22,5 +22,5 @@
 </div>
 <div mat-dialog-actions class="actions">
   <button mat-button  (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data.listName" cdkFocusInitial>Crear lista</button>
+  <button mat-button [mat-dialog-close]="data.listName" cdkFocusInitial (click)="create(data.listName, data.isPrivate)">Crear lista</button>
 </div>
