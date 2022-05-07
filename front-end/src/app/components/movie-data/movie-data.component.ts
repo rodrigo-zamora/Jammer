@@ -33,6 +33,7 @@ export class MovieDataComponent implements OnInit {
     this.lists.getLists();
     this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
       this.uLists = list.lists;
+      this.uLists.splice(0, 1);
     });
   }
 

@@ -26,7 +26,7 @@
                     <button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una lista
                         <mat-menu #menu="matMenu">
                             <p style="color: #fff; text-align: center;">Agregar a la lista</p>
-                            <button mat-menu-item *ngFor="let listItem of uLists" (click)="addToList(listItem?.UUID, movie?.UUID)">{{listItem?.name}}</button>
+                            <button mat-menu-item *ngFor="let listItem of uLists" (click)="addToList(listItem?.UUID, movies?.id)">{{listItem?.name}}</button>
                             <mat-divider></mat-divider>
                             <button mat-menu-item class="addList" routerLink="/lists">Crear lista</button>
                         </mat-menu>
