@@ -1,23 +1,23 @@
 <div class="card">
-    <div class="buttonOnList delete">
-        <button mat-fab>
-            <mat-icon>delete</mat-icon>
-        </button>
+  <div *ngIf="list?.name != 'Historial'" class="buttonOnList delete">
+    <button mat-fab (click)="deleteList(list?.UUID)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <div class="buttonOnList edit">
+    <button mat-fab>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <div class="buttonOnList share">
+    <button mat-fab>
+      <mat-icon>share</mat-icon>
+    </button>
+  </div>
+  <div class="" routerLink="/list/{{list?.UUID}}">
+    <img *ngIf="list?.imageURL" class="card-img-top" src="{{list?.imageURL}}" alt="Card image">
+    <div class="card-body">
+      <h3 class="title"><b>{{list?.name}}</b></h3>
     </div>
-    <div class="buttonOnList edit">
-        <button mat-fab>
-            <mat-icon>edit</mat-icon>
-        </button>
-    </div>
-    <div class="buttonOnList share">
-        <button mat-fab>
-            <mat-icon>share</mat-icon>
-        </button>
-    </div>
-    <div class="">
-    </div>
-    <img *ngIf="list?.imageURL" class="card-img-top" src="{{list?.imageURL}}" alt="Card image"  routerLink="/list">
-        <div class="card-body">
-        <h3 class="title"><b>{{list?.name}}</b></h3>
-    </div>
+  </div>
 </div>
