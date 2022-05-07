@@ -140,6 +140,9 @@ const listController = {
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
+            if (list.name == 'Historial') {
+                throw new BadRequestError('You cannot delete this list');
+            }
             try {
                 let user = await User.findOne({
                     lists: {

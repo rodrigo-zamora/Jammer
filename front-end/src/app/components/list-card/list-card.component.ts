@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ListService } from '../list.service';
 
 @Component({
   selector: 'app-list-card',
@@ -9,9 +10,13 @@ export class ListCardComponent implements OnInit {
 
   @Input() list: any;
 
-  constructor() { }
+  constructor(public lists: ListService) { }
 
   ngOnInit(): void {
+  }
+
+  deleteList(listUUID: string) {
+    this.lists.deleteList(listUUID);
   }
 
 }

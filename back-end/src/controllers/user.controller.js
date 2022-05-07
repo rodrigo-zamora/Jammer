@@ -46,7 +46,7 @@ const userController = {
             throw new ConflictError(`User with email ${user.email} already exists`);
         } else {
             let list = {
-                name: 'Recently Watched',
+                name: 'Historial',
                 movies: [],
                 isShared: false,
                 sharedWith: []

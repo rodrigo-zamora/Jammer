@@ -24,7 +24,7 @@ passport.use(
             } else {
                 console.log('Creating new user');
                 let list = {
-                    name: 'Recently Watched',
+                    name: 'Historial',
                     movies: [],
                     isShared: false,
                     sharedWith: []

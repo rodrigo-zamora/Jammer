@@ -1,6 +1,6 @@
 <div class="card">
-    <div class="buttonOnList delete">
-        <button mat-fab>
+    <div *ngIf="list?.name != 'Historial'" class="buttonOnList delete">
+        <button mat-fab (click)="deleteList(list?.UUID)">
             <mat-icon>delete</mat-icon>
         </button>
     </div>

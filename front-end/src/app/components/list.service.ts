@@ -26,4 +26,14 @@ export class ListService {
         });
     }
   }
+
+  deleteList(listUUID: string) {
+    let url = this.api + 'list/' + listUUID;
+    this.http.delete(url).subscribe(
+      (data: any) => {
+        this.getLists();
+      }
+    );
+  }
+
 }
