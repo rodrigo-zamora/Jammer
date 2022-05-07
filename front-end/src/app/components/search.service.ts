@@ -37,7 +37,7 @@ export class SearchService {
             UUID: data[i].UUID,
             title: data[i].title,
             year: data[i].year,
-            cuevanaUUID: data[i].cuevanaUUID,
+            cuevanaUUID: data[i].id,
             poster: data[i].poster,
             rating: data[i].rating,
             duration: data[i].duration
