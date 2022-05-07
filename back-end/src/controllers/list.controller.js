@@ -120,6 +120,8 @@ const listController = {
                     if (listBody.hasOwnProperty(key)) {
                         if (key == 'sharedWith') {
                             throw new BadRequestError('You cannot update sharedWith field using this method');
+                        } else if (key == 'movies') {
+                            list.movies = listBody.movies;
                         } else {
                             list[key] = listBody[key];
                         }

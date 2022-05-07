@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 export interface movie {
+  UUID: string;
   title: string;
   year: number;
   cuevanaUUID: string;
@@ -33,6 +34,7 @@ export class SearchService {
       .subscribe((data: any) => {
         for(let i = 0; i < data.length; i++) {
           const film: movie = {
+            UUID: data[i].UUID,
             title: data[i].title,
             year: data[i].year,
             cuevanaUUID: data[i].cuevanaUUID,
@@ -53,6 +55,7 @@ export class SearchService {
       .subscribe((data: any) => {
         for(let i = 0; i < data.length; i++) {
           const film: movie = {
+            UUID: data[i].UUID,
             title: data[i].title,
             year: data[i].year,
             cuevanaUUID: data[i].cuevanaUUID,
