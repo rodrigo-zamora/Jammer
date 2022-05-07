@@ -15,9 +15,23 @@
                     </div>
                     <p class="year">{{movies[0]?.year}}</p>
                 </div>
+                <div class="button">
+                    <button
+                        mat-raised-button 
+                        class="seeMovie"
+                        onClick="window.open('https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2RMZWxWNmVZTERqazF0U2pWQlBBaGZMeEV0dHBpcWU1MkVtMzI2bkd0TXlDRFl4Um5jYkN6UFU2VFV1TGFpL24zeDNBcUFhVEJ1KzBQV1dienVDTHowQVFYUUkvOUhlSHk2MlFMY2hlem1BdzhiMlNqby9PQTJuM1JaQ0sxMDQ3dFpWTFVZODAyM0t0aER6TFZIVklMczBaaGRIZjFSRzFyVzhPMW9BWEU0VE9rMzdtM3cvNmJHR1RwQnB6c1h4dlowbzFmN3BhYzJpS1ZHN2NhUkFWaEJKdmpubm0yMnlYbExTRHNNQ0puUXNRPT0')"
+                        >
+                        Ver Película
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="film">{{"Film"}}</div>
+        <div class="commentSection">
+            <h1>Comentarios</h1>
+            <p>{{'movies[0]?.comments'}}</p> <!--ngFor-->
+            <p>{{'movies[0]?.comments'}}</p>
+            <app-comment></app-comment>
+        </div>
         <app-footer></app-footer>
     </app-global-theme>
 </div>

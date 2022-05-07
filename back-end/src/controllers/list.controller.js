@@ -120,6 +120,8 @@ const listController = {
                     if (listBody.hasOwnProperty(key)) {
                         if (key == 'sharedWith') {
                             throw new BadRequestError('You cannot update sharedWith field using this method');
+                        } else if (key == 'movies') {
+                            list.movies = listBody.movies;
                         } else {
                             list[key] = listBody[key];
                         }
@@ -140,6 +142,9 @@ const listController = {
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
+            if (list.name == 'Historial') {
+                throw new BadRequestError('You cannot delete this list');
+            }
             try {
                 let user = await User.findOne({
                     lists: {

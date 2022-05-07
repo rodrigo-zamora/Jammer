@@ -20,5 +20,8 @@ export class PaymentComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  
+  onClick() {
+    // post a la subscrupcion para modificar el estado de la subscripcion
+  }
 }

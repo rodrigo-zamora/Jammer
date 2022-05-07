@@ -15,6 +15,13 @@
     position: relative;
     transition: 0.3s ease-in-out;
 
+    .card-img-top {
+        position: absolute;
+        opacity: 0.3;
+        top: 0;
+        left: 0;
+    }
+
     &:hover .buttonOnList{
         display: block;
         transition: 0.3s ease-in-out;
@@ -25,6 +32,7 @@
         position: absolute;
         display: none;
         transition: 0.3s ease-in-out;
+        z-index: 99;
         
         button {
             width: 30px;

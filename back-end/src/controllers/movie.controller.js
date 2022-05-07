@@ -159,7 +159,6 @@ const movieController = {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
         let movieDetails;
         await Cuevana3.getDetail(cuevanaUUID).then(movie => {
-            console.log('Movie found: ', movie);
             movieDetails = movie;
         });
         return movieDetails;

@@ -58,7 +58,7 @@ app.use(passport.session());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: '*'
+        origin: 'https://jammer-streaming.herokuapp.com'
     }
 })
 
@@ -71,10 +71,18 @@ io.on('connection', (socket) => {
             io.emit('newComment', data);
         }
     });
-
 });
 
-app.use(cors());
+let corsOptions = {
+    origin: [
+        'https://jammer-streaming.herokuapp.com',
+        'http://localhost:4200'
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    AllowCredentials: true
+}
+app.use(cors(corsOptions));
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');

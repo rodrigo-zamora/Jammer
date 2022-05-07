@@ -8,7 +8,7 @@ passport.use(
     new GoogleStrategy({
             clientID: process.env.CLIENT_ID || '',
             clientSecret: process.env.CLIENT_SECRET || '',
-            callbackURL: 'http://localhost:3000/auth/google/callback',
+            callbackURL: 'https://backend-jammer.herokuapp.com/auth/google/callback',
         },
         async function (accessToken, refreshToken, profile, done) {
             console.log('working');
@@ -24,7 +24,7 @@ passport.use(
             } else {
                 console.log('Creating new user');
                 let list = {
-                    name: 'Recently Watched',
+                    name: 'Historial',
                     movies: [],
                     isShared: false,
                     sharedWith: []

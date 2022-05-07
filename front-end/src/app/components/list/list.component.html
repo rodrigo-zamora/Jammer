@@ -1,7 +1,13 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <app-card></app-card>
+    <div class="movieInfo" *ngFor="let movie of listItem">
+      <app-card [movie]="movie"></app-card>
+      <div class="right">
+        <p>{{'Comments here'}}</p>
+        <app-comment></app-comment>
+      </div>
+    </div>
     <app-footer></app-footer>
   </app-global-theme>
 </div>
