@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(public pelis: SearchService, private router: Router, route: ActivatedRoute) {
     route.params.subscribe(params => {
+      this.searchMovieTitle = [];
       var url = this.router.url;
       var query = url.split('/')[2];
       this.pelis.getSearchMovies(query);

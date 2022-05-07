@@ -32,6 +32,7 @@ export class SearchService {
   getSearchMovies( search: string ) {
     this.http.get(`https://backend-jammer.herokuapp.com/movies/search?title=${search}`)
       .subscribe((data: any) => {
+        this.searchTitle = [];
         for(let i = 0; i < data.length; i++) {
           const film: movie = {
             UUID: data[i].UUID,
