@@ -14,11 +14,12 @@
                         </div>
                     </div>
                     <p class="year">{{movies?.year}}</p>
-                </div><br><br>
+                </div><br>
                 <div class="moreInfo">
-                    <p><b>Director: </b> {{movies?.director}}</p>
-                    <div style="display: flex;"><b style="margin-right: 3px;">Género: </b><p *ngFor="let genre of movies.genres"> {{genre.genre}}</p></div>
+                    <p><b>Director(s): </b> {{movies?.director}}</p>
+                    <div style="display: flex;"><b style="margin-right: 3px;">Género: </b><p *ngFor="let genre of movies.genres; let isLast=last"> {{genre.genre}}{{isLast ? '' : ', '}}</p></div>
                 </div>
+                <div style="display: flex; flex-flow: wrap; color: #fff; margin-top: 10px;"><b style="margin-right: 3px;">Actores: </b><p style="margin: 0px;" *ngFor="let actor of movies.cast; let isLast=last"> {{actor.name}}{{isLast ? '' : ', '}}</p></div>
                 <div class="button">
                     <button
                         mat-raised-button 
