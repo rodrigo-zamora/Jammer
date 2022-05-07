@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,15 +10,24 @@ import { HttpClient } from '@angular/common/http';
 })
 export class NavBarComponent implements OnInit {
 
-  // @Output() clicked = new EventEmitter();
   @Output() clicked = new EventEmitter<string>();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(public auth: AuthService, private http: HttpClient, private router: Router) { }
 
   isLogged: boolean = false;
 
   ngOnInit(): void {
-    this.isLoggedIn();
+    console.log('Verifying login');
+    this.auth.verifyLogin();
+    console.log('Login verified');
+    this.auth.authData$.subscribe((data) => {
+      console.log('Data received');
+      if (data.user) {
+        this.isLogged = true;
+      } else {
+        this.isLogged = false;
+      }
+    });
   }
 
   searchMovies() {
@@ -27,18 +37,6 @@ export class NavBarComponent implements OnInit {
  
   login() {
     window.location.replace('https://backend-jammer.herokuapp.com/auth/google/login');
-  }
-
-  isLoggedIn() {
-    this.http.get('https://backend-jammer.herokuapp.com/auth/verifyLogin').subscribe(
-      (data: any) => {
-        if (data.status == 401) {
-          this.isLogged = false;
-        } else {
-          this.isLogged = true;
-        }
-      }
-    );
   }
 
 }

@@ -14,7 +14,7 @@ router.get(
     passport.authenticate('google'),
     function (req, res) {
         console.log(req.query.code);
-        res.redirect('/');
+        res.redirect('https://jammer-streaming.herokuapp.com/');
     }
 );
 
