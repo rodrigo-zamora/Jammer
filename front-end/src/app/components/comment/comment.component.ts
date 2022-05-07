@@ -19,12 +19,15 @@ export class CommentComponent implements OnInit {
 
   saveComment(type: string) {
     if (type == 'detail') {
-      var comment = (<HTMLInputElement>document.getElementById("comment")).value;
-      var url = this.router.url;
-      var uuid = url.split('/')[2];
-      var name = url.split('/')[3];
-      var cuevanaUUID = uuid + '/' + name;
-      this.comments.createComment(cuevanaUUID, comment);
+      let comment = (<HTMLInputElement>document.getElementById("comment"));
+      let commentValue = comment.value;
+      comment.value = '';
+
+      let url = this.router.url;
+      let uuid = url.split('/')[2];
+      let name = url.split('/')[3];
+      let cuevanaUUID = uuid + '/' + name;
+      this.comments.createComment(cuevanaUUID, commentValue);
     }
   }
 

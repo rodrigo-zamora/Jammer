@@ -29,9 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService) {
-    
-  }
+  constructor(public pelis: MoviesService) { }
 
   ngOnInit(): void {
     this.pelis.getActionMovies();

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MoviesService } from '../movies.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { CommentService } from '../comment.service';
 
 @Component({
   selector: 'app-movie-data',
@@ -15,7 +16,7 @@ export class MovieDataComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService, private router: Router) { }
+  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -23,10 +24,9 @@ export class MovieDataComponent implements OnInit {
     var uuid = url.split('/')[2];
     var name = url.split('/')[3];
 
-    this.pelis.getMovieComments(uuid + '/' + name);
-    this.pelis.movieComments$.pipe(takeUntil(this.destroyed)).subscribe(data => {
-      this.comments = data;
-      console.log(this.comments);
+    this.commentService.getComments(uuid + '/' + name);
+    this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
+      this.comments = comments;
     });
 
     this.pelis.getMovieDetails(uuid + '/' + name);

@@ -33,7 +33,7 @@
                 <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
             </div>
             <div *ngFor="let comment of comments">
-                <p>Comentario</p>
+                <p>{{comment?.text}}</p>
             </div>
         </div>
         <app-footer></app-footer>
