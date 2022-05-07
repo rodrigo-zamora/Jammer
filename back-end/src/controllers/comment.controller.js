@@ -40,21 +40,15 @@ const commentController = {
     },
     getAll: async function (movieUUID) {
         console.log(`Searching for comments for movie with uuid ${movieUUID}`);
-        let movie = await Movie.findOne({
-            UUID: movieUUID
+        let comments = await Comment.find({
+            movieUUID: movieUUID
         });
-        if (!movie) {
-            throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
+        if (!comments) {
+            return [];
         } else {
-            let comments = await Comment.find({
-                movieUUID: movieUUID
-            });
-            if (!comments) {
-                throw new NotFoundError(`Comments for movie with uuid ${movieUUID} not found`);
-            } else {
-                return comments;
-            }
+            return comments;
         }
+
     },
     delete: async function (commentUUID, userUUID) {
         console.log(`Deleting comment with uuid ${commentUUID}`);
@@ -111,7 +105,7 @@ const commentController = {
                         throw new BadRequestError(err.message);
                     }
                 }
-            }  
+            }
         }
     },
     getAllForUser: async function (userUUID) {
