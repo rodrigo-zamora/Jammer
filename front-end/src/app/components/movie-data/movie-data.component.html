@@ -14,6 +14,10 @@
                         </div>
                     </div>
                     <p class="year">{{movies?.year}}</p>
+                </div><br><br>
+                <div class="moreInfo">
+                    <p><b>Director: </b> {{movies?.director}}</p>
+                    <div style="display: flex;"><b style="margin-right: 3px;">Género: </b><p *ngFor="let genre of movies.genres"> {{genre.genre}}</p></div>
                 </div>
                 <div class="button">
                     <button
@@ -37,11 +41,14 @@
         <div class="commentSection">
             <h1>Comentarios</h1>
             <app-comment></app-comment>
-            <div *ngIf="!comments">
+            <div class="noComments" *ngIf="!comments">
                 <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
             </div>
-            <div *ngFor="let comment of comments">
-                <p>{{comment?.text}}</p>
+            <div class="forComments" *ngFor="let comment of comments">
+                <div class="comment">
+                    <h2>{{'Juan Perez'}}</h2>
+                    <p>{{comment?.text}}</p>
+                </div>
             </div>
         </div>
         <app-footer></app-footer>

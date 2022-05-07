@@ -46,6 +46,7 @@ export class MovieDataComponent implements OnInit {
     this.commentService.getComments(uuid + '/' + name);
     this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
       this.comments = comments;
+      console.log(this.comments);
     });
 
     this.pelis.getMovieDetails(uuid + '/' + name);

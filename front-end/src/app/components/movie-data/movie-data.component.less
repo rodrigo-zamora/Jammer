@@ -75,15 +75,40 @@ div {
                         background-color: #B62519;
                     }
                 }
+                .moreInfo {
+                    display: flex;
+                    justify-content: space-between;
+                    color: #fff;
+                }
             }
         }
         .commentSection {
             color: #fff;
             margin: 30px;
 
-            p {
-                margin: 15px;
+            .noComments {
+                p {
+                    margin: 15px;
+                }
             }
+
+            .forComments {
+                padding: 15px;
+
+                .comment {
+                    border: 1px solid #fff;
+                    border-radius: 15px;
+
+                    h2 {
+                        margin: 10px;
+                    }
+
+                    p {
+                        margin: 15px 30px;
+                    }
+                }
+            }
+
         }
     }
 }
