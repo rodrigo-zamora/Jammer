@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MoviesService } from '../movies.service';
+import { MoviesService, movie } from '../movies.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommentService } from '../comment.service';
+import { ListService } from '../list.service';
+
 
 @Component({
   selector: 'app-movie-data',
@@ -11,12 +13,28 @@ import { CommentService } from '../comment.service';
 })
 export class MovieDataComponent implements OnInit {
 
+  @Input() movie: movie | undefined;
+
+  uLists: any;
+
   movies: any;
   comments: any;
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router) { }
+  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router, public lists: ListService) { }
+
+  addToList(listUUID : string, movieUUID : string | undefined) {
+    let userUUID = localStorage.getItem('UUID');
+    this.lists.addMovieToList(listUUID, movieUUID, userUUID);
+  }
+
+  displayLists() {
+    this.lists.getLists();
+    this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+      this.uLists = list.lists;
+    });
+  }
 
   ngOnInit(): void {
 
