@@ -11,20 +11,13 @@ const {
 const commentController = {
     create: async function (movieUUID, comment) {
         console.log(`Creating new comment for movie with uuid ${movieUUID}`);
-        let movie = await Movie.findOne({
-            UUID: movieUUID
-        });
-        if (!movie) {
-            throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
-        } else {
-            try {
-                let newComment = await new Comment(comment);
-                newComment.movieUUID = movieUUID;
-                let savedComment = await newComment.save();
-                return savedComment;
-            } catch (err) {
-                throw new BadRequestError(err.message);
-            }
+        try {
+            let newComment = await new Comment(comment);
+            newComment.movieUUID = movieUUID;
+            let savedComment = await newComment.save();
+            return savedComment;
+        } catch (err) {
+            throw new BadRequestError(err.message);
         }
     },
     get: async function (commentUUID) {
@@ -38,10 +31,10 @@ const commentController = {
             return comment;
         }
     },
-    getAll: async function (movieUUID) {
-        console.log(`Searching for comments for movie with uuid ${movieUUID}`);
+    getAll: async function (cuevanaUUID) {
+        console.log(`Searching for comments for movie with cuevana uuid ${cuevanaUUID}`);
         let comments = await Comment.find({
-            movieUUID: movieUUID
+            movieUUID: cuevanaUUID
         });
         if (!comments) {
             return [];

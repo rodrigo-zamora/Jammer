@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommentService } from 'src/app/components/comment.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comment',
@@ -7,14 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentComponent implements OnInit {
 
-  constructor() { }
+  comment: any;
+
+  constructor(public comments: CommentService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-
-  saveComment() {
-    // post a la seccion de comentarios del usuario
+  saveComment(type: string) {
+    if (type == 'detail') {
+      var comment = (<HTMLInputElement>document.getElementById("comment")).value;
+      var url = this.router.url;
+      var uuid = url.split('/')[2];
+      var name = url.split('/')[3];
+      var cuevanaUUID = uuid + '/' + name;
+      this.comments.createComment(cuevanaUUID, comment);
+    }
   }
 
 }

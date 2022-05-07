@@ -19,6 +19,7 @@ export class MoviesService {
 
   movieCount = 10;
   api = 'https://backend-jammer.herokuapp.com/movies/';
+  commentsAPI = 'https://backend-jammer.herokuapp.com/comments/';
 
   actionMovies$ = new Subject<movie[]>();
   animationMovies$ = new Subject<movie[]>();
@@ -39,6 +40,7 @@ export class MoviesService {
   thrillerMovies$ = new Subject<movie[]>();
   movieDetails$ = new Subject<any>();
   searchMovies$ = new Subject<movie[]>();
+  movieComments$ = new Subject<any>();
 
   action: movie[] = [];
   animation: movie[] = [];
@@ -59,9 +61,18 @@ export class MoviesService {
   thriller: movie[] = [];
   movieDetails: any;
   searchMovies: movie[] = [];
+  movieComments: any;
 
   constructor(private http: HttpClient) {
 
+  }
+
+  getMovieComments(cuevanaUUID: string) {
+    this.http.get(this.commentsAPI + cuevanaUUID)
+      .subscribe((data: any) => {
+        this.movieComments = data;
+        this.movieComments$.next(this.movieComments);
+      });
   }
 
   getSearchMovies(search: string) {

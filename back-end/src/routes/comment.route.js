@@ -4,15 +4,15 @@ const {handleError} = require('../utils/hof');
 
 const commentController = require('../controllers/comment.controller');
 
-router.get('/:movieUUID', handleError(async (req, res) => {
-    console.log('GET /comments/:movieUUID');
-    let comments = await commentController.getAll(req.params.movieUUID);
+router.get('/:cuevanaUUID/:cuevanaName', handleError(async (req, res) => {
+    console.log('GET /comments/:cuevanaUUID/:cuevanaName');
+    let comments = await commentController.getAll(req.params.cuevanaUUID + '/' + req.params.cuevanaName);
     res.send(comments);
 }));
 
-router.post('/:movieUUID', handleError(async (req, res) => {
-    console.log('POST /comments/:movieUUID');
-    let comment = await commentController.create(req.params.movieUUID, req.body);
+router.post('/:cuevanaUUID/:cuevanaName', handleError(async (req, res) => {
+    console.log('POST /comments/:cuevanaUUID/:cuevanaName');
+    let comment = await commentController.create((req.params.cuevanaUUID + '/' + req.params.cuevanaName), req.body);
     res.send(comment);
 }));
 

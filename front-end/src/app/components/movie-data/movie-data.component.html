@@ -2,18 +2,18 @@
     <app-global-theme>
         <app-nav-bar></app-nav-bar>
         <div class="movieInfo">
-            <img src="{{movies[0]?.poster}}" alt="Movie image">
+            <img src={{movies?.poster}} alt="Movie image">
             <div class="movieInfoContent">
-                <h1 class="title"><b>{{movies[0]?.title}}</b></h1>
+                <h1 class="title"><b>{{movies?.title}}</b></h1>
                 <div class="cardInfo">
-                    <h2>{{movies[0]?.sypnosis}}</h2>
+                    <h2>{{movies?.sypnosis}}</h2>
                     <div class="duo">
-                        <p class="duration">{{movies[0]?.duration}}</p><br>
+                        <p class="duration">{{movies?.duration}}</p><br>
                         <div class="rating">
-                            <p class="wmargin">{{movies[0]?.rating}}</p><mat-icon>star</mat-icon>
+                            <p class="wmargin">{{movies?.rating}}</p><mat-icon>star</mat-icon>
                         </div>
                     </div>
-                    <p class="year">{{movies[0]?.year}}</p>
+                    <p class="year">{{movies?.year}}</p>
                 </div>
                 <div class="button">
                     <button
@@ -28,9 +28,13 @@
         </div>
         <div class="commentSection">
             <h1>Comentarios</h1>
-            <p>{{'movies[0]?.comments'}}</p> <!--ngFor-->
-            <p>{{'movies[0]?.comments'}}</p>
             <app-comment></app-comment>
+            <div *ngIf="!comments">
+                <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
+            </div>
+            <div *ngFor="let comment of comments">
+                <p>Comentario</p>
+            </div>
         </div>
         <app-footer></app-footer>
     </app-global-theme>
