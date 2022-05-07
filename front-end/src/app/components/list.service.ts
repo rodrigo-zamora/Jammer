@@ -26,13 +26,13 @@ export class ListService {
     this.http.get(url).subscribe(
       (data: any) => {
         for (let i = 0; i < data.movies.length; i++) {
-          let movieUUID = data.movies[i]
+          let movieUUID = data.movies[i];
           this.http.get(this.movieAPI + 'movie/' + movieUUID).subscribe(
-            (data: any) => {
-              this.listMovies.push(data);  
-              this.listMovies$.next(this.listMovies);
+            (data2: any) => {
+              this.listMovies.push(data2);  
             });
-        }
+          }
+        this.listMovies$.next(this.listMovies);
       });
   }
 

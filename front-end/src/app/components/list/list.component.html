@@ -4,7 +4,9 @@
     <div class="movieInfo" *ngFor="let movie of listItem">
       <app-card [movie]="movie"></app-card>
       <div class="right">
-        <p>{{'Comments here'}}</p>
+        <div *ngFor="let com of commentItems">
+          <p>ASD</p>
+        </div>
         <app-comment></app-comment>
       </div>
     </div>
