@@ -128,13 +128,6 @@ describe('Comment Controller', () => {
             } catch (error) {
                 expect(error).toBeInstanceOf(BadRequestError);
             }
-        }),
-        it('should throw a NotFoundError if the movie does not exist', async () => {
-            try {
-                await commentController.create('notFound', {});
-            } catch (error) {
-                expect(error).toBeInstanceOf(NotFoundError);
-            }
         })
     }),
     describe('delete', () => {

@@ -14,13 +14,7 @@ describe('/comments/:movieUUID', () => {
                 .get(`/comments/${movieUUID}`)
                 .expect(200)
                 .end(endFunction(done));
-        }),
-        it('should return 404 if the movie does not exist', (done) => {
-            request(app)
-                .get(`/comments/${movieUUID}-not-found`)
-                .expect(404)
-                .end(endFunction(done));
-        });
+        })
     }),
     describe('POST', () => {
         it('should create a new comment', (done) => {
