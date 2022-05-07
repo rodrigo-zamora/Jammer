@@ -12,4 +12,7 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  saveComment() {
+    // post a la seccion de comentarios del usuario
+  }
 }

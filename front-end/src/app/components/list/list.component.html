@@ -1,7 +1,21 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <app-card></app-card>
+    <div class="movieInfo">
+      <app-card></app-card>
+      <div class="movieInfoContent">
+        <p>{{'All comments display here'}}</p>
+          <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Deja un comentario</mat-label>
+              <textarea matInput placeholder="Ex. Esta pelicula me hace sentir..."></textarea>
+            </mat-form-field>
+            <button mat-icon-button (click)="saveComment()">
+              <mat-icon>check_circle_outline</mat-icon>
+            </button>
+          </form>
+      </div>
+    </div>
     <app-footer></app-footer>
   </app-global-theme>
 </div>
