@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 
 export interface movie {
+  UUID: string;
   title: string;
   year: number;
   cuevanaUUID: string;
@@ -81,6 +82,7 @@ export class MoviesService {
 
   toFilm(data: any): movie {
     return {
+      UUID: data.UUID,
       title: data.title,
       year: data.year,
       cuevanaUUID: data.cuevanaUUID,

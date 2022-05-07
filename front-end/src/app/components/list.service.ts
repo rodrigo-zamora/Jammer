@@ -57,4 +57,19 @@ export class ListService {
     );
   }
 
+  addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
+    console.log('Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
+    this.http.get(this.listAPI + 'list/' + listUUID + '/' + userUUID).subscribe(
+      (data: any) => {
+        let moviesArray = data.movies;
+        moviesArray.push(movieUUID);
+        let url = this.listAPI + 'list/' + listUUID;
+        this.http.put(url, { movies: moviesArray }).subscribe(
+          (data: any) => {  
+            console.log('Movie added to list');
+          }
+        );
+      }
+    );
+  }
 }
