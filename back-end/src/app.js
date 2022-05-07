@@ -73,11 +73,16 @@ io.on('connection', (socket) => {
     });
 });
 
-app.use(cors({
-        credentials: true,
-        origin: 'https://jammer-streaming.herokuapp.com'
-    }
-));
+let corsOptions = {
+    origin: [
+        'https://jammer-streaming.herokuapp.com',
+        'http://localhost:4200'
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    AllowCredentials: true
+}
+app.use(cors(corsOptions));
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from 'src/app/components/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,17 +17,17 @@ export class NavBarComponent implements OnInit {
   isLogged: boolean = false;
 
   ngOnInit(): void {
-    console.log('Verifying login');
-    this.auth.verifyLogin();
-    console.log('Login verified');
+    this.isLogged = this.auth.verifyLogin();
+    console.log(this.isLogged);
+    /*this.auth.verifyLogin();
     this.auth.authData$.subscribe((data) => {
-      console.log('Data received');
+      console.log(data);
       if (data.user) {
         this.isLogged = true;
       } else {
         this.isLogged = false;
       }
-    });
+    });*/
   }
 
   searchMovies() {

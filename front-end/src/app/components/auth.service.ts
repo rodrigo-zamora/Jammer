@@ -5,6 +5,7 @@ import { Observable, of, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   api = 'https://backend-jammer.herokuapp.com/auth/';
@@ -15,13 +16,25 @@ export class AuthService {
 
   constructor(public http: HttpClient) { }
 
-  verifyLogin() {
-    console.log('Verifying login from service: ' + this.api + 'verifyLogin'); 
-    this.http.get(this.api + 'verifyLogin', { withCredentials: true }).subscribe(
+  /*verifyLogin() {
+    let url = this.api + 'verifyLogin';
+    console.log('Verifying login from service: ' + url + 'verifyLogin');
+    this.http.get(url, { withCredentials: true }).subscribe(
       (data: any) => {
         console.log('Login verified from service');
+        console.log(data);
         this.auth = data;
         this.authData$.next(this.auth);
       });
+  }*/
+
+  verifyLogin() {
+    let uuid = localStorage.getItem('UUID');
+    if (uuid) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 }
