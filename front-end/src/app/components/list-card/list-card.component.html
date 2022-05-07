@@ -14,7 +14,10 @@
             <mat-icon>share</mat-icon>
         </button>
     </div>
-    <div class="card-body" routerLink="/list">
-        <h3 class="title"><b>{{"Favoritas"}}</b></h3>
+    <div class="">
+    </div>
+    <img *ngIf="list?.imageURL" class="card-img-top" src="{{list?.imageURL}}" alt="Card image"  routerLink="/list">
+        <div class="card-body">
+        <h3 class="title"><b>{{list?.name}}</b></h3>
     </div>
 </div>

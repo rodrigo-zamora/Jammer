@@ -17,12 +17,7 @@ const listSchema = new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 2,
-        maxlength: 50,
-        validate: {
-            validator: (name) => {
-                return /^[a-zA-Z ]+$/.test(name);
-            }
-        }
+        maxlength: 50
     },
     description: {
         type: String,
