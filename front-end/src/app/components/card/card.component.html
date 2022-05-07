@@ -1,7 +1,7 @@
 <div class="card">
     <div class="button-container">
-        <button mat-mini-fab color="primary" class="moreButton" (click)="displayLists()">
-            <mat-icon mat-button [matMenuTriggerFor]="menu">more_vert</mat-icon>
+        <button mat-mini-fab color="primary" class="displayListsButton" (click)="displayLists()">
+            <mat-icon mat-button [matMenuTriggerFor]="menu" class="moreButton">more_vert</mat-icon>
             <mat-menu #menu="matMenu">
                 <p style="color: #fff; text-align: center;">Agregar a la lista</p>
                 <button mat-menu-item *ngFor="let listItem of uLists" (click)="addToList(listItem?.UUID, movie?.UUID)">{{listItem?.name}}</button>
