@@ -5,13 +5,8 @@
     </button>
   </div>
   <div class="buttonOnList edit">
-    <button mat-fab>
+    <button mat-fab (click)="openDialog()">
       <mat-icon>edit</mat-icon>
-    </button>
-  </div>
-  <div class="buttonOnList share">
-    <button mat-fab>
-      <mat-icon>share</mat-icon>
     </button>
   </div>
   <div class="" routerLink="/list/{{list?.UUID}}">
