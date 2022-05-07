@@ -1,7 +1,13 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <app-list-card></app-list-card>
+    <div class="button-container">
+      <input type="text" placeholder="Nombre de la lista" aria-label="list" aria-describedby="basic-addon2" class="listNameInput">
+      <button mat-mini-fab color="primary" class="addButton">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <app-list-card></app-list-card> <!--ngIf-->
     <app-footer></app-footer>
   </app-global-theme>
 </div>

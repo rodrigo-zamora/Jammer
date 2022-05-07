@@ -12,6 +12,23 @@
     max-width: 200px;
     margin: 25px;
     cursor: pointer;
+    position: relative;
+
+    .button-container {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        button {
+            background-color: #B62519;
+            opacity: 0.8;
+            transition: 0.3s ease-in-out;
+            &:hover {
+                opacity: 1;
+                transition: 0.3s ease-in-out;
+            }
+        }
+    }
 
     .card-body {
         height: 150px;

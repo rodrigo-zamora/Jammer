@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'myList', component: MyListComponent },
   { path: '404', component: PageNotFoundComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'movie-data', component: MovieDataComponent },
+  { path: 'movie/:id/:name', component: MovieDataComponent },
   { path: 'subscription', component: SubscriptionComponent },
   {path: '**', redirectTo: '/404'}
 ];
