@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { movie } from '../movies.service';
 import { Router } from '@angular/router';
@@ -23,11 +23,16 @@ export class ListComponent implements OnInit {
     this.lists.getMoviesFromList(uuid);
     this.lists.listMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.listItem = movies;
-      console.log(this.listItem);
     });
   }
 
   saveComment() {
     // post a la seccion de comentarios del usuario
   }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
 }

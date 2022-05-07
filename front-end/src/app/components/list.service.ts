@@ -22,17 +22,17 @@ export class ListService {
   getMoviesFromList(listUUID: string) {
     let userUUID = localStorage.getItem('UUID');
     let url = this.listAPI + 'list/' + listUUID + '/' + userUUID;
+    this.listMovies = [];
     this.http.get(url).subscribe(
       (data: any) => {
-        console.log("data", data);
         for (let i = 0; i < data.movies.length; i++) {
           let movieUUID = data.movies[i]
           this.http.get(this.movieAPI + 'movie/' + movieUUID).subscribe(
             (data: any) => {
               this.listMovies.push(data);  
+              this.listMovies$.next(this.listMovies);
             });
         }
-        this.listMovies$.next(this.listMovies);
       });
   }
 
