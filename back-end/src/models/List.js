@@ -31,22 +31,7 @@ const listSchema = new mongoose.Schema({
             }
         }
     },
-    movies: [{
-        movieUUID: {
-            type: String,
-            required: true
-        },
-        time: {
-            type: String,
-            required: true
-        },
-        comments: [{
-            commentUUID: {
-                type: String,
-                required: true
-            }
-        }]
-    }],
+    movies: [],
     isShared: {
         type: Boolean,
         required: true,

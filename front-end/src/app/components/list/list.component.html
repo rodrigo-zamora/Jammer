@@ -1,8 +1,8 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <div class="movieInfo">
-      <app-card></app-card>
+    <div class="movieInfo" *ngFor="let movie of listItem">
+      <app-card [movie]="movie"></app-card>
       <div class="movieInfoContent">
         <p>{{'All comments display here'}}</p>
           <form class="example-form">

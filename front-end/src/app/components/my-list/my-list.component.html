@@ -10,14 +10,14 @@
     <div class="myLists">
       <h1>Mis listas</h1>
       <div class="allLists">
-        <app-list-card *ngFor="let item of list" [list]="item"></app-list-card> <!--ngIf-->
+        <app-list-card *ngFor="let item of list" [list]="item"></app-list-card>
       </div>
     </div>
     <div class="sharedLists">
       <h1>Listas compartidas</h1>
       <div class="allLists">
         <h3 *ngIf="sharedLists.length == 0">No tienes ninguna lista compartida</h3>
-        <app-list-card *ngFor="let item of sharedLists" [list]="item"></app-list-card> <!--ngIf-->
+        <app-list-card *ngFor="let item of sharedLists" [list]="item"></app-list-card>
       </div>
     </div>
     <app-footer></app-footer>

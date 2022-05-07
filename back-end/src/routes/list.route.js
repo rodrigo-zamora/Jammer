@@ -18,9 +18,9 @@ router.post('/:userUUID', handleError(async (req, res) => {
     res.send(list);
 }));
 
-router.get('/list/:listUUID', handleError(async (req, res) => {
-    console.log('GET /lists/list/:listUUID');
-    let list = await listController.get(req.params.listUUID);
+router.get('/list/:listUUID/:userUUID', handleError(async (req, res) => {
+    console.log('GET /lists/list/:listUUID/:userUUID');
+    let list = await listController.get(req.params.listUUID, req.params.userUUID);
     res.send(list);
 }));
 
@@ -45,12 +45,6 @@ router.post('/list/:listUUID/share', handleError(async (req, res) => {
 router.post('/list/:listUUID/upload', uploadCloud.single('image'), handleError(async (req, res) => {
     console.log('POST /lists/list/:listUUID/upload');
     let list = await listController.uploadImage(req.params.listUUID, req.file.path);
-    res.send(list);
-}));
-
-router.get('/list/:listUUID/image', handleError(async (req, res) => {
-    console.log('GET /lists/list/:listUUID/image');
-    let list = await listController.getImage(req.params.listUUID);
     res.send(list);
 }));
 
