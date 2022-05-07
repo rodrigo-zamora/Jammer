@@ -37,4 +37,8 @@ export class AuthService {
     }
   }
 
+  hasSubscription(): boolean {
+    return false;
+  }
+
 }

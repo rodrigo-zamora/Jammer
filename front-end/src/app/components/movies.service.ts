@@ -104,6 +104,7 @@ export class MoviesService {
   }
 
   getActionMovies() {
+    this.action = [];
     this.http.get(this.api + 'search?genre=0')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -115,6 +116,7 @@ export class MoviesService {
   }
 
   getAnimationMovies() {
+    this.animation = [];
     this.http.get(this.api + 'search?genre=1')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -126,6 +128,7 @@ export class MoviesService {
   }
 
   getAdventureMovies() {
+    this.adventure = [];
     this.http.get(this.api + 'search?genre=2')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -137,6 +140,7 @@ export class MoviesService {
   }
 
   getWarMovies() {
+    this.war = [];
     this.http.get(this.api + 'search?genre=3')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -148,6 +152,7 @@ export class MoviesService {
   }
 
   getBiographyMovies() {
+    this.biography = [];
     this.http.get(this.api + 'search?genre=4')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -159,6 +164,7 @@ export class MoviesService {
   }
 
   getSciFiMovies() {
+    this.sciFi = [];
     this.http.get(this.api + 'search?genre=5')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -170,6 +176,7 @@ export class MoviesService {
   }
 
   getComedyMovies() {
+    this.comedy = [];
     this.http.get(this.api + 'search?genre=6')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -181,6 +188,7 @@ export class MoviesService {
   }
 
   getCrimeMovies() {
+    this.crime = [];
     this.http.get(this.api + 'search?genre=7')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -192,6 +200,7 @@ export class MoviesService {
   }
 
   getDocumentalMovies() {
+    this.documental = [];
     this.http.get(this.api + 'search?genre=8')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -203,6 +212,7 @@ export class MoviesService {
   }
 
   getDramaMovies() {
+    this.drama = [];
     this.http.get(this.api + 'search?genre=9')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -214,6 +224,7 @@ export class MoviesService {
   }
 
   getFamilyMovies() {
+    this.family = [];
     this.http.get(this.api + 'search?genre=10')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -225,6 +236,7 @@ export class MoviesService {
   }
 
   getFantasyMovies() {
+    this.fantasy = [];
     this.http.get(this.api + 'search?genre=11')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -236,6 +248,7 @@ export class MoviesService {
   }
 
   getMisteryMovies() {
+    this.mistery = [];
     this.http.get(this.api + 'search?genre=12')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -247,6 +260,7 @@ export class MoviesService {
   }
 
   getMusicalMovies() {
+    this.musical = [];
     this.http.get(this.api + 'search?genre=13')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -258,6 +272,7 @@ export class MoviesService {
   }
 
   getRomanceMovies() {
+    this.romance = [];
     this.http.get(this.api + 'search?genre=14')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -269,6 +284,7 @@ export class MoviesService {
   }
 
   getTerrorMovies() {
+    this.terror = [];
     this.http.get(this.api + 'search?genre=15')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
@@ -280,6 +296,7 @@ export class MoviesService {
   }
 
   getThrillerMovies() {
+    this.thriller = [];
     this.http.get(this.api + 'search?genre=16')
       .subscribe((data: any) => {
         for (let i = 0; i < this.movieCount; i++) {
