@@ -19,15 +19,11 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         trim: true,
-        minlength: 2,
-        maxlength: 50,
         default: ''
     },
     lastName: {
         type: String,
         trim: true,
-        minlength: 2,
-        maxlength: 50,
         default: ''
     },
     imageURL: {
