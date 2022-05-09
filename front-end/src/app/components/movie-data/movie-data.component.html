@@ -28,10 +28,24 @@
             {{getActors()}}</p>
         </div>
         <div class="button">
-          <button mat-raised-button class="seeMovie"
-            onClick="window.open('https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2RMZWxWNmVZTERqazF0U2pWQlBBaGZMeEV0dHBpcWU1MkVtMzI2bkd0TXlDRFl4Um5jYkN6UFU2VFV1TGFpL24zeDNBcUFhVEJ1KzBQV1dienVDTHowQVFYUUkvOUhlSHk2MlFMY2hlem1BdzhiMlNqby9PQTJuM1JaQ0sxMDQ3dFpWTFVZODAyM0t0aER6TFZIVklMczBaaGRIZjFSRzFyVzhPMW9BWEU0VE9rMzdtM3cvNmJHR1RwQnB6c1h4dlowbzFmN3BhYzJpS1ZHN2NhUkFWaEJKdmpubm0yMnlYbExTRHNNQ0puUXNRPT0')">
-            Ver Película
-          </button>
+          <a mat-raised-button class="seeMovie"
+            type="button"
+            target="_blank"
+            href="{{movies?.links.latino[0]}}">
+            Ver película en latino
+          </a>
+          <a mat-raised-button class="seeMovie"
+            type="button"
+            target="_blank"
+            href="{{movies?.links.espanol[0]}}">
+            Ver película en español
+          </a>
+          <a mat-raised-button class="seeMovie"
+            type="button"
+            target="_blank"
+            href="{{movies?.links.sub[0]}}">
+            Ver película subtitulada
+          </a>
           <!--<button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una
             lista
             <mat-menu #menu="matMenu">

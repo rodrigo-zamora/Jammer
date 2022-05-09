@@ -55,6 +55,7 @@ export class MovieDataComponent implements OnInit {
       console.log(movie[0]);
       this.movies = movie[0];
     });
+    console.log(this.movies);
   }
 
   ngOnDestroy(): void {
