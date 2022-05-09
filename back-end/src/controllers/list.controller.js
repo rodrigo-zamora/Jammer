@@ -2,6 +2,8 @@ const List = require('../models/List');
 const Movie = require('../models/Movie');
 const User = require('../models/User');
 
+const MovieController = require('./movie.controller');
+
 const {
     NotFoundError,
     ConflictError,
@@ -112,37 +114,57 @@ const listController = {
         let list = await List.findOne({
             UUID: listUUID
         });
-        console.log('list found')
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
-            if (Object.keys(listBody).length === 0) {
-                throw new BadRequestError('No fields to update');
-            } else {
-                console.log('fields to update')
-                let toUpdate = new List(list);
-                for (let key in listBody) {
-                    if (key == 'movies') {
-                        console.log('listbody has movies');
-                        for (let movie of listBody.movies) {
-                            if (movie.UUID) {
-                                let movieToAdd = await Movie.findOne({
-                                    UUID: movie.UUID
-                                });
-                                toUpdate.movies.push(movieToAdd);
+            console.log(`List found`);
+            list = new List(list);
+            for (let key in listBody) {
+                console.log(`Setting ${key} to ${listBody[key]}`);
+                if (key == 'movies') {
+                    console.log(`Updating movies for list ${list.name}`);
+                    console.log('Movies to add: ' + listBody.movies);
+                    for (let movie of listBody.movies) {
+                        console.log(`Updating movie ${movie}`);
+                        console.log('Checking if movie exists in own database');
+                        let movieInDatabase = await Movie.findOne({
+                            $or: [{
+                                UUID: movie
+                            }, {
+                                cuevanaUUID: movie
+                            }]
+                        });
+                        if (!movieInDatabase) {
+                            console.log('Movie does not exist in database');
+                            console.log('Creating movie in database: ' + movie);
+                            let toCreate = await MovieController.createFromCuevanaUUID(movie);
+                            console.log('Movie created: ' + toCreate.title);
+                            if (list.movies.includes(toCreate.UUID)) {
+                                console.log('Movie already exists in list');
                             } else {
-                                let newMovie = await new Movie(movie);
-                                await newMovie.save();
-                                toUpdate.movies.push(newMovie.UUID);
+                                console.log('Movie does not exist in list');
+                                list.movies.push(toCreate.UUID);
                             }
+                            await toCreate.save();
+                        } else {
+                            console.log('Movie exists in database');
+                            movieInDatabase = new Movie(movieInDatabase);
+                            if (list.movies.includes(movieInDatabase.UUID)) {
+                                console.log('Movie already exists in list');
+                            } else {
+                                console.log('Movie does not exist in list');
+                                list.movies.push(movieInDatabase.UUID);
+                            }
+                            await movieInDatabase.save();
                         }
-                    } else if (key == 'sharedWith') {
-                        throw new BadRequestError('Cannot update sharedWith field using this method');
                     }
+                } else {
+                    list[key] = listBody[key];
                 }
-                await toUpdate.save();
-                return toUpdate;
+
             }
+            await list.save();
+            return list;
         }
     },
     delete: async function (listUUID) {
