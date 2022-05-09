@@ -45,4 +45,8 @@ export class ListComponent implements OnInit {
     this.destroyed.complete();
   }
 
+  deleteFromList() {
+    
+  }
+
 }

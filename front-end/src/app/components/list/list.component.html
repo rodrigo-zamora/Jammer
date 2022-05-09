@@ -1,7 +1,7 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <div *ngIf="listItem.length == 0">
+    <div *ngIf="listItem.length == 0" class="noMovieInList">
       <h2>
         No has agregado ninguna película a la lista.
       </h2>
@@ -15,6 +15,7 @@
           </div>
           <app-comment></app-comment>
         </div>
+        <button mat-raised-button class="deleteFromList" (click)="deleteFromList()">Borrar de la lista</button>
       </div>
     </div>
     <app-footer></app-footer>
