@@ -14,15 +14,19 @@ router.get(
     passport.authenticate('google'),
     function (req, res) {
         console.log(req.query.code);
-        res.redirect('https://jammer-streaming.herokuapp.com/');
+        //res.redirect('https://jammer-streaming.herokuapp.com/');
+        res.redirect('http://localhost:4200')
     }
 );
 
 router.get('/verifyLogin', (req, res) => {
+    console.log('verifyLogin from route: ' + req.user);
+    console.log('isAuthenticated: ' + req.isAuthenticated());
+    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
         res.status(200).send(req.user);
     } else {
-        res.status(401).send('Not authorized');
+        res.status(401).send('Not authorized aaaaaaaaaaa');
     }
 });
 
@@ -31,7 +35,7 @@ router.get('/logout', (req, res) => {
         req.logout();
         res.status(200).send('Logged out');
     } else {
-        res.status(401).send('Not authorized');
+        res.status(401).send('Not authorized aaaaaaa');
     }
 });
 

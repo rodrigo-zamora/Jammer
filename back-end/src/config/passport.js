@@ -8,7 +8,8 @@ passport.use(
     new GoogleStrategy({
             clientID: process.env.CLIENT_ID || '',
             clientSecret: process.env.CLIENT_SECRET || '',
-            callbackURL: 'https://backend-jammer.herokuapp.com/auth/google/callback',
+            //callbackURL: 'https://backend-jammer.herokuapp.com/auth/google/callback'
+            callbackURL: 'http://localhost:3000/auth/google/callback'
         },
         async function (accessToken, refreshToken, profile, done) {
             console.log('working');
@@ -54,9 +55,8 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (id, done) {
     User.findOne({
         UUID: id
-    }).then(user => {
-        done(null, user);
-    }).catch(err => {
-        done(err, null);
+    }, function (err, user) {
+        done(err, user);
     });
+
 });

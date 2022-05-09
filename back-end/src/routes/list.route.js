@@ -26,6 +26,8 @@ router.get('/list/:listUUID/:userUUID', handleError(async (req, res) => {
 
 router.put('/list/:listUUID', handleError(async (req, res) => {
     console.log('PUT /lists/list/:listUUID');
+    console.log(req.params.listUUID);
+    console.log(req.body);
     let list = await listController.update(req.params.listUUID, req.body);
     res.send(list);
 }));

@@ -48,6 +48,13 @@ process.on('SIGINT', function () {
     });
 });
 
+app.use(cors(
+    {
+        origin: 'http://localhost:4200',
+        credentials: true
+    }
+));
+
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
     keys: [COOKIE_KEY]
@@ -55,10 +62,10 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const server = http.createServer(app);
+/*const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'https://jammer-streaming.herokuapp.com'
+        origin: '*'
     }
 })
 
@@ -71,18 +78,8 @@ io.on('connection', (socket) => {
             io.emit('newComment', data);
         }
     });
-});
+});*/
 
-let corsOptions = {
-    origin: [
-        'https://jammer-streaming.herokuapp.com',
-        'http://localhost:4200'
-    ],
-    credentials: true,
-    optionsSuccessStatus: 200,
-    AllowCredentials: true
-}
-app.use(cors(corsOptions));
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');

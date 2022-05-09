@@ -160,7 +160,10 @@ const movieController = {
         let movieDetails;
         await Cuevana3.getDetail(cuevanaUUID).then(movie => {
             movieDetails = movie;
-        });
+            console.log(movieDetails);
+        }).catch((err) => {
+            console.log(err);
+        })
         return movieDetails;
     },
     getLinks: async function (cuevanaUUID) {
@@ -168,7 +171,10 @@ const movieController = {
         let movieLinks;
         await Cuevana3.getLinks(cuevanaUUID).then(movie => {
             movieLinks = movie;
-        });
+            console.log(movieLinks);
+        }).catch((err) => {
+            console.log(err);
+        })
         return movieLinks;
     }
 };

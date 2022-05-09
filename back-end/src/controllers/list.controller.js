@@ -1,4 +1,5 @@
 const List = require('../models/List');
+const Movie = require('../models/Movie');
 const User = require('../models/User');
 
 const {
@@ -107,30 +108,37 @@ const listController = {
         }
     },
     update: async function (listUUID, listBody) {
-        console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
+        console.log(`Updating list with listUUID ${listUUID} and listBody ${listBody}`);
         let list = await List.findOne({
             UUID: listUUID
         });
+        console.log('list found')
         if (!list) {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
-            list = new List(list);
-            try {
+            if (Object.keys(listBody).length === 0) {
+                throw new BadRequestError('No fields to update');
+            } else {
                 for (let key in listBody) {
-                    if (listBody.hasOwnProperty(key)) {
-                        if (key == 'sharedWith') {
-                            throw new BadRequestError('You cannot update sharedWith field using this method');
-                        } else if (key == 'movies') {
-                            list.movies = listBody.movies;
-                        } else {
-                            list[key] = listBody[key];
+                    if (key == 'movies') {
+                        for (let movie of listBody.movies) {
+                            let movieToCheck = await Movie.findOne({
+                                UUID: movie
+                            });
+                            if (!movieToCheck) {
+                                let newMovie = await new Movie(movie);
+                                await newMovie.save();
+                                list.movies.push(newMovie.UUID);
+                            } else {
+                                list.movies.push(movieToCheck.UUID);
+                            }
                         }
+                    } else if (key == 'sharedWith') {
+                        throw new BadRequestError('Cannot update sharedWith field using this method');
                     }
                 }
-                let savedList = await list.save();
-                return savedList;
-            } catch (err) {
-                throw new BadRequestError(err.message);
+                await list.save();
+                return list;
             }
         }
     },

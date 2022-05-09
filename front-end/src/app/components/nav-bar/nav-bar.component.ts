@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/components/auth.service';
 
 @Component({
@@ -14,20 +15,15 @@ export class NavBarComponent implements OnInit {
 
   constructor(public auth: AuthService, private http: HttpClient, private router: Router) { }
 
-  isLogged: boolean = false;
+  isLogged: any;
+  
+  destroyed = new ReplaySubject<void>(1);
 
   ngOnInit(): void {
-    this.isLogged = this.auth.verifyLogin();
-    console.log(this.isLogged);
-    /*this.auth.verifyLogin();
-    this.auth.authData$.subscribe((data) => {
-      console.log(data);
-      if (data.user) {
-        this.isLogged = true;
-      } else {
-        this.isLogged = false;
-      }
-    });*/
+    this.auth.verifyLogin();
+    this.auth.authData$.pipe(takeUntil(this.destroyed)).subscribe((isLogged) => {
+      this.isLogged = isLogged;
+    });
   }
 
   searchMovies() {
@@ -36,7 +32,7 @@ export class NavBarComponent implements OnInit {
   }
  
   login() {
-    window.location.replace('https://backend-jammer.herokuapp.com/auth/google/login');
+    window.location.replace('http://localhost:3000/auth/google/login');
   }
 
 }

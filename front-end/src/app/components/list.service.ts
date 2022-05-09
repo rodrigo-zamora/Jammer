@@ -78,6 +78,7 @@ export class ListService {
         let moviesArray = data.movies;
         moviesArray.push(movieUUID);
         let url = this.listAPI + 'list/' + listUUID;
+        console.log(moviesArray);
         this.http.put(url, { movies: moviesArray }).subscribe(
           (data: any) => {  
             console.log('Movie added to list');
