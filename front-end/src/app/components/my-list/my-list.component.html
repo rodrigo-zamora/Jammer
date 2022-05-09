@@ -1,7 +1,7 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <div *ngIf="canSeeLists" class="noSubscription">
+    <div *ngIf="!canSeeLists()" class="noSubscription">
       <h2>
         Las listas son para los usuarios con una suscripción.
       </h2>
@@ -9,20 +9,20 @@
         <a class="subscriptionClick">¡Haz click aquí para suscribirte!</a>
       </h3>
     </div>
-    <div *ngIf="!canSeeLists">
+    <div *ngIf="canSeeLists()">
       <div class="button-container">
         <button mat-raised-button class="addButton" (click)="openDialog()">Crear lista</button>
       </div>
       <div class="myLists">
         <h1>Mis listas</h1>
-        <div class="allLists">
+        <div class="allLists" *ngIf="list">
           <app-list-card *ngFor="let item of list" [list]="item"></app-list-card>
         </div>
       </div>
       <div class="sharedLists">
         <h1>Listas compartidas</h1>
-        <div class="allLists">
-          <h3 *ngIf="sharedLists.length == 0">No tienes ninguna lista compartida</h3>
+        <div class="allLists" *ngIf="sharedLists">
+          <h3 *ngIf="sharedLists">No tienes ninguna lista compartida</h3>
           <app-list-card *ngFor="let item of sharedLists" [list]="item"></app-list-card>
         </div>
       </div>

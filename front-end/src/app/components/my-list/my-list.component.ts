@@ -26,6 +26,7 @@ export class MyListComponent implements OnInit {
 
   constructor(public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
     route.params.subscribe(params => {
+      console.log('UPDATING LISTS VIEW')
       this.lists.getLists();
       this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
         this.list = list.lists;

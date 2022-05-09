@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ListService {
 
   listAPI = 'https://backend-jammer.herokuapp.com/lists/';

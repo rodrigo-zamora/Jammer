@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-//import * as moment from 'moment';
-//import { MomentModule } from 'ngx-moment';
+import { SubscriptionService } from '../subscription.service';
+import { AuthService } from '../auth.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-payment',
@@ -11,17 +13,30 @@ import { Component, OnInit } from '@angular/core';
 
 export class PaymentComponent implements OnInit {
 
-  //today = moment().format('DD/MM/YYYY');
-  //nextPayment = moment().add(30, 'days');
+  nextPayment = moment().add(1, 'month').format('DD/MM/YYYY');
 
-  constructor() { 
-  }
+  subscription: any;
+
+  destroyed = new ReplaySubject<void>(1);
+
+  constructor(public subscriptionService : SubscriptionService, private authService: AuthService) { }
 
 
   ngOnInit(): void {
+
   }
   
-  onClick() {
-    // post a la subscrupcion para modificar el estado de la subscripcion
+  paySubscription() {
+    let userUUID = this.authService.getUserUUID();
+    this.subscriptionService.createSubscription(userUUID);
+    this.subscriptionService.subscription$.pipe(takeUntil(this.destroyed)).subscribe((subscription) => {
+      this.subscription = subscription;
+    });
   }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
 }

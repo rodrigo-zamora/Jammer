@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
-import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +34,7 @@ export class AuthService {
     return this.authData.UUID;
   }
 
-  hasSubscription() {
-    console.log('hasSubscription from service', this.authData.subscription);
+  hasSubscription(): boolean {
     if (this.authData.subscription == null) {
       return false;
     } else {
