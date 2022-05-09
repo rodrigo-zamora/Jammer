@@ -1,7 +1,12 @@
 <div>
     <app-global-theme>
         <app-nav-bar></app-nav-bar>
-        <div *ngIf="!hasSubscription()">
+        <div *ngIf="!isLoggedIn()" class="loggedOut">
+            <h2>
+                Debes iniciar sesión para comprar una suscripción.
+            </h2>
+        </div>
+        <div *ngIf="!hasSubscription() && isLoggedIn()">
             <app-payment></app-payment>
         </div>
         <div *ngIf="hasSubscription()" class="hasSubscription">

@@ -22,8 +22,12 @@ export class SubscriptionComponent implements OnInit {
   deleteSubscription() {
     let subscription = this.authService.getSubscription();
     this.authService.setSubscription();
-    this.subscriptionService.deleteSubscription(subscription);
     this.router.navigate(['/']);
+    this.subscriptionService.deleteSubscription(subscription);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
 }
