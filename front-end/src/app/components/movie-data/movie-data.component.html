@@ -58,11 +58,11 @@
       </div>
       <div class="forComments" *ngFor="let comment of comments">
         <div class="comment">
-          <div>
+          <div class="autorInfo">
             <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
+            <h2>{{comment?.authorName}}</h2>
           </div>
           <div class="author">
-            <h2>{{comment?.authorName}}</h2>
           </div>
           <div class="text">
             <p>{{comment?.text}}</p>
