@@ -5,11 +5,9 @@
       <h2>
         Las listas son para los usuarios con una suscripción.
       </h2>
-      <h3 routerLink="/subscription">
-        <a class="subscriptionClick">¡Haz click aquí para suscribirte!</a>
-      </h3>
+      <button mat-raised-button class="subscribe" routerLink="/subscription">¡Suscribete!</button>
     </div>
-    <div *ngIf="canSeeLists()">
+    <div *ngIf="canSeeLists()" class="withSubscription">
       <div class="button-container">
         <button mat-raised-button class="addButton" (click)="openDialog()">Crear lista</button>
       </div>

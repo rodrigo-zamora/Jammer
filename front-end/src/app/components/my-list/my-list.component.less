@@ -21,7 +21,7 @@ div app-global-theme {
             color: #fff;
         }
     }
-    .myLists, .sharedLists, .noSubscription {
+    .myLists, .sharedLists {
         margin: 30px;
         color: #fff;
 
@@ -31,5 +31,21 @@ div app-global-theme {
         .subscriptionClick:hover {
             color: #B62519;
         }
+    }
+    .noSubscription {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        height: calc(100vh - 400px);
+
+        .subscribe {
+            height: 35px;
+            background-color: #B62519;
+        }
+    }
+    .withSubscription {
+        height: calc(100vh - 400px);
     }
 }
