@@ -119,6 +119,7 @@ const listController = {
             if (Object.keys(listBody).length === 0) {
                 throw new BadRequestError('No fields to update');
             } else {
+                let toUpdate = new List(list);
                 for (let key in listBody) {
                     if (key == 'movies') {
                         for (let movie of listBody.movies) {
@@ -128,17 +129,17 @@ const listController = {
                             if (!movieToCheck) {
                                 let newMovie = await new Movie(movie);
                                 await newMovie.save();
-                                list.movies.push(newMovie.UUID);
+                                toUpdate.movies.push(newMovie.UUID);
                             } else {
-                                list.movies.push(movieToCheck.UUID);
+                                toUpdate.movies.push(movieToCheck.UUID);
                             }
                         }
                     } else if (key == 'sharedWith') {
                         throw new BadRequestError('Cannot update sharedWith field using this method');
                     }
                 }
-                await list.save();
-                return list;
+                await toUpdate.save();
+                return toUpdate;
             }
         }
     },

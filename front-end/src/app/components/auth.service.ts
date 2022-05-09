@@ -29,25 +29,6 @@ export class AuthService {
         this.authData$.next(this.authData);
       }
     );
-
-
-    /*fetch('http://localhost:3000/auth/verifyLogin',  {credentials: 'include'})
-    .then((response) => {
-      console.log(response);
-      if (response.status === 401) {
-        console.log('not logged in');
-        this.authData$.next(false);
-      }
-      else if (response.status === 200) {
-        console.log('logged in');
-      }
-      else {
-        console.log('unknown status');
-        this.authData$.next(false);
-      }
-    }).catch((err) => {
-      console.log(err);
-    });*/
   }
 
   hasSubscription(): boolean {

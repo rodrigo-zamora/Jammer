@@ -26,7 +26,7 @@ router.get('/verifyLogin', (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).send(req.user);
     } else {
-        res.status(401).send('Not authorized aaaaaaaaaaa');
+        res.status(401).send('Not authorized');
     }
 });
 
@@ -35,7 +35,7 @@ router.get('/logout', (req, res) => {
         req.logout();
         res.status(200).send('Logged out');
     } else {
-        res.status(401).send('Not authorized aaaaaaa');
+        res.status(401).send('Not authorized');
     }
 });
 
