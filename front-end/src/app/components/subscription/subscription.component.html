@@ -1,7 +1,9 @@
 <div>
     <app-global-theme>
         <app-nav-bar></app-nav-bar>
-        <app-payment *ngIf="!hasSubscription()"></app-payment>
+        <div *ngIf="!hasSubscription()">
+            <app-payment></app-payment>
+        </div>
         <div *ngIf="hasSubscription()" class="hasSubscription">
             <h2>¡Ya tienes una suscripción activa!</h2>
             <button mat-raised-button class="cancelSub" (click)="deleteSubscription()">Cancelar suscripción</button>

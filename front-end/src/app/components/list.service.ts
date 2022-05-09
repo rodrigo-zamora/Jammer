@@ -84,4 +84,13 @@ export class ListService {
         console.log('Movie added to list: ' + data);
       });
   }
+
+  removeMovieFromList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
+    console.log('[SERVICE] Removing movie with UUID: ' + movieUUID + ' from list with UUID: ' + listUUID);
+    console.log('[SERVICE] Movie UUID: ' + movieUUID);
+    this.http.put(this.listAPI + 'list/' + listUUID, {movies: [movieUUID]}).subscribe(
+      (data: any) => {
+        console.log('Movie removed from list: ' + data);
+      });
+    }
 }

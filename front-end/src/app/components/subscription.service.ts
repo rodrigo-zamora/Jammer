@@ -23,4 +23,11 @@ export class SubscriptionService {
     });
   }
 
+  deleteSubscription(userUUID: string) {
+    this.http.delete(this.api + userUUID).subscribe(data => {
+      this.subscription = data;
+      this.subscription$.next(this.subscription);
+    });
+  }
+
 }

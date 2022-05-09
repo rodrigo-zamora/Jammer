@@ -4,7 +4,7 @@
     <span>Jammer</span>
   </div>
 
-  <div *ngIf="isLogged" class="myListButton" routerLink="/lists">
+  <div class="myListButton" routerLink="/lists">
     <ul class="navigation-links navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link">Mis listas</a>
@@ -12,7 +12,7 @@
     </ul>
   </div>
 
-  <div *ngIf="isLogged" class="myListButton" routerLink="/subscription">
+  <div class="myListButton" routerLink="/subscription">
     <ul class="navigation-links navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link">Suscripción</a>
@@ -32,7 +32,7 @@
     <button mat-raised-button class="searchButton">Iniciar sesión</button>
   </div>
 
-  <div *ngIf="isLogged" (click)="login()">
+  <div *ngIf="isLogged" (click)="logout()">
     <button mat-raised-button class="searchButton">Cerrar sesión</button>
   </div>
 </div>

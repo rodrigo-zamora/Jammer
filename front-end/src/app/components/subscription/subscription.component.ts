@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SubscriptionService } from '../subscription.service';
 
 @Component({
   selector: 'app-subscription',
@@ -8,7 +10,7 @@ import { AuthService } from '../auth.service';
 })
 export class SubscriptionComponent implements OnInit {
 
-  constructor(public authService: AuthService) { }
+  constructor(private router: Router, public authService: AuthService, public subscriptionService: SubscriptionService) { }
 
   ngOnInit(): void {
   }
@@ -18,7 +20,10 @@ export class SubscriptionComponent implements OnInit {
   }
 
   deleteSubscription() {
-    
+    let subscription = this.authService.getSubscription();
+    this.authService.setSubscription();
+    this.subscriptionService.deleteSubscription(subscription);
+    this.router.navigate(['/']);
   }
 
 }

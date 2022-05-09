@@ -34,11 +34,20 @@ export class AuthService {
   }
 
   hasSubscription(): boolean {
-    if (this.authData.subscription == null) {
+    if (this.authData == null || this.authData.subscription == null || this.authData.subscription == undefined || this.authData.subscription == '') {
       return false;
     } else {
       return true;
     }
+  }
+
+  setSubscription() {
+    this.authData.subscription = null;
+    this.authData$.next(this.authData);
+  }
+
+  getSubscription() {
+    return this.authData.subscription;
   }
 
   getUserFullName() {
