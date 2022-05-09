@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 
 export interface movie {
+  cuevanaUUID: string;
   UUID: string;
   title: string;
   year: number;
-  cuevanaUUID: string;
   poster: string;
   rating: number;
   duration: string;
@@ -18,8 +18,12 @@ export interface movie {
 export class MoviesService {
 
   movieCount = 14;
-  api = 'https://backend-jammer.herokuapp.com/movies/';
-  commentsAPI = 'https://backend-jammer.herokuapp.com/comments/';
+
+  //api = 'https://backend-jammer.herokuapp.com/movies/';
+  //commentsAPI = 'https://backend-jammer.herokuapp.com/comments/';
+
+  api = 'http://localhost:3000/movies/';
+  commentsAPI = 'http://localhost:3000/comments/';
 
   actionMovies$ = new Subject<movie[]>();
   animationMovies$ = new Subject<movie[]>();
@@ -93,10 +97,10 @@ export class MoviesService {
 
   toFilm(data: any): movie {
     return {
+      cuevanaUUID: data.cuevanaUUID,
       UUID: data.UUID,
       title: data.title,
       year: data.year,
-      cuevanaUUID: data.cuevanaUUID,
       poster: data.poster,
       rating: data.rating,
       duration: data.duration

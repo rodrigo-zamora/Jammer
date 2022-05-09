@@ -8,7 +8,8 @@ import { AuthService } from './auth.service';
 })
 export class CommentService {
 
-  api = 'https://backend-jammer.herokuapp.com/comments/';
+  //api = 'https://backend-jammer.herokuapp.com/comments/';
+  api = 'http://localhost:3000/comments/';
 
   comments$ = new Subject<any>();
 

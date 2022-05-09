@@ -10,8 +10,11 @@ import { AuthService } from './auth.service';
 
 export class ListService {
 
-  listAPI = 'https://backend-jammer.herokuapp.com/lists/';
-  movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
+  //listAPI = 'https://backend-jammer.herokuapp.com/lists/';
+  //movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
+
+  listAPI = 'http://localhost:3000/lists/';
+  movieAPI = 'http://localhost:3000/movies/';
 
   userLists$ = new Subject<any>();
   listMovies$ = new Subject<movie[]>();
@@ -74,19 +77,11 @@ export class ListService {
   }
 
   addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
-    console.log('Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
-    this.http.get(this.listAPI + 'list/' + listUUID + '/' + userUUID).subscribe(
+    console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
+    console.log('[SERVICE] Movie UUID: ' + movieUUID);
+    this.http.put(this.listAPI + 'list/' + listUUID, {movies: [movieUUID]}).subscribe(
       (data: any) => {
-        let moviesArray = data.movies;
-        moviesArray.push(movieUUID);
-        let url = this.listAPI + 'list/' + listUUID;
-        console.log(moviesArray);
-        this.http.put(url, { movies: moviesArray }).subscribe(
-          (data: any) => {  
-            console.log('Movie added to list');
-          }
-        );
-      }
-    );
+        console.log('Movie added to list: ' + data);
+      });
   }
 }

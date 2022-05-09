@@ -186,7 +186,10 @@ const movieController = {
             poster: movieDetails[0].poster,
             year: movieDetails[0].year,
             sypnosis: movieDetails[0].sypnosis,
-            duration: movieDetails[0].duration
+            duration: movieDetails[0].duration,
+            rating: 0,
+            cast: [],
+            genre: []
         };
         console.log("Movie to create: " + JSON.stringify(toCreate));
         let newMovie = new Movie(toCreate);

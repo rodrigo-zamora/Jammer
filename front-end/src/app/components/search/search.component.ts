@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.pelis.getSearchMovies(query);
       this.pelis.searchMovieTitle$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
         this.searchMovieTitle = movies;
+        console.log(this.searchMovieTitle);
       });
     });
   }
