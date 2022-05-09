@@ -119,23 +119,21 @@ const listController = {
             if (Object.keys(listBody).length === 0) {
                 throw new BadRequestError('No fields to update');
             } else {
+                console.log('fields to update')
                 let toUpdate = new List(list);
                 for (let key in listBody) {
                     if (key == 'movies') {
+                        console.log('listbody has movies');
                         for (let movie of listBody.movies) {
-                            let movieToCheck = await Movie.findOne({
-                                UUID: movie
-                            });
-                            if (!movieToCheck)  {
+                            if (movie.UUID) {
+                                let movieToAdd = await Movie.findOne({
+                                    UUID: movie.UUID
+                                });
+                                toUpdate.movies.push(movieToAdd);
+                            } else {
                                 let newMovie = await new Movie(movie);
                                 await newMovie.save();
                                 toUpdate.movies.push(newMovie.UUID);
-                            } else {
-                                if (toUpdate.movies.includes(movie)) {
-                                    throw new ConflictError(`Movie with uuid ${movie} already exists in list`);
-                                } else {
-                                    toUpdate.movies.push(movie);
-                                }
                             }
                         }
                     } else if (key == 'sharedWith') {

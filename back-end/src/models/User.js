@@ -18,29 +18,17 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true,
         trim: true,
         minlength: 2,
         maxlength: 50,
-        validate: {
-            validator: (firstName) => {
-                return /^[a-zA-Z]+$/.test(firstName);
-            },
-            message: (props) => `${props.value} is not a valid first name!`
-        }
+        default: ''
     },
     lastName: {
         type: String,
-        required: true,
         trim: true,
         minlength: 2,
         maxlength: 50,
-        validate: {
-            validator: (firstName) => {
-                return /^[a-zA-Z]+$/.test(firstName);
-            },
-            message: (props) => `${props.value} is not a valid first name!`
-        }
+        default: ''
     },
     imageURL: {
         type: String,

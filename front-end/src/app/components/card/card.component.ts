@@ -25,6 +25,7 @@ export class CardComponent implements OnInit {
 
   addToList(listUUID : string, movieUUID : string | undefined) {
     let userUUID = this.authService.getUserUUID();
+    console.log('Adding movie with UUID ' + movieUUID + ' to list with UUID ' + listUUID + ' and user with UUID ' + userUUID);
     this.lists.addMovieToList(listUUID, movieUUID, userUUID);
   }
 
