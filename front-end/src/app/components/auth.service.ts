@@ -19,12 +19,7 @@ export class AuthService {
   }
   
   logout() {
-    this.http.get(this.api + 'logout').subscribe(
-      (data: any) => {
-        console.log("DATA: " + data);
-        this.authData = data;
-        this.authData$.next(this.authData);
-      });
+    window.location.replace('http://localhost:3000/auth/logout');
   }
 
   verifyLogin() {
