@@ -35,4 +35,8 @@ export class NavBarComponent implements OnInit {
     window.location.replace('http://localhost:3000/auth/google/login');
   }
 
+  logout() {
+    
+  }
+
 }

@@ -17,7 +17,7 @@
           <p class="year">{{movies?.year}}</p>
         </div><br>
         <div class="moreInfo">
-          <p><b>Director(s): </b> {{movies?.director}}</p>
+          <p><b>Director(es): </b> {{movies?.director}}</p>
           <div style="display: flex;"><b style="margin-right: 3px;">Género: </b>
             <p *ngFor="let genre of movies.genres; let isLast=last"> {{genre.genre}}{{isLast ? '' : ', '}}</p>
           </div>

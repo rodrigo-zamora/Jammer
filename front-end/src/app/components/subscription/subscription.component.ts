@@ -17,4 +17,8 @@ export class SubscriptionComponent implements OnInit {
     return this.authService.hasSubscription();
   }
 
+  deleteSubscription() {
+    
+  }
+
 }
