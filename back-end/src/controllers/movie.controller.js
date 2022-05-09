@@ -81,7 +81,6 @@ const movieController = {
         }
     },
     search: async function (query) {
-        console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
             throw new BadRequestError('Query is empty');
         } else {
@@ -115,7 +114,6 @@ const movieController = {
                             16: "Thriller"
                         };
                         let genre = genres[query[key]];
-                        console.log('Searching for movies with genre: ', genre);
                         let movies = await Movie.find({
                             genre: genre
                         }).sort({

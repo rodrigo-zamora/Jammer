@@ -28,12 +28,8 @@ router.get('/verifyLogin', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    if (req.isAuthenticated()) {
-        req.logout();
-        res.status(200).send('Logged out');
-    } else {
-        res.status(401).send('Not authorized');
-    }
+    req.logout();
+    req.session = null;
 });
 
 module.exports = router;

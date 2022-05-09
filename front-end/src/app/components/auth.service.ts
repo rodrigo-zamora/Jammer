@@ -17,8 +17,18 @@ export class AuthService {
 
   constructor(public http: HttpClient) {
   }
+  
+  logout() {
+    this.http.get(this.api + 'logout').subscribe(
+      (data: any) => {
+        console.log("DATA: " + data);
+        this.authData = data;
+        this.authData$.next(this.authData);
+      });
+  }
 
   verifyLogin() {
+    console.log('Verifying login');
     this.http.get(this.api + 'verifyLogin', {
       withCredentials: true
     }).subscribe(
@@ -53,7 +63,7 @@ export class AuthService {
   getUserFullName() {
     return this.authData.firstName + ' ' + this.authData.lastName;
   }
-  
+
   getUserImage() {
     return this.authData.imageURL;
   }

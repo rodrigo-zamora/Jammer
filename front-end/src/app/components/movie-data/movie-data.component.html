@@ -47,8 +47,8 @@
     </div>
     <div class="commentSection">
       <h1>Comentarios</h1>
-      <div>
-        <app-comment *ngIf="isLoggedIn()"></app-comment>
+      <div *ngIf="isLoggedIn()">
+        <app-comment></app-comment>
       </div>
       <div *ngIf="!isLoggedIn()">
         <p>Para comentar, debes iniciar sesión</p>
