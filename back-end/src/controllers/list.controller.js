@@ -126,12 +126,16 @@ const listController = {
                             let movieToCheck = await Movie.findOne({
                                 UUID: movie
                             });
-                            if (!movieToCheck) {
+                            if (!movieToCheck)  {
                                 let newMovie = await new Movie(movie);
                                 await newMovie.save();
                                 toUpdate.movies.push(newMovie.UUID);
                             } else {
-                                toUpdate.movies.push(movieToCheck.UUID);
+                                if (toUpdate.movies.includes(movie)) {
+                                    throw new ConflictError(`Movie with uuid ${movie} already exists in list`);
+                                } else {
+                                    toUpdate.movies.push(movie);
+                                }
                             }
                         }
                     } else if (key == 'sharedWith') {

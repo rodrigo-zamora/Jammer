@@ -25,7 +25,9 @@ export class CommentService {
 
   createComment(cuevanaUUID: string, comment: string) {
     let uuid = this.authService.getUserUUID();
-    this.http.post((this.api + cuevanaUUID), { text: comment, authorUUID: uuid }).subscribe(data => {
+    let fullName = this.authService.getUserFullName();
+    let image = this.authService.getUserImage();
+    this.http.post((this.api + cuevanaUUID), { text: comment, authorUUID: uuid, authorName: fullName, authorImage: image }).subscribe(data => {
       this.getComments(cuevanaUUID);
     });
   }

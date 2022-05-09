@@ -52,14 +52,26 @@ export class MovieDataComponent implements OnInit {
 
     this.pelis.getMovieDetails(uuid + '/' + name);
     this.pelis.movieDetails$.pipe(takeUntil(this.destroyed)).subscribe((movie) => {
+      console.log(movie[0]);
       this.movies = movie[0];
-      console.log(this.movies);
     });
   }
 
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
+  }
+
+  getAuthorImage() {
+    return this.authService.getUserImage();
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  getActors() {
+    return this.movies.cast.map((actor: { name: any; }) => actor.name).join(', ');
   }
 
 }

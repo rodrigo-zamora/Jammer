@@ -16,6 +16,14 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    authorName: {
+        type: String,
+        required: true
+    },
+    authorImage: {
+        type: String,
+        required: false
+    },
     movieUUID: {
         type: String,
         required: true
@@ -34,7 +42,7 @@ const commentSchema = new mongoose.Schema({
         maxlength: 500,
         validate: {
             validator: (text) => {
-                return /^[a-zA-Z ]+$/.test(text);
+                return /^[a-zA-Z0-9\s\.,\?\!\:\;\(\)\-\_\=\+\*\&\%\$\#\@\[\]\{\}]+$/.test(text);
             }
         }
     },

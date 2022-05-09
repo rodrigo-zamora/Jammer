@@ -1,57 +1,75 @@
 <div>
-    <app-global-theme>
-        <app-nav-bar></app-nav-bar>
-        <div class="movieInfo">
-            <img src={{movies?.poster}} alt="Movie image">
-            <div class="movieInfoContent">
-                <h1 class="title"><b>{{movies?.title}}</b></h1>
-                <div class="cardInfo">
-                    <h2>{{movies?.sypnosis}}</h2>
-                    <div class="duo">
-                        <p class="duration">{{movies?.duration}}</p><br>
-                        <div class="rating">
-                            <p class="wmargin">{{movies?.rating}}</p><mat-icon>star</mat-icon>
-                        </div>
-                    </div>
-                    <p class="year">{{movies?.year}}</p>
-                </div><br>
-                <div class="moreInfo">
-                    <p><b>Director(s): </b> {{movies?.director}}</p>
-                    <div style="display: flex;"><b style="margin-right: 3px;">Género: </b><p *ngFor="let genre of movies.genres; let isLast=last"> {{genre.genre}}{{isLast ? '' : ', '}}</p></div>
-                </div>
-                <div style="display: flex; flex-flow: wrap; color: #fff; margin-top: 10px;"><b style="margin-right: 3px;">Actores: </b><p style="margin: 0px;" *ngFor="let actor of movies.cast; let isLast=last"> {{actor.name}}{{isLast ? '' : ', '}}</p></div>
-                <div class="button">
-                    <button
-                        mat-raised-button 
-                        class="seeMovie"
-                        onClick="window.open('https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2RMZWxWNmVZTERqazF0U2pWQlBBaGZMeEV0dHBpcWU1MkVtMzI2bkd0TXlDRFl4Um5jYkN6UFU2VFV1TGFpL24zeDNBcUFhVEJ1KzBQV1dienVDTHowQVFYUUkvOUhlSHk2MlFMY2hlem1BdzhiMlNqby9PQTJuM1JaQ0sxMDQ3dFpWTFVZODAyM0t0aER6TFZIVklMczBaaGRIZjFSRzFyVzhPMW9BWEU0VE9rMzdtM3cvNmJHR1RwQnB6c1h4dlowbzFmN3BhYzJpS1ZHN2NhUkFWaEJKdmpubm0yMnlYbExTRHNNQ0puUXNRPT0')"
-                        >
-                        Ver Película
-                    </button>
-                    <button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una lista
-                        <mat-menu #menu="matMenu">
-                            <p style="color: #fff; text-align: center;">Agregar a la lista</p>
-                            <button mat-menu-item *ngFor="let listItem of uLists" (click)="addToList(listItem?.UUID, movies?.id)">{{listItem?.name}}</button>
-                            <mat-divider></mat-divider>
-                            <button mat-menu-item class="addList" routerLink="/lists">Crear lista</button>
-                        </mat-menu>
-                    </button>
-                </div>
+  <app-global-theme>
+    <app-nav-bar></app-nav-bar>
+    <div class="movieInfo">
+      <img src={{movies?.poster}} alt="Movie image">
+      <div class="movieInfoContent">
+        <h1 class="title"><b>{{movies?.title}}</b></h1>
+        <div class="cardInfo">
+          <h2>{{movies?.sypnosis}}</h2>
+          <div class="duo">
+            <p class="duration">{{movies?.duration}}</p><br>
+            <div class="rating">
+              <p class="wmargin">{{movies?.rating}}</p>
+              <mat-icon>star</mat-icon>
             </div>
+          </div>
+          <p class="year">{{movies?.year}}</p>
+        </div><br>
+        <div class="moreInfo">
+          <p><b>Director(s): </b> {{movies?.director}}</p>
+          <div style="display: flex;"><b style="margin-right: 3px;">Género: </b>
+            <p *ngFor="let genre of movies.genres; let isLast=last"> {{genre.genre}}{{isLast ? '' : ', '}}</p>
+          </div>
         </div>
-        <div class="commentSection">
-            <h1>Comentarios</h1>
-            <app-comment></app-comment>
-            <div class="noComments" *ngIf="!comments">
-                <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
-            </div>
-            <div class="forComments" *ngFor="let comment of comments">
-                <div class="comment">
-                    <h2>{{'Juan Perez'}}</h2>
-                    <p>{{comment?.text}}</p>
-                </div>
-            </div>
+        <div style="display: flex; flex-flow: wrap; color: #fff; margin-top: 10px;"><b
+            style="margin-right: 3px;">Actores: </b>
+          <p style="margin: 0px;">
+            {{getActors()}}</p>
         </div>
-        <app-footer></app-footer>
-    </app-global-theme>
+        <div class="button">
+          <button mat-raised-button class="seeMovie"
+            onClick="window.open('https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2RMZWxWNmVZTERqazF0U2pWQlBBaGZMeEV0dHBpcWU1MkVtMzI2bkd0TXlDRFl4Um5jYkN6UFU2VFV1TGFpL24zeDNBcUFhVEJ1KzBQV1dienVDTHowQVFYUUkvOUhlSHk2MlFMY2hlem1BdzhiMlNqby9PQTJuM1JaQ0sxMDQ3dFpWTFVZODAyM0t0aER6TFZIVklMczBaaGRIZjFSRzFyVzhPMW9BWEU0VE9rMzdtM3cvNmJHR1RwQnB6c1h4dlowbzFmN3BhYzJpS1ZHN2NhUkFWaEJKdmpubm0yMnlYbExTRHNNQ0puUXNRPT0')">
+            Ver Película
+          </button>
+          <!--<button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una
+            lista
+            <mat-menu #menu="matMenu">
+              <p style="color: #fff; text-align: center;">Agregar a la lista</p>
+              <button mat-menu-item *ngFor="let listItem of uLists"
+                (click)="addToList(listItem?.UUID, movies?.id)">{{listItem?.name}}</button>
+              <mat-divider></mat-divider>
+              <button mat-menu-item class="addList" routerLink="/lists">Crear lista</button>
+            </mat-menu>
+          </button>-->
+        </div>
+      </div>
+    </div>
+    <div class="commentSection">
+      <h1>Comentarios</h1>
+      <div>
+        <app-comment *ngIf="isLoggedIn()"></app-comment>
+      </div>
+      <div *ngIf="!isLoggedIn()">
+        <p>Para comentar, debes iniciar sesión</p>
+      </div>
+      <div class="noComments" *ngIf="comments.length == 0">
+        <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
+      </div>
+      <div class="forComments" *ngFor="let comment of comments">
+        <div class="comment">
+          <div>
+            <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
+          </div>
+          <div class="author">
+            <h2>{{comment?.authorName}}</h2>
+          </div>
+          <div class="text">
+            <p>{{comment?.text}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </app-global-theme>
 </div>

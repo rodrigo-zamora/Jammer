@@ -26,13 +26,14 @@ export class MyListComponent implements OnInit {
 
   constructor(public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
     route.params.subscribe(params => {
-      console.log('UPDATING LISTS VIEW')
+      console.log('gotin');
       this.lists.getLists();
+      console.log('getting lists')
       this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+        console.log('got lists')
+        console.log(list)
         this.list = list.lists;
         this.sharedLists = list.sharedLists;
-        console.log(this.list);
-        console.log(this.sharedLists);
       });
     });
   }
@@ -50,7 +51,6 @@ export class MyListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
   }
 
   ngOnDestroy(): void {
