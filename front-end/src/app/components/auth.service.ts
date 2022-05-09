@@ -31,8 +31,16 @@ export class AuthService {
     );
   }
 
-  hasSubscription(): boolean {
-    return false;
+  getUserUUID() {
+    return this.authData.UUID;
   }
 
+  hasSubscription() {
+    console.log('hasSubscription from service', this.authData.subscription);
+    if (this.authData.subscription == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

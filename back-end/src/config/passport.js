@@ -12,18 +12,12 @@ passport.use(
             callbackURL: 'http://localhost:3000/auth/google/callback'
         },
         async function (accessToken, refreshToken, profile, done) {
-            console.log('working');
-            console.log('accessToken', accessToken);
-            console.log('refreshToken', refreshToken);
-            console.log('profile', profile);
             let user = await User.findOne({
                 UUID: profile.id
             });
             if (user) {
-                console.log('user found');
                 return done(null, user);
             } else {
-                console.log('Creating new user');
                 let list = {
                     name: 'Historial',
                     movies: [],
@@ -41,7 +35,6 @@ passport.use(
                 newUser.lists.push(recentlyWatchedList.UUID);
                 await recentlyWatchedList.save();
                 await newUser.save();
-                console.log('New user created');
                 return done(null, newUser);
             }
         }

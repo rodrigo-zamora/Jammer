@@ -20,9 +20,6 @@ router.get(
 );
 
 router.get('/verifyLogin', (req, res) => {
-    console.log('verifyLogin from route: ' + req.user);
-    console.log('isAuthenticated: ' + req.isAuthenticated());
-    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
         res.status(200).send(req.user);
     } else {

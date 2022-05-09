@@ -3,6 +3,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 import { MoviesService, movie } from '../movies.service';
 import { Router } from '@angular/router';
 import { ListService } from '../list.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-card', // Etiqueta html del componente
@@ -18,12 +19,12 @@ export class CardComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService) {
+  constructor(public lists: ListService, private authService: AuthService) {
 
   }
 
   addToList(listUUID : string, movieUUID : string | undefined) {
-    let userUUID = localStorage.getItem('UUID');
+    let userUUID = this.authService.getUserUUID();
     this.lists.addMovieToList(listUUID, movieUUID, userUUID);
   }
 

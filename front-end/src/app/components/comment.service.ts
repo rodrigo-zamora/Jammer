@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CommentService {
 
   comment: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getComments(cuevanaUUID: string) {
     this.http.get((this.api + cuevanaUUID)).subscribe(data => {
@@ -23,7 +24,7 @@ export class CommentService {
   }
 
   createComment(cuevanaUUID: string, comment: string) {
-    let uuid = localStorage.getItem('UUID');
+    let uuid = this.authService.getUserUUID();
     this.http.post((this.api + cuevanaUUID), { text: comment, authorUUID: uuid }).subscribe(data => {
       this.getComments(cuevanaUUID);
     });

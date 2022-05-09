@@ -1,9 +1,10 @@
 import { Component, Input, OnInit , Inject} from '@angular/core';
 import { ListService } from '../list.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { AuthService } from '../auth.service';
 
 /**
  * @title Dialog Overview
@@ -23,7 +24,17 @@ export class MyListComponent implements OnInit {
   
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService, private router: Router, public dialog: MatDialog) { }
+  constructor(public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
+    route.params.subscribe(params => {
+      this.lists.getLists();
+      this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+        this.list = list.lists;
+        this.sharedLists = list.sharedLists;
+        console.log(this.list);
+        console.log(this.sharedLists);
+      });
+    });
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
@@ -38,13 +49,7 @@ export class MyListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.lists.getLists();
-    this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
-      this.list = list.lists;
-      this.sharedLists = list.sharedLists;
-      console.log(this.list);
-      console.log(this.sharedLists);
-    });
+    
   }
 
   ngOnDestroy(): void {
@@ -53,8 +58,12 @@ export class MyListComponent implements OnInit {
   }
 
   createList(listName: string, isPrivate: boolean) {
-    let userUUID = localStorage.getItem('UUID');
+    let userUUID = this.authService.getUserUUID();
     this.lists.createList(listName, isPrivate, userUUID);
+  }
+
+  canSeeLists(): boolean {
+    return this.authService.hasSubscription();
   }
 
 }

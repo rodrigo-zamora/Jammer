@@ -4,6 +4,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommentService } from '../comment.service';
 import { ListService } from '../list.service';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -22,10 +23,10 @@ export class MovieDataComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router, public lists: ListService) { }
+  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router, public lists: ListService, private authService: AuthService) { }
 
   addToList(listUUID : string, movieUUID : string | undefined) {
-    let userUUID = localStorage.getItem('UUID');
+    let userUUID = this.authService.getUserUUID();
     this.lists.addMovieToList(listUUID, movieUUID, userUUID);
   }
 

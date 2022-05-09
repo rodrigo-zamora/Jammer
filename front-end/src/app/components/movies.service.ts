@@ -17,7 +17,7 @@ export interface movie {
 
 export class MoviesService {
 
-  movieCount = 10;
+  movieCount = 14;
   api = 'https://backend-jammer.herokuapp.com/movies/';
   commentsAPI = 'https://backend-jammer.herokuapp.com/comments/';
 
