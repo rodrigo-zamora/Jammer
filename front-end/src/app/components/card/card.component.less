@@ -15,7 +15,7 @@
     position: relative;
 
     &:hover .button-container .displayListsButton {
-        display: block;
+        opacity: 0.8;
     }
 
     .button-container {
@@ -24,13 +24,13 @@
         top: 0;
 
         &:focus .displayListsButton {
-            display: block;
+            opacity: 1;
         }
 
         .displayListsButton {
-            display: none;
+            display: block;
             background-color: #B62519;
-            opacity: 0.8;
+            opacity: 0;
             transition: 0.3s ease-in-out;
 
             &:hover {
@@ -38,7 +38,7 @@
                 transition: 0.3s ease-in-out;
             }
             &:focus {
-                display: block;
+                opacity: 1;
             }
         }
     }
