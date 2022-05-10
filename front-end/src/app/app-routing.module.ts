@@ -9,12 +9,12 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'list/:id', component: ListComponent },
   { path: 'search/:id', component: SearchComponent },
   { path: 'lists', component: MyListComponent },
   { path: '404', component: PageNotFoundComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', redirectTo: '' },
   { path: 'movie/:id/:name', component: MovieDataComponent },
   { path: 'subscription', component: SubscriptionComponent },
   {path: '**', redirectTo: '/404'}

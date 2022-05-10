@@ -29,75 +29,75 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService) { }
+  constructor(public moviesServices: MoviesService) { }
 
   ngOnInit(): void {
-    this.pelis.getActionMovies();
-    this.pelis.actionMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getActionMovies();
+    this.moviesServices.actionMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.actionMovies = movies;
     });
-    this.pelis.getAnimationMovies();
-    this.pelis.animationMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getAnimationMovies();
+    this.moviesServices.animationMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.animationMovies = movies;
     });
-    this.pelis.getAdventureMovies();
-    this.pelis.adventureMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getAdventureMovies();
+    this.moviesServices.adventureMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.adventureMovies = movies;
     });
-    this.pelis.getWarMovies();
-    this.pelis.warMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getWarMovies();
+    this.moviesServices.warMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.warMovies = movies;
     });
-    this.pelis.getBiographyMovies();
-    this.pelis.biographyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getBiographyMovies();
+    this.moviesServices.biographyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.biographyMovies = movies;
     });
-    this.pelis.getSciFiMovies();
-    this.pelis.sciFiMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getSciFiMovies();
+    this.moviesServices.sciFiMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.sciFiMovies = movies;
     });
-    this.pelis.getComedyMovies();
-    this.pelis.comedyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getComedyMovies();
+    this.moviesServices.comedyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.comedyMovies = movies;
     });
-    this.pelis.getCrimeMovies();
-    this.pelis.crimeMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getCrimeMovies();
+    this.moviesServices.crimeMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.crimeMovies = movies;
     });
-    this.pelis.getDocumentalMovies();
-    this.pelis.documentalMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getDocumentalMovies();
+    this.moviesServices.documentalMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.documentalMovies = movies;
     });
-    this.pelis.getDramaMovies();
-    this.pelis.dramaMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getDramaMovies();
+    this.moviesServices.dramaMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.dramaMovies = movies;
     });
-    this.pelis.getFamilyMovies();
-    this.pelis.familyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getFamilyMovies();
+    this.moviesServices.familyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.familyMovies = movies;
     });
-    this.pelis.getFantasyMovies();
-    this.pelis.fantasyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getFantasyMovies();
+    this.moviesServices.fantasyMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.fantasyMovies = movies;
     });
-    this.pelis.getMisteryMovies();
-    this.pelis.misteryMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getMisteryMovies();
+    this.moviesServices.misteryMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.misteryMovies = movies;
     });
-    this.pelis.getMusicalMovies();
-    this.pelis.musicalMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getMusicalMovies();
+    this.moviesServices.musicalMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.musicalMovies = movies;
     });
-    this.pelis.getRomanceMovies();
-    this.pelis.romanceMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getRomanceMovies();
+    this.moviesServices.romanceMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.romanceMovies = movies;
     });
-    this.pelis.getTerrorMovies();
-    this.pelis.terrorMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getTerrorMovies();
+    this.moviesServices.terrorMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.terrorMovies = movies;
     });
-    this.pelis.getThrillerMovies();
-    this.pelis.thrillerMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+    this.moviesServices.getThrillerMovies();
+    this.moviesServices.thrillerMovies$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
       this.thrillerMovies = movies;
     });
   }

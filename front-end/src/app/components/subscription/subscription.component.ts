@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SubscriptionService } from '../subscription.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-subscription',
@@ -10,9 +11,10 @@ import { SubscriptionService } from '../subscription.service';
 })
 export class SubscriptionComponent implements OnInit {
 
-  constructor(private router: Router, public authService: AuthService, public subscriptionService: SubscriptionService) { }
+  constructor(private snackbar: MatSnackBar, private router: Router, public authService: AuthService, public subscriptionService: SubscriptionService) { }
 
   ngOnInit(): void {
+    
   }
 
   hasSubscription(): boolean {
@@ -22,8 +24,10 @@ export class SubscriptionComponent implements OnInit {
   deleteSubscription() {
     let subscription = this.authService.getSubscription();
     this.authService.setSubscription();
-    this.router.navigate(['/']);
     this.subscriptionService.deleteSubscription(subscription);
+    this.snackbar.open('Suscripción cancelada correctamente ', '', {
+      duration: 4000
+    });
   }
 
   isLoggedIn(): boolean {

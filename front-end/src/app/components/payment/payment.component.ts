@@ -3,6 +3,7 @@ import { SubscriptionService } from '../subscription.service';
 import { AuthService } from '../auth.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 
 @Component({
@@ -20,7 +21,7 @@ export class PaymentComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(private router: Router, public subscriptionService : SubscriptionService, private authService: AuthService) { }
+  constructor(private snackbar: MatSnackBar, private router: Router, public subscriptionService : SubscriptionService, private authService: AuthService) { }
 
 
   ngOnInit(): void {
@@ -32,6 +33,9 @@ export class PaymentComponent implements OnInit {
     this.subscriptionService.createSubscription(userUUID);
     this.subscriptionService.subscription$.pipe(takeUntil(this.destroyed)).subscribe((subscription) => {
       this.subscription = subscription;
+      this.snackbar.open('Suscripción realizada correctamente ', '', {
+        duration: 4000
+      });
       this.router.navigate(['/']);
     });
   }

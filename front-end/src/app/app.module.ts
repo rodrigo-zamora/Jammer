@@ -14,8 +14,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CardComponent } from './components/card/card.component';
@@ -35,8 +33,8 @@ import { CarouselBasicComponent } from './components/carousel-basic/carousel-bas
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
 import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { CommentComponent } from './components/comment/comment.component';
-
-
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -57,7 +55,8 @@ import { CommentComponent } from './components/comment/comment.component';
     ListComponent,
     ListCardComponent,
     DialogOverviewExampleDialogComponent,
-    CommentComponent
+    CommentComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +73,8 @@ import { CommentComponent } from './components/comment/comment.component';
     MatInputModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent, ListComponent]
