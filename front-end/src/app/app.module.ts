@@ -33,8 +33,8 @@ import { CarouselBasicComponent } from './components/carousel-basic/carousel-bas
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
 import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { CommentComponent } from './components/comment/comment.component';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,8 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     MatDialogModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent, ListComponent]
