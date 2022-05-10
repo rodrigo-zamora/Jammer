@@ -26,8 +26,12 @@ export class SubscriptionComponent implements OnInit {
   }
 
   deleteSubscription() {
-    const message = '¿Está seguro que desea cancelar su suscripción?';
-    const dialogData = new ConfirmDialogModel("Cancelar suscripción", message);
+    const dialogData = new ConfirmDialogModel(
+      "Cancelar suscripción",
+      '¿Está seguro que desea cancelar su suscripción?',
+      "Salir",
+      "Cancelar suscripción"
+    );
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '400px',
@@ -40,7 +44,7 @@ export class SubscriptionComponent implements OnInit {
         this.authService.setSubscription();
         this.subscriptionService.deleteSubscription(subscription);
         this.snackbar.open('Suscripción cancelada correctamente ', '', {
-          duration: 4000
+          duration: 3000
         });
       }
     });

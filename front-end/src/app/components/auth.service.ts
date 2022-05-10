@@ -65,10 +65,8 @@ export class AuthService {
 
   isLoggedIn() {
     if (this.authData == null) {
-      console.log('Not logged in');
       return false;
     } else {
-      console.log('Logged in');
       return true;
     }
   }
