@@ -3,7 +3,7 @@ import { ListService } from '../list.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { DialogCreateListComponent } from '../dialog-create-list/dialog-create-list.component';
 import { AuthService } from '../auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -37,7 +37,7 @@ export class MyListComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+    const dialogRef = this.dialog.open(DialogCreateListComponent, {
       width: '550px',
       data: {name: this.name, animal: this.animal},
     });

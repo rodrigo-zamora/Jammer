@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{'Crear/Modificar componente'}}</h1>
+<h1 mat-dialog-title>{{'Crear nueva lista'}}</h1>
 <div mat-dialog-content class="content">
   <p>Nombre de la lista</p>
   <mat-form-field appearance="fill">
@@ -13,12 +13,10 @@
     <input matInput [(ngModel)]="data.email">
   </mat-form-field>
 </div>
-<!-- TO DO
 <div mat-dialog-content class="content">
   <p>Subir imagen de la lista</p>
-  <button mat-button (click)="uploadImage()" class="button"><mat-icon class="icon">cloud_upload</mat-icon>Subir Imagen</button>
+  <button mat-button (click)="uploadImage()" class="button"><mat-icon class="icon">cloud_upload</mat-icon>Subir imagen</button>
 </div>
-//-->
 <div mat-dialog-content class="content privateList">
   <mat-checkbox class="example-margin">Lista privada</mat-checkbox>
 </div>

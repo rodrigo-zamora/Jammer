@@ -31,10 +31,11 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
-import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { DialogCreateListComponent } from './components/dialog-create-list/dialog-create-list.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { DialogUpdateListComponent } from './components/dialog-update-list/dialog-update-list.component';
 
 @NgModule({
   declarations: [
@@ -54,9 +55,10 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     MyListComponent,
     ListComponent,
     ListCardComponent,
-    DialogOverviewExampleDialogComponent,
+    DialogCreateListComponent,
     CommentComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    DialogUpdateListComponent
   ],
   imports: [
     BrowserModule,

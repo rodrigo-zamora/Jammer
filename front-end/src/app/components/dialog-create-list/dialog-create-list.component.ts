@@ -10,14 +10,14 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-dialog-overview-example-dialog',
-  templateUrl: './dialog-overview-example-dialog.component.html',
-  styleUrls: ['./dialog-overview-example-dialog.component.less']
+  selector: 'app- dialog-create-list',
+  templateUrl: './dialog-create-list.component.html',
+  styleUrls: ['./dialog-create-list.component.less']
 })
-export class DialogOverviewExampleDialogComponent implements OnInit {
+export class DialogCreateListComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+    public dialogRef: MatDialogRef<DialogCreateListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public lists: ListService,
     private authService: AuthService
