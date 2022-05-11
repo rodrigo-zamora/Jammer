@@ -79,18 +79,21 @@ export class ListService {
   addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
     console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
     console.log('[SERVICE] Movie UUID: ' + movieUUID);
-    this.http.put(this.listAPI + 'list/' + listUUID, {movies: [movieUUID]}).subscribe(
+    let url = this.listAPI + 'list/' + listUUID + '/' + movieUUID;
+    this.http.post(url, movieUUID, { withCredentials: true }).subscribe(
       (data: any) => {
-        console.log('Movie added to list: ' + data);
+        console.log('[SERVICE] Movie added to list');
+        this.getMoviesFromList(listUUID);
       });
   }
 
-  removeMovieFromList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
-    console.log('[SERVICE] Removing movie with UUID: ' + movieUUID + ' from list with UUID: ' + listUUID);
-    console.log('[SERVICE] Movie UUID: ' + movieUUID);
-    this.http.put(this.listAPI + 'list/' + listUUID, {movies: [movieUUID]}).subscribe(
+  deleteFromList(listUUID: string, movieUUID: string | undefined) {
+    console.log('[SERVICE] Deleting movie with UUID: ' + movieUUID + ' from list with UUID: ' + listUUID);
+    let url = this.listAPI + 'list/' + listUUID + '/' + movieUUID;
+    this.http.delete(url).subscribe(
       (data: any) => {
-        console.log('Movie removed from list: ' + data);
+        console.log('[SERVICE] Movie deleted from list');
+        this.getMoviesFromList(listUUID);
       });
-    }
+  }
 }

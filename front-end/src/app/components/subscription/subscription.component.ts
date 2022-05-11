@@ -42,6 +42,7 @@ export class SubscriptionComponent implements OnInit {
       if (result) {
         let subscription = this.authService.getSubscription();
         this.authService.setSubscription();
+        this.router.navigate(['/']);
         this.subscriptionService.deleteSubscription(subscription);
         this.snackbar.open('Suscripción cancelada correctamente ', '', {
           duration: 3000

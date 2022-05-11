@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /**
  * @title Dialog Overview
@@ -24,13 +25,10 @@ export class MyListComponent implements OnInit {
   
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
+  constructor(private snackbbar: MatSnackBar, public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
     route.params.subscribe(params => {
-      console.log('gotin');
       this.lists.getLists();
-      console.log('getting lists')
       this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
-        console.log('got lists')
         console.log(list)
         this.list = list.lists;
         this.sharedLists = list.sharedLists;
@@ -45,12 +43,12 @@ export class MyListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.animal = result;
     });
   }
 
   ngOnInit(): void {
+    this.authService.verifyLogin();
   }
 
   ngOnDestroy(): void {

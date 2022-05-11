@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ListService } from '../list.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -13,7 +15,7 @@ export class ListCardComponent implements OnInit {
 
   @Input() list: any;
 
-  constructor(public lists: ListService, public dialog: MatDialog) { }
+  constructor(private snackbar: MatSnackBar, public lists: ListService, public dialog: MatDialog) { }
 
   animal: string | undefined;
   name: string | undefined;
@@ -34,7 +36,27 @@ export class ListCardComponent implements OnInit {
   }
 
   deleteList(listUUID: string) {
-    this.lists.deleteList(listUUID);
+    const dialogData = new ConfirmDialogModel(
+      "Eliminar lista",
+      "¿Estás seguro de que quieres eliminar esta lista?",
+      "Salir",
+      "Eliminar"
+    )
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '550px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.lists.deleteList(listUUID);
+        this.snackbar.open('Lista eliminada', '', {
+          duration: 2000
+        });
+      }
+    });
+
   }
 
 }

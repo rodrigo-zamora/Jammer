@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { MoviesService, movie } from '../movies.service';
-import { Router } from '@angular/router';
+import { movie } from '../movies.service';
 import { ListService } from '../list.service';
 import { AuthService } from '../auth.service';
 
@@ -19,7 +18,7 @@ export class CardComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService, private authService: AuthService) {
+  constructor(public listService: ListService, private authService: AuthService) {
 
   }
 
@@ -27,18 +26,22 @@ export class CardComponent implements OnInit {
     let userUUID = this.authService.getUserUUID();
     if (movieUUID) {
       console.log('Adding movie with UUID ' + movieUUID + ' to list with UUID ' + listUUID + ' and user with UUID ' + userUUID);
-      this.lists.addMovieToList(listUUID, movieUUID, userUUID);
+      this.listService.addMovieToList(listUUID, movieUUID, userUUID);
     } else {
       console.log('Adding movie with Cuevana UUID ' + cuevanaUUID + ' to list with UUID ' + listUUID + ' and user with UUID ' + userUUID);
-      this.lists.addMovieToList(listUUID, cuevanaUUID, userUUID);
+      this.listService.addMovieToList(listUUID, cuevanaUUID, userUUID);
     }
   }
 
   displayLists() {
-    this.lists.getLists();
-    this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+    this.listService.getLists();
+    this.listService.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
       this.uLists = list.lists;
-      this.uLists.splice(0, 1);
+      this.uLists.forEach((item: any) => {
+        if (item.name == 'Historial') {
+          this.uLists.splice(this.uLists.indexOf(item), 1);
+        }
+      });
     });
   }
 

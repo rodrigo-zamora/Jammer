@@ -167,6 +167,76 @@ const listController = {
             return list;
         }
     },
+    addMovie: async function (listUUID, movieUUID) {
+        console.log(`Adding movie with listUUID ${listUUID} and movieUUID ${movieUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            list = new List(list);
+            console.log(`List found`);
+            let movieInDatabase = await Movie.findOne({
+                $or: [{
+                    UUID: movieUUID
+                }, {
+                    cuevanaUUID: movieUUID
+                }]
+            });
+            if (!movieInDatabase) {
+                console.log('Movie does not exist in database');
+                console.log('Creating movie in database: ' + movieUUID);    
+                let toCreate = await MovieController.createFromCuevanaUUID(movieUUID);
+                console.log('Movie created: ' + toCreate.title);
+                if (list.movies.includes(toCreate.UUID)) {
+                    console.log('Movie already exists in list');
+                } else {
+                    console.log('Movie does not exist in list');
+                    list.movies.push(toCreate.UUID);
+                }
+                await toCreate.save();
+            } else {
+                console.log('Movie exists in database');
+                movieInDatabase = new Movie(movieInDatabase);
+                if (list.movies.includes(movieInDatabase.UUID)) {
+                    console.log('Movie already exists in list');
+                } else {
+                    console.log('Movie does not exist in list');
+                    list.movies.push(movieInDatabase.UUID);
+                }
+                await movieInDatabase.save();
+            }
+            await list.save();
+            return list;
+        }
+    },
+    deleteMovie: async function (listUUID, movieUUID) {
+        console.log(`Deleting movie with listUUID ${listUUID} and movieUUID ${movieUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            list = new List(list);
+            let movie = await Movie.findOne({
+                UUID: movieUUID
+            });
+            if (!movie) {
+                throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
+            } else {
+                movie = new Movie(movie);
+                if (list.movies.includes(movie.UUID)) {
+                    list.movies.splice(list.movies.indexOf(movie.UUID), 1);
+                } else {
+                    throw new NotFoundError(`Movie with uuid ${movieUUID} not found in list ${list.name}`);
+                }
+                await list.save();
+                return list;
+            }
+        }
+    },
     delete: async function (listUUID) {
         console.log(`Deleting list with listUUID ${listUUID}`);
         let list = await List.findOne({
