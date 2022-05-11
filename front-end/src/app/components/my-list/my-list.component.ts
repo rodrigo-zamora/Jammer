@@ -1,9 +1,11 @@
 import { Component, Input, OnInit , Inject} from '@angular/core';
 import { ListService } from '../list.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { DialogOverviewExampleDialogComponent } from '../dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { DialogCreateListComponent } from '../dialog-create-list/dialog-create-list.component';
+import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /**
  * @title Dialog Overview
@@ -23,28 +25,30 @@ export class MyListComponent implements OnInit {
   
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService, private router: Router, public dialog: MatDialog) { }
+  constructor(private snackbbar: MatSnackBar, public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
+    route.params.subscribe(params => {
+      this.lists.getLists();
+      this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+        console.log(list)
+        this.list = list.lists;
+        this.sharedLists = list.sharedLists;
+      });
+    });
+  }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+    const dialogRef = this.dialog.open(DialogCreateListComponent, {
       width: '550px',
       data: {name: this.name, animal: this.animal},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.animal = result;
     });
   }
 
   ngOnInit(): void {
-    this.lists.getLists();
-    this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
-      this.list = list.lists;
-      this.sharedLists = list.sharedLists;
-      console.log(this.list);
-      console.log(this.sharedLists);
-    });
+    this.authService.verifyLogin();
   }
 
   ngOnDestroy(): void {
@@ -52,9 +56,8 @@ export class MyListComponent implements OnInit {
     this.destroyed.complete();
   }
 
-  createList(listName: string, isPrivate: boolean) {
-    let userUUID = localStorage.getItem('UUID');
-    this.lists.createList(listName, isPrivate, userUUID);
+  canSeeLists(): boolean {
+    return this.authService.hasSubscription();
   }
 
 }

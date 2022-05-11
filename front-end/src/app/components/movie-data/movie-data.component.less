@@ -71,8 +71,16 @@ div {
                     margin-top: 20px;
 
                     .seeMovie {
+                        margin: 0 10px;
                         background-color: #B62519;
+                        text-decoration: none;
+                        color: #fff;
                     }
+                }
+                .moreInfo {
+                    display: flex;
+                    justify-content: space-between;
+                    color: #fff;
                 }
             }
         }
@@ -80,9 +88,57 @@ div {
             color: #fff;
             margin: 30px;
 
-            p {
-                margin: 15px;
+            .noComments {
+                p {
+                    margin: 15px;
+                }
             }
+
+            .forComments {
+                padding: 15px;
+
+                .comment {
+                    border: 1px solid #fff;
+                    border-radius: 15px;
+
+                    .commentHeader {
+                        display: flex;
+                        justify-content: space-between;
+
+                        h2 {
+                            margin: 10px;
+                        }
+    
+                        p {
+                            margin: 15px 30px;
+                        }
+                        .autorInfo {
+                            display: flex;
+                            margin: 10px 10px;
+    
+                            .authorImage {
+                                width: 45px;
+                                height: 45px;
+                                border-radius: 50%;
+                                font-weight: bold;
+                            }
+                        }
+
+                        .crud {
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+
+                    .text {
+                        background-color: #2e2e2e;
+                        border-radius: 10px;
+                        padding: 5px;
+                        margin: 10px;
+                    }
+                }
+            }
+
         }
     }
 }

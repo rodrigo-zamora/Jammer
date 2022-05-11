@@ -30,19 +30,20 @@ export class SearchService {
   }
 
   getSearchMovies( search: string ) {
-    this.http.get(`https://backend-jammer.herokuapp.com/movies/search?title=${search}`)
+    //this.http.get(`https://backend-jammer.herokuapp.com/movies/search?title=${search}`)
+    this.http.get(`http://localhost:3000/movies/search?title=${search}`)
       .subscribe((data: any) => {
+        this.searchTitle = [];
         for(let i = 0; i < data.length; i++) {
           const film: movie = {
             UUID: data[i].UUID,
             title: data[i].title,
             year: data[i].year,
-            cuevanaUUID: data[i].cuevanaUUID,
+            cuevanaUUID: data[i].id,
             poster: data[i].poster,
             rating: data[i].rating,
             duration: data[i].duration
           };
-          console.log(film);
           this.searchTitle.push(film);
         }
         this.searchMovieTitle$.next(this.searchTitle);
@@ -51,7 +52,8 @@ export class SearchService {
   }
 
   getSearchGenres( genre: string ) {
-    this.http.get(`https://backend-jammer.herokuapp.com/movies/search?genre=${genre}`)
+    //this.http.get(`https://backend-jammer.herokuapp.com/movies/search?genre=${genre}`)
+    this.http.get(`http://localhost:3000/movies/search?genre=${genre}`)
       .subscribe((data: any) => {
         for(let i = 0; i < data.length; i++) {
           const film: movie = {

@@ -1,11 +1,21 @@
 <div>
   <app-global-theme>
     <app-nav-bar></app-nav-bar>
-    <div class="movieInfo" *ngFor="let movie of listItem">
-      <app-card [movie]="movie"></app-card>
-      <div class="right">
-        <p>{{'Comments here'}}</p>
-        <app-comment></app-comment>
+    <div *ngIf="listItem.length == 0" class="noMovieInList">
+      <h2>
+        No has agregado ninguna película a la lista.
+      </h2>
+    </div>
+    <div *ngIf="listItem.length > 0">
+      <div class="movieInfo" *ngFor="let movie of listItem">
+        <app-card [movie]="movie"></app-card>
+        <div class="right">
+          <div *ngFor="let com of commentItems">
+            <p>ASD</p>
+          </div>
+          <app-comment></app-comment>
+        </div>
+        <button mat-raised-button class="deleteFromList" (click)="deleteFromList(movie.UUID)">Borrar de la lista</button>
       </div>
     </div>
     <app-footer></app-footer>

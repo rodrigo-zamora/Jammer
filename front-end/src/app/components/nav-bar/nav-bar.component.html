@@ -4,7 +4,7 @@
     <span>Jammer</span>
   </div>
 
-  <div *ngIf="isLogged" class="myListButton" routerLink="/lists">
+  <div class="myListButton" routerLink="/lists">
     <ul class="navigation-links navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link">Mis listas</a>
@@ -12,27 +12,27 @@
     </ul>
   </div>
 
-  <div *ngIf="isLogged" class="myListButton" routerLink="/subscription">
+  <div class="myListButton" routerLink="/subscription">
     <ul class="navigation-links navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link">Subscripción</a>
+        <a class="nav-link">Suscripción</a>
       </li>
     </ul>
   </div>
 
   <div class="spacer"></div>
 
-  <div class="secondary-navigation">
+  <div class="secondary-navigation" ngNativeValidate>
     <input id="search" type="text" placeholder="Buscar película" aria-label="Search" aria-describedby="basic-addon2"
-      class="search-input">
-    <button mat-raised-button class="searchButton" (click)="searchMovies()">Buscar</button>
+      class="search-input" required>
+    <button mat-raised-button class="searchButton" (click)="searchMovies()" type="submit">Buscar</button>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 
-  <div *ngIf="!isLogged" class="google-btn" (click)="login()">
-    <div class="google-icon-wrapper">
-      <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
-      </div>
-    <p class="btn-text"><b>Iniciar sesión con Google</b></p>
-    </div>
+  <div *ngIf="!isLogged" (click)="login()">
+    <button mat-raised-button class="searchButton">Iniciar sesión</button>
+  </div>
+
+  <div *ngIf="isLogged" (click)="logout()">
+    <button mat-raised-button class="searchButton">Cerrar sesión</button>
   </div>
 </div>

@@ -36,7 +36,7 @@ const movieSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        required: true
+        required: false
     },
     duration: {
         type: String,
@@ -44,11 +44,11 @@ const movieSchema = new mongoose.Schema({
     },
     genres: {
         type: [String],
-        required: true
+        required: false
     },
     cast: {
         type: [String],
-        required: true
+        required: false
     }
 }, { collection : 'movies' });
 

@@ -27,7 +27,7 @@ const listSchema = new mongoose.Schema({
         maxlength: 500,
         validate: {
             validator: (description) => {
-                return /^[a-zA-Z ]+$/.test(name);
+                return /^[a-zA-Z0-9\s\.,\?\!\:\;\(\)\-\_\=\+\*\&\%\$\#\@\[\]\{\}]+$/.test(text);
             }
         }
     },

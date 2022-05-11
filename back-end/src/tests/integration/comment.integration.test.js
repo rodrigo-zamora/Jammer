@@ -5,7 +5,7 @@ const endFunction = require('./helpers/supertest-jasmine');
 
 const commentUUID = "1c967358-d9b2-46d3-ae34-db9fd6d90c6e";
 const authorUUID = "1f967358-d9b2-46d3-ae34-db9fd6d90c6e";
-const movieUUID = "fb2595ae-c5b6-4e0d-b9ca-52366efa9501";
+const movieUUID = "adventures-of-a-mathematician";
 
 describe('/comments/:movieUUID', () => {
     describe('GET', () => {

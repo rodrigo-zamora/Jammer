@@ -17,7 +17,6 @@ router.post('/', handleError(async (req, res) => {
 }));
 
 router.get('/search', handleError(async (req, res) => {
-    console.log('GET /movies/search');
     let movie = await movieController.search(req.query);
     res.send(movie);
 }));

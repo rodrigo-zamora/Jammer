@@ -22,8 +22,8 @@ const subscriptionController = {
                 user = new User(user);
                 let newSubscription = await new Subscription(subscription);
                 user.subscription = newSubscription.UUID;
-                await user.save();
                 await newSubscription.save();
+                await user.save();
                 return newSubscription;
             }
         }

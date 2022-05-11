@@ -9,7 +9,14 @@
 */
 
 const cheerio = require('cheerio');
-const cloudscraper = require('cloudscraper');
+const cloudscraper = require('cloudscraper').defaults({
+  agentOptions: {
+    ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256'
+  },
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+  }
+})
 const {BASE_URL, MOVIES, SERIES, GENRES} = require('./urls')
 
 const getMovies = async(type) =>{
@@ -329,7 +336,10 @@ const getSearch = async(query, page) => {
 }
 
 const getLinks = async(id) => {
+  console.log('getLinks');
   const res = await cloudscraper(`${BASE_URL}${id}` , {method: 'GET'});
+  console.log('res', res);
+  console.log('res json', JSON.stringify(res));
   const body = await res;
   const $ = cheerio.load(body);
   const promises = [];
@@ -338,11 +348,14 @@ const getLinks = async(id) => {
   for(let i = 1; i < 11; i++){
     const url = $(`#OptL${i} > iframe`).attr('data-src');
     if(url !== undefined) {
+      console.log('entró')
       latino.push({
         url: 'https:' + url,
       })
     }
   }
+  console.log('acabó for')
+
   const espanol = [];
   for(let i = 1; i < 11; i++){
     const url = $(`#OptE${i} > iframe`).attr('data-src');

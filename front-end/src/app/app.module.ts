@@ -14,8 +14,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CardComponent } from './components/card/card.component';
@@ -33,10 +31,12 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { CarouselBasicComponent } from './components/carousel-basic/carousel-basic.component';
 import { GenreComponentComponent } from './components/genre-component/genre-component.component';
-import { DialogOverviewExampleDialogComponent } from './components/dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import { DialogCreateListComponent } from './components/dialog-create-list/dialog-create-list.component';
 import { CommentComponent } from './components/comment/comment.component';
-
-
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { DialogUpdateListComponent } from './components/dialog-update-list/dialog-update-list.component';
+import { EditCommentsComponent } from './components/edit-comments/edit-comments.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +56,11 @@ import { CommentComponent } from './components/comment/comment.component';
     MyListComponent,
     ListComponent,
     ListCardComponent,
-    DialogOverviewExampleDialogComponent,
-    CommentComponent
+    DialogCreateListComponent,
+    CommentComponent,
+    ConfirmDialogComponent,
+    DialogUpdateListComponent,
+    EditCommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +77,9 @@ import { CommentComponent } from './components/comment/comment.component';
     MatInputModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent, ListComponent]

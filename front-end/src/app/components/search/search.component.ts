@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { SearchService } from '../search.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { movie } from '../movies.service';
 
 @Component({
@@ -15,16 +15,20 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   movies: movie[] = [];
 
-  constructor(public pelis: SearchService, private router: Router) { }
-
-  ngOnInit(): void {
-    var url = this.router.url;
-    var query = url.split('/')[2];
-    this.pelis.getSearchMovies(query);
-    this.pelis.searchMovieTitle$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
-      this.searchMovieTitle = movies;
+  constructor(public pelis: SearchService, private router: Router, route: ActivatedRoute) {
+    route.params.subscribe(params => {
+      this.searchMovieTitle = [];
+      var url = this.router.url;
+      var query = url.split('/')[2];
+      this.pelis.getSearchMovies(query);
+      this.pelis.searchMovieTitle$.pipe(takeUntil(this.destroyed)).subscribe((movies) => {
+        this.searchMovieTitle = movies;
+        console.log(this.searchMovieTitle);
+      });
     });
   }
+
+  ngOnInit(): void { }
 
   ngOnDestroy(): void {
     this.destroyed.next();

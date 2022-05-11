@@ -1,7 +1,18 @@
 <div>
     <app-global-theme>
         <app-nav-bar></app-nav-bar>
-        <app-payment></app-payment>
+        <div *ngIf="!isLoggedIn()" class="loggedOut">
+            <h2>
+                Debes iniciar sesión para comprar una suscripción.
+            </h2>
+        </div>
+        <div *ngIf="!hasSubscription() && isLoggedIn()">
+            <app-payment></app-payment>
+        </div>
+        <div *ngIf="hasSubscription()" class="hasSubscription">
+            <h2>¡Ya tienes una suscripción activa!</h2>
+            <button mat-raised-button class="cancelSub" (click)="deleteSubscription()">Cancelar suscripción</button>
+        </div>
         <app-footer></app-footer>
     </app-global-theme>
 </div>

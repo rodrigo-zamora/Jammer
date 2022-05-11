@@ -28,5 +28,24 @@ div app-global-theme {
         .allLists {
             display: flex;
         }
+        .subscriptionClick:hover {
+            color: #B62519;
+        }
+    }
+    .noSubscription {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        height: calc(100vh - 400px);
+
+        .subscribe {
+            height: 35px;
+            background-color: #B62519;
+        }
+    }
+    .withSubscription {
+        height: calc(100vh - 400px);
     }
 }

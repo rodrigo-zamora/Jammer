@@ -14,18 +14,31 @@
     cursor: pointer;
     position: relative;
 
+    &:hover .button-container .displayListsButton {
+        opacity: 0.8;
+    }
+
     .button-container {
         position: absolute;
         right: 0;
         top: 0;
 
-        button {
+        &:focus .displayListsButton {
+            opacity: 1;
+        }
+
+        .displayListsButton {
+            display: block;
             background-color: #B62519;
-            opacity: 0.8;
+            opacity: 0;
             transition: 0.3s ease-in-out;
+
             &:hover {
                 opacity: 1;
                 transition: 0.3s ease-in-out;
+            }
+            &:focus {
+                opacity: 1;
             }
         }
     }

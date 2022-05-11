@@ -8,33 +8,66 @@ import { Observable, of, Subject } from 'rxjs';
 
 export class AuthService {
 
-  api = 'https://backend-jammer.herokuapp.com/auth/';
+  api = 'http://localhost:3000/auth/';
+  //api = 'https://backend-jammer.herokuapp.com/auth/';
 
   authData$ = new Subject<any>();
 
-  auth: any;
+  authData: any;
 
-  constructor(public http: HttpClient) { }
-
-  /*verifyLogin() {
-    let url = this.api + 'verifyLogin';
-    console.log('Verifying login from service: ' + url + 'verifyLogin');
-    this.http.get(url, { withCredentials: true }).subscribe(
-      (data: any) => {
-        console.log('Login verified from service');
-        console.log(data);
-        this.auth = data;
-        this.authData$.next(this.auth);
-      });
-  }*/
+  constructor(public http: HttpClient) {
+  }
+  
+  logout() {
+    window.location.replace('http://localhost:3000/auth/logout');
+  }
 
   verifyLogin() {
-    let uuid = localStorage.getItem('UUID');
-    if (uuid) {
-      return true;
-    } else {
+    console.log('Verifying login');
+    this.http.get(this.api + 'verifyLogin', {
+      withCredentials: true
+    }).subscribe(
+      (data: any) => {
+        this.authData = data;
+        this.authData$.next(this.authData);
+      }
+    );
+  }
+
+  getUserUUID() {
+    return this.authData.UUID;
+  }
+
+  hasSubscription(): boolean {
+    if (this.authData == null || this.authData.subscription == null || this.authData.subscription == undefined || this.authData.subscription == '') {
       return false;
+    } else {
+      return true;
     }
   }
 
+  setSubscription() {
+    this.authData.subscription = null;
+    this.authData$.next(this.authData);
+  }
+
+  getSubscription() {
+    return this.authData.subscription;
+  }
+
+  getUserFullName() {
+    return this.authData.firstName + ' ' + this.authData.lastName;
+  }
+
+  getUserImage() {
+    return this.authData.imageURL;
+  }
+
+  isLoggedIn() {
+    if (this.authData == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

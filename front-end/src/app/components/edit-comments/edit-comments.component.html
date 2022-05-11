@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{'Editar comentario'}}</h1>
+<div mat-dialog-content class="content">
+  <p>Editar comentario</p>
+  <mat-form-field appearance="fill" ngNativeValidate>
+    <mat-label>Comentario</mat-label>
+    <input matInput id="newComment">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="actions">
+  <button mat-button  (click)="onNoClick()">Cancelar</button>
+  <button mat-button cdkFocusInitial (click)="editComment(data.UUID)" type="submit">Editar comentario</button>
+</div>

@@ -18,6 +18,21 @@ const COOKIE_KEY = process.env.COOKIE_KEY || 'secret';
 
 const app = express();
 
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: ['http://localhost:4200'],
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('movieComment', (data) => {
+        io.emit('movieComment', data);
+    })
+});
+
 const mongoose = require('mongoose');
 
 const DB_NAME = process.env.DB_NAME || '';
@@ -48,6 +63,13 @@ process.on('SIGINT', function () {
     });
 });
 
+app.use(cors(
+    {
+        origin: 'http://localhost:4200',
+        credentials: true
+    }
+));
+
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
     keys: [COOKIE_KEY]
@@ -55,10 +77,10 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const server = http.createServer(app);
+/*const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'https://jammer-streaming.herokuapp.com'
+        origin: '*'
     }
 })
 
@@ -71,18 +93,8 @@ io.on('connection', (socket) => {
             io.emit('newComment', data);
         }
     });
-});
+});*/
 
-let corsOptions = {
-    origin: [
-        'https://jammer-streaming.herokuapp.com',
-        'http://localhost:4200'
-    ],
-    credentials: true,
-    optionsSuccessStatus: 200,
-    AllowCredentials: true
-}
-app.use(cors(corsOptions));
 
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
@@ -126,11 +138,11 @@ app.use((err, req, res, next) => {
     if (err instanceof ForbiddenError) return res.status(403).send(err.message);
     if (err instanceof UnauthorizedError) return res.status(401).send(err.message);
 
-    res.status(503).send('Something went wrong, try again');
+    res.status(503).send('Something went wrong, try again: ' + err.message);
 });
 
 app.get('*', (req, res) => {
     res.send('404 Not found');
 });
 
-module.exports = app;
+module.exports = server;

@@ -191,7 +191,7 @@ describe('List Controller', () => {
         describe('update', () => {
             it('should update a list', async () => {
                     let list = {
-                        description: 'New description',
+                        description: "Movies I've recently watched",
                     };
                     let updatedList = await listController.update('LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e', list);
                     let toUpdate = mockedData.lists.find(list => list.UUID === 'LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e');
@@ -208,15 +208,6 @@ describe('List Controller', () => {
                     try {
                         await listController.update('LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e', {
                             sharedWith: ['1f967358-d9b2-46d3-ae34-db9fd6d90c6e']
-                        });
-                    } catch (error) {
-                        expect(error).toBeInstanceOf(BadRequestError);
-                    }
-                }),
-                it('should throw a BadRequestError if the list is not valid', async () => {
-                    try {
-                        await listController.update('LIST-1f967358-d9b2-46d3-ae34-db9fd6d90c6e', {
-                            title: 'list'
                         });
                     } catch (error) {
                         expect(error).toBeInstanceOf(BadRequestError);

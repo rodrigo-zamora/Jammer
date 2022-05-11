@@ -26,6 +26,8 @@ router.get('/list/:listUUID/:userUUID', handleError(async (req, res) => {
 
 router.put('/list/:listUUID', handleError(async (req, res) => {
     console.log('PUT /lists/list/:listUUID');
+    console.log(req.params.listUUID);
+    console.log(req.body);
     let list = await listController.update(req.params.listUUID, req.body);
     res.send(list);
 }));
@@ -36,15 +38,27 @@ router.delete('/list/:listUUID', handleError(async (req, res) => {
     res.send(list);
 }));
 
-router.post('/list/:listUUID/share', handleError(async (req, res) => {
-    console.log('POST /lists/list/:listUUID/share');
-    let list = await listController.addUserToList(req.params.listUUID, req.body);
+router.post('/list/:listUUID', uploadCloud.single('list'), async (req, res) => {
+    console.log('POST /lists/list/:listUUID');
+    let list = await listController.addImage(req.params.listUUID, req.file);
+    res.send(list);
+});
+
+router.post('/list/:listUUID/:movieUUID',handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/:movieUUID');
+    let list = await listController.addMovie(req.params.listUUID, req.params.movieUUID);
     res.send(list);
 }));
 
-router.post('/list/:listUUID/upload', uploadCloud.single('image'), handleError(async (req, res) => {
-    console.log('POST /lists/list/:listUUID/upload');
-    let list = await listController.uploadImage(req.params.listUUID, req.file.path);
+router.post('/list/:listUUID/:cuevanaUUID/:movieName',handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/:cuevanaUUID/:movieName');
+    let list = await listController.addMovie(req.params.listUUID, req.params.cuevanaUUID, req.params.movieName);
+    res.send(list);
+}));
+
+router.delete('/list/:listUUID/:movieUUID',handleError(async (req, res) => {
+    console.log('DELETE /lists/list/:listUUID/:movieUUID');
+    let list = await listController.deleteMovie(req.params.listUUID, req.params.movieUUID);
     res.send(list);
 }));
 

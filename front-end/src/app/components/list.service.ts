@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { MoviesService, movie } from './movies.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ListService {
 
-  listAPI = 'https://backend-jammer.herokuapp.com/lists/';
-  movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
+  //listAPI = 'https://backend-jammer.herokuapp.com/lists/';
+  //movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
+
+  listAPI = 'http://localhost:3000/lists/';
+  movieAPI = 'http://localhost:3000/movies/';
 
   userLists$ = new Subject<any>();
   listMovies$ = new Subject<movie[]>();
@@ -17,27 +22,27 @@ export class ListService {
   userLists: any;
   listMovies: movie[] = [];
 
-  constructor(public movies: MoviesService, private http: HttpClient) { }
+  constructor(public movies: MoviesService, private http: HttpClient, private authService: AuthService) { }
 
   getMoviesFromList(listUUID: string) {
-    let userUUID = localStorage.getItem('UUID');
+    let userUUID = this.authService.getUserUUID();
     let url = this.listAPI + 'list/' + listUUID + '/' + userUUID;
     this.listMovies = [];
     this.http.get(url).subscribe(
       (data: any) => {
         for (let i = 0; i < data.movies.length; i++) {
-          let movieUUID = data.movies[i]
+          let movieUUID = data.movies[i];
           this.http.get(this.movieAPI + 'movie/' + movieUUID).subscribe(
-            (data: any) => {
-              this.listMovies.push(data);  
-              this.listMovies$.next(this.listMovies);
+            (data2: any) => {
+              this.listMovies.push(data2);  
             });
-        }
+          }
+        this.listMovies$.next(this.listMovies);
       });
   }
 
   getLists() {
-    let uuid = localStorage.getItem('UUID');
+    let uuid = this.authService.getUserUUID();
     if (uuid) {
       let url = this.listAPI + uuid;
       this.http.get(url).subscribe(
@@ -57,7 +62,7 @@ export class ListService {
     );
   }
 
-  createList(listName: string, isPrivate: boolean, userUUID: string | null) {
+  createList(listName: string, isPrivate: boolean, userUUID: string | null, image: File | null) {
     console.log('Creating list with name: ' + listName + ' and isPrivate: ' + isPrivate);
     let listBody = {
       name: listName,
@@ -66,24 +71,61 @@ export class ListService {
     this.http.post(this.listAPI + userUUID, listBody).subscribe(
       (data: any) => {
         console.log('List created with UUID: ' + data.UUID);
-        this.getLists();
+        if (image) {
+          this.addImageToList(data.UUID, image);
+        } else {
+          this.getLists();
+        }
       }
     );
   }
 
-  addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
-    console.log('Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
-    this.http.get(this.listAPI + 'list/' + listUUID + '/' + userUUID).subscribe(
+  addImageToList(listUUID: string, file: File) {
+    let url = this.listAPI + 'list/' + listUUID;
+    const formData = new FormData();
+    formData.append('list', file, file.name);
+    this.http.post(url, formData).subscribe(
       (data: any) => {
-        let moviesArray = data.movies;
-        moviesArray.push(movieUUID);
-        let url = this.listAPI + 'list/' + listUUID;
-        this.http.put(url, { movies: moviesArray }).subscribe(
-          (data: any) => {  
-            console.log('Movie added to list');
-          }
-        );
+        console.log('[SERVICE] Image uploaded');
+        this.getLists();
+      }),
+      (error: any) => {
+        console.log('[SERVICE] Error uploading image: ' + error);
       }
-    );
+  }
+
+  addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
+    console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
+    console.log('[SERVICE] Movie UUID: ' + movieUUID);
+    let url = this.listAPI + 'list/' + listUUID + '/' + movieUUID;
+    this.http.post(url, movieUUID, { withCredentials: true }).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] Movie added to list');
+        this.getMoviesFromList(listUUID);
+      });
+  }
+
+  deleteFromList(listUUID: string, movieUUID: string | undefined) {
+    console.log('[SERVICE] Deleting movie with UUID: ' + movieUUID + ' from list with UUID: ' + listUUID);
+    let url = this.listAPI + 'list/' + listUUID + '/' + movieUUID;
+    this.http.delete(url).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] Movie deleted from list');
+        this.getMoviesFromList(listUUID);
+      });
+  }
+
+  addMovieToHistory(movieUUID: string, userUUID: string | null) {
+    console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to history');
+    console.log(this.userLists);
+    if (this.userLists) {
+        this.addMovieToList(this.userLists.lists[0].UUID, movieUUID, userUUID);
+    } else {
+      this.getLists();
+      setTimeout(() => {
+        this.addMovieToHistory(movieUUID, userUUID);
+      }
+      , 1000);
+    }
   }
 }

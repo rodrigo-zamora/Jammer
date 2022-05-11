@@ -1,37 +1,106 @@
 <div>
-    <app-global-theme>
-        <app-nav-bar></app-nav-bar>
-        <div class="movieInfo">
-            <img src="{{movies[0]?.poster}}" alt="Movie image">
-            <div class="movieInfoContent">
-                <h1 class="title"><b>{{movies[0]?.title}}</b></h1>
-                <div class="cardInfo">
-                    <h2>{{movies[0]?.sypnosis}}</h2>
-                    <div class="duo">
-                        <p class="duration">{{movies[0]?.duration}}</p><br>
-                        <div class="rating">
-                            <p class="wmargin">{{movies[0]?.rating}}</p><mat-icon>star</mat-icon>
-                        </div>
-                    </div>
-                    <p class="year">{{movies[0]?.year}}</p>
-                </div>
-                <div class="button">
-                    <button
-                        mat-raised-button 
-                        class="seeMovie"
-                        onClick="window.open('https://apialfa.tomatomatela.com/ir/player.php?h=bHJMRW1oTVhldDJJZnZnUE10V3NBQmx5b2ZqemljRFk1RmUybGphTUI2ZFhTWTNzZkUwOXAza0NTSktMWW9vQ1pWSXViY2JaOEdPazE4bjBVS2NMUXhlRWUwWWhxU0ZjdGNIT0dBWFI5U2RMZWxWNmVZTERqazF0U2pWQlBBaGZMeEV0dHBpcWU1MkVtMzI2bkd0TXlDRFl4Um5jYkN6UFU2VFV1TGFpL24zeDNBcUFhVEJ1KzBQV1dienVDTHowQVFYUUkvOUhlSHk2MlFMY2hlem1BdzhiMlNqby9PQTJuM1JaQ0sxMDQ3dFpWTFVZODAyM0t0aER6TFZIVklMczBaaGRIZjFSRzFyVzhPMW9BWEU0VE9rMzdtM3cvNmJHR1RwQnB6c1h4dlowbzFmN3BhYzJpS1ZHN2NhUkFWaEJKdmpubm0yMnlYbExTRHNNQ0puUXNRPT0')"
-                        >
-                        Ver Película
-                    </button>
-                </div>
+  <app-global-theme>
+    <app-nav-bar></app-nav-bar>
+    <div class="movieInfo">
+      <img src={{movies?.poster}} alt="Movie image">
+      <div class="movieInfoContent">
+        <h1 class="title"><b>{{movies?.title}}</b></h1>
+        <div class="cardInfo">
+          <h2>{{movies?.sypnosis}}</h2>
+          <div class="duo">
+            <p class="duration">{{movies?.duration}}</p><br>
+            <div class="rating">
+              <p class="wmargin">{{movies?.rating}}</p>
+              <mat-icon>star</mat-icon>
             </div>
+          </div>
+          <p class="year">{{movies?.year}}</p>
+        </div><br>
+        <div class="moreInfo">
+          <p><b>Director(es): </b> {{movies?.director}}</p>
+          <div style="display: flex;"><b style="margin-right: 3px;">Género: </b>
+            <p *ngFor="let genre of movies.genres; let isLast=last"> {{genre.genre}}{{isLast ? '' : ', '}}</p>
+          </div>
         </div>
-        <div class="commentSection">
-            <h1>Comentarios</h1>
-            <p>{{'movies[0]?.comments'}}</p> <!--ngFor-->
-            <p>{{'movies[0]?.comments'}}</p>
-            <app-comment></app-comment>
+        <div style="display: flex; flex-flow: wrap; color: #fff; margin-top: 10px;"><b
+            style="margin-right: 3px;">Actores: </b>
+          <p style="margin: 0px;">
+            {{getActors()}}</p>
         </div>
-        <app-footer></app-footer>
-    </app-global-theme>
+        <div class="button">
+          <a *ngIf="movies.links.latino.length != 0"
+            mat-raised-button class="seeMovie"
+            type="button"
+            href="{{movies?.links.latino[0].url}}"
+            target="_blank"
+            (click)="addToHistory(movies?.id)"
+            >
+            Ver película en latino
+          </a>
+          <a *ngIf="movies.links.espanol.length != 0"
+            mat-raised-button class="seeMovie"
+            type="button"
+            href="{{movies?.links.espanol[0].url}}"
+            target="_blank"
+            (click)="addToHistory(movies?.id)"
+            >
+            Ver película en español
+          </a>
+          <a *ngIf="movies.links.sub.length != 0"
+            mat-raised-button class="seeMovie"
+            type="button"
+            href="{{movies?.links.sub[0].url}}"
+            target="_blank"
+            (click)="addToHistory(movies?.id)"
+            >
+            Ver película subtitulada
+          </a>
+          <button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una
+            lista
+            <mat-menu #menu="matMenu">
+              <p style="color: #fff; text-align: center;">Agregar a la lista</p>
+              <button mat-menu-item *ngFor="let listItem of uLists"
+                (click)="addToList(listItem?.UUID, movies?.id)">{{listItem?.name}}</button>
+              <mat-divider></mat-divider>
+              <button mat-menu-item class="addList" routerLink="/lists">Crear lista</button>
+            </mat-menu>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="commentSection">
+      <h1>Comentarios</h1>
+      <div *ngIf="isLoggedIn()">
+        <app-comment></app-comment>
+      </div>
+      <div *ngIf="!isLoggedIn()">
+        <p>Para comentar, debes iniciar sesión</p>
+      </div>
+      <div class="noComments" *ngIf="comments.length == 0">
+        <p>Aún no hay ningun comentario. ¡Sé el primero en comentar!</p>
+      </div>
+      <div class="forComments" *ngFor="let comment of comments">
+        <div class="comment">
+          <div class="commentHeader">
+            <div class="autorInfo">
+              <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
+              <h2>{{comment?.authorName}}</h2>
+            </div>
+            <div class="crud" *ngIf="canCRUD(comment?.authorUUID)">
+              <button mat-icon-button (click)="openDialog(comment?.UUID)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteComment(comment?.UUID)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="text">
+            <p>{{comment?.text}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </app-global-theme>
 </div>

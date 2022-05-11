@@ -5,7 +5,7 @@ const uploadCloud = multer({
   storage: multerGoogleStorage.storageEngine({
     autoRetry: true,
     bucket: 'jammer-app',
-    keyFilename: '../our-episode-349306-5cbd7e728563.json',
+    keyFilename: './src/our-episode-349306-5cbd7e728563.json',
     projectId: 'our-episode-349306',
     filename: (req, file, cb) => {
       cb(null, `profileImages/${Date.now()}_${file.originalname}`);

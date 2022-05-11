@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { MoviesService, movie } from '../movies.service';
-import { Router } from '@angular/router';
+import { movie } from '../movies.service';
 import { ListService } from '../list.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-card', // Etiqueta html del componente
@@ -18,20 +18,35 @@ export class CardComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public lists: ListService) {
+  constructor(public listService: ListService, private authService: AuthService) {
 
   }
 
-  addToList(listUUID : string, movieUUID : string | undefined) {
-    let userUUID = localStorage.getItem('UUID');
-    this.lists.addMovieToList(listUUID, movieUUID, userUUID);
+  addToList(listUUID : string, movieUUID : string | undefined, cuevanaUUID : string | undefined) {
+    let userUUID = this.authService.getUserUUID();
+    if (movieUUID) {
+      console.log('Adding movie with UUID ' + movieUUID + ' to list with UUID ' + listUUID + ' and user with UUID ' + userUUID);
+      this.listService.addMovieToList(listUUID, movieUUID, userUUID);
+    } else {
+      console.log('Adding movie with Cuevana UUID ' + cuevanaUUID + ' to list with UUID ' + listUUID + ' and user with UUID ' + userUUID);
+      this.listService.addMovieToList(listUUID, cuevanaUUID, userUUID);
+    }
   }
 
   displayLists() {
-    this.lists.getLists();
-    this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
+    this.listService.getLists();
+    this.listService.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
       this.uLists = list.lists;
+      this.uLists.forEach((item: any) => {
+        if (item.name == 'Historial') {
+          this.uLists.splice(this.uLists.indexOf(item), 1);
+        }
+      });
     });
+  }
+
+  hasSubscription(): boolean {
+    return this.authService.hasSubscription();
   }
 
   ngOnInit(): void {

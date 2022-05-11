@@ -1,5 +1,8 @@
 const List = require('../models/List');
+const Movie = require('../models/Movie');
 const User = require('../models/User');
+
+const MovieController = require('./movie.controller');
 
 const {
     NotFoundError,
@@ -107,7 +110,65 @@ const listController = {
         }
     },
     update: async function (listUUID, listBody) {
-        console.log(`Updating list with listUUID ${listUUID} and listName ${listBody.name}`);
+        console.log(`Updating list with listUUID ${listUUID} and listBody ${listBody}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            console.log(`List found`);
+            list = new List(list);
+            for (let key in listBody) {
+                console.log(`Setting ${key} to ${listBody[key]}`);
+                if (key == 'movies') {
+                    console.log(`Updating movies for list ${list.name}`);
+                    console.log('Movies to add: ' + listBody.movies);
+                    for (let movie of listBody.movies) {
+                        console.log(`Updating movie ${movie}`);
+                        console.log('Checking if movie exists in own database');
+                        let movieInDatabase = await Movie.findOne({
+                            $or: [{
+                                UUID: movie
+                            }, {
+                                cuevanaUUID: movie
+                            }]
+                        });
+                        if (!movieInDatabase) {
+                            console.log('Movie does not exist in database');
+                            console.log('Creating movie in database: ' + movie);
+                            let toCreate = await MovieController.createFromCuevanaUUID(movie);
+                            console.log('Movie created: ' + toCreate.title);
+                            if (list.movies.includes(toCreate.UUID)) {
+                                console.log('Movie already exists in list');
+                            } else {
+                                console.log('Movie does not exist in list');
+                                list.movies.push(toCreate.UUID);
+                            }
+                            await toCreate.save();
+                        } else {
+                            console.log('Movie exists in database');
+                            movieInDatabase = new Movie(movieInDatabase);
+                            if (list.movies.includes(movieInDatabase.UUID)) {
+                                console.log('Movie already exists in list');
+                            } else {
+                                console.log('Movie does not exist in list');
+                                list.movies.push(movieInDatabase.UUID);
+                            }
+                            await movieInDatabase.save();
+                        }
+                    }
+                } else {
+                    list[key] = listBody[key];
+                }
+
+            }
+            await list.save();
+            return list;
+        }
+    },
+    addMovie: async function (listUUID, movieUUID, movieName) {
+        console.log(`Adding movie with listUUID ${listUUID} and movieUUID ${movieUUID}`);
         let list = await List.findOne({
             UUID: listUUID
         });
@@ -115,22 +176,64 @@ const listController = {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
             list = new List(list);
-            try {
-                for (let key in listBody) {
-                    if (listBody.hasOwnProperty(key)) {
-                        if (key == 'sharedWith') {
-                            throw new BadRequestError('You cannot update sharedWith field using this method');
-                        } else if (key == 'movies') {
-                            list.movies = listBody.movies;
-                        } else {
-                            list[key] = listBody[key];
-                        }
-                    }
+            console.log(`List found`);
+            let movieInDatabase = await Movie.findOne({
+                $or: [{
+                    UUID: movieUUID
+                }, {
+                    cuevanaUUID: movieUUID + '/' + movieName
+                }]
+            });
+            if (!movieInDatabase) {
+                console.log('Movie does not exist in database');
+                console.log('Creating movie in database: ' + movieUUID);    
+                let toCreate = await MovieController.createFromCuevanaUUID(movieUUID + '/' + movieName);
+                console.log('Movie created: ' + toCreate.title);
+                if (list.movies.includes(toCreate.UUID)) {
+                    console.log('Movie already exists in list');
+                } else {
+                    console.log('Movie does not exist in list');
+                    list.movies.push(toCreate.UUID);
                 }
-                let savedList = await list.save();
-                return savedList;
-            } catch (err) {
-                throw new BadRequestError(err.message);
+                await toCreate.save();
+            } else {
+                console.log('Movie exists in database');
+                movieInDatabase = new Movie(movieInDatabase);
+                if (list.movies.includes(movieInDatabase.UUID)) {
+                    console.log('Movie already exists in list');
+                } else {
+                    console.log('Movie does not exist in list');
+                    list.movies.push(movieInDatabase.UUID);
+                }
+                await movieInDatabase.save();
+            }
+            await list.save();
+            return list;
+        }
+    },
+    deleteMovie: async function (listUUID, movieUUID) {
+        console.log(`Deleting movie with listUUID ${listUUID} and movieUUID ${movieUUID}`);
+        let list = await List.findOne({
+            UUID: listUUID
+        });
+        if (!list) {
+            throw new NotFoundError(`List with uuid ${listUUID} not found`);
+        } else {
+            list = new List(list);
+            let movie = await Movie.findOne({
+                UUID: movieUUID
+            });
+            if (!movie) {
+                throw new NotFoundError(`Movie with uuid ${movieUUID} not found`);
+            } else {
+                movie = new Movie(movie);
+                if (list.movies.includes(movie.UUID)) {
+                    list.movies.splice(list.movies.indexOf(movie.UUID), 1);
+                } else {
+                    throw new NotFoundError(`Movie with uuid ${movieUUID} not found in list ${list.name}`);
+                }
+                await list.save();
+                return list;
             }
         }
     },
@@ -238,8 +341,8 @@ const listController = {
             }
         }
     },
-    uploadImage: async function (listUUID, image) {
-        console.log(`Uploading image to list with listUUID ${listUUID}`);
+    addImage: async function (listUUID, image) {
+        console.log(`Adding image to list with listUUID ${listUUID}`);
         let list = await List.findOne({
             UUID: listUUID
         });
@@ -247,24 +350,14 @@ const listController = {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
             list = new List(list);
-            try {
-                list.imageURL = image;
-                let savedList = await list.save();
-                return savedList;
-            } catch (err) {
-                throw new BadRequestError(err.message);
+            if (!image) {
+                throw new BadRequestError('No image provided');
+            } else {
+                list.imageURL = image.path;
+                await list.save();
+                return list;
             }
         }
-    },
-    getImage: async function (listUUID) {
-        console.log(`Getting image from list with listUUID ${listUUID}`);
-        let list = await List.findOne({
-            UUID: listUUID
-        });
-        if (!list) {
-            throw new NotFoundError(`List with uuid ${listUUID} not found`);
-        }
-        return list.imageURL;
     }
 };
 

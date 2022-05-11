@@ -14,7 +14,8 @@ router.get(
     passport.authenticate('google'),
     function (req, res) {
         console.log(req.query.code);
-        res.redirect('https://jammer-streaming.herokuapp.com/');
+        //res.redirect('https://jammer-streaming.herokuapp.com/');
+        res.redirect('http://localhost:4200')
     }
 );
 
@@ -29,6 +30,7 @@ router.get('/verifyLogin', (req, res) => {
 router.get('/logout', (req, res) => {
     if (req.isAuthenticated()) {
         req.logout();
+        res.redirect('http://localhost:4200');
         res.status(200).send('Logged out');
     } else {
         res.status(401).send('Not authorized');

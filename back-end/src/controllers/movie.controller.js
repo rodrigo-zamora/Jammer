@@ -81,7 +81,6 @@ const movieController = {
         }
     },
     search: async function (query) {
-        console.log('Searching for movies: ', query);
         if (Object.keys(query).length === 0) {
             throw new BadRequestError('Query is empty');
         } else {
@@ -115,7 +114,6 @@ const movieController = {
                             16: "Thriller"
                         };
                         let genre = genres[query[key]];
-                        console.log('Searching for movies with genre: ', genre);
                         let movies = await Movie.find({
                             genre: genre
                         }).sort({
@@ -160,7 +158,9 @@ const movieController = {
         let movieDetails;
         await Cuevana3.getDetail(cuevanaUUID).then(movie => {
             movieDetails = movie;
-        });
+        }).catch((err) => {
+            console.log(err);
+        })
         return movieDetails;
     },
     getLinks: async function (cuevanaUUID) {
@@ -168,8 +168,31 @@ const movieController = {
         let movieLinks;
         await Cuevana3.getLinks(cuevanaUUID).then(movie => {
             movieLinks = movie;
-        });
+            console.log(movieLinks);
+        }).catch((err) => {
+            console.log(err);
+        })
         return movieLinks;
+    },
+    createFromCuevanaUUID: async function (cuevanaUUID) {
+        console.log('Creating movie from cuevanaUUID: ', cuevanaUUID);
+        let movieDetails = await this.getDetails(cuevanaUUID);
+        //console.log("Movie details: ", JSON.stringify(movieDetails));
+        let toCreate = {
+            cuevanaUUID: cuevanaUUID,
+            title: movieDetails[0].title,
+            poster: movieDetails[0].poster,
+            year: movieDetails[0].year,
+            sypnosis: movieDetails[0].sypnosis,
+            duration: movieDetails[0].duration,
+            rating: 0,
+            cast: [],
+            genre: []
+        };
+        console.log("Movie to create: " + JSON.stringify(toCreate));
+        let newMovie = new Movie(toCreate);
+        let savedMovie = await newMovie.save();
+        return savedMovie;
     }
 };
 
