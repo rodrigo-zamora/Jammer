@@ -80,10 +80,14 @@ export class MovieDataComponent implements OnInit {
     var url = this.router.url;
     var uuid = url.split('/')[2];
     var name = url.split('/')[3];
+    this.comments = [];
     this.commentService.getComments(uuid + '/' + name);
     this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
-      this.comments = comments;
-      console.log(this.comments);
+      comments.forEach((comment: any) => {
+        if (!comment.isPrivate) {
+          this.comments.push(comment);
+        }
+      });
     });
   }
 
