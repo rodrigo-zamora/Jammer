@@ -18,6 +18,21 @@ const COOKIE_KEY = process.env.COOKIE_KEY || 'secret';
 
 const app = express();
 
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: ['http://localhost:4200'],
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('movieComment', (data) => {
+        socket.emit('movieComment', data);
+    })
+});
+
 const mongoose = require('mongoose');
 
 const DB_NAME = process.env.DB_NAME || '';
@@ -130,4 +145,4 @@ app.get('*', (req, res) => {
     res.send('404 Not found');
 });
 
-module.exports = app;
+module.exports = server;
