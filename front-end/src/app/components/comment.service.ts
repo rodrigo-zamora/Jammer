@@ -32,4 +32,10 @@ export class CommentService {
       this.getComments(cuevanaUUID);
     });
   }
+
+  deleteComment(commentUUID: string) {
+    let userUUID = this.authService.getUserUUID();
+    this.http.delete((this.api + commentUUID + '/' + userUUID)).subscribe(data => {});
+  }
+
 }

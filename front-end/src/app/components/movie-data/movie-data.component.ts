@@ -44,21 +44,24 @@ export class MovieDataComponent implements OnInit {
     var uuid = url.split('/')[2];
     var name = url.split('/')[3];
 
-    this.commentService.getComments(uuid + '/' + name);
-    this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
-      this.comments = comments;
-      console.log(this.comments);
-    });
+    this.getComments()
 
     this.pelis.getMovieDetails(uuid + '/' + name);
     this.pelis.movieDetails$.pipe(takeUntil(this.destroyed)).subscribe((movie) => {
       console.log(movie[0]);
       this.movies = movie[0];
     });
-    console.log(this.movies);
-    console.log('latino',this.movies.links.latino[0]);
-    console.log('español',this.movies.links.espanol[0]);
-    console.log('sub',this.movies.links.sub[0]);
+  }
+
+  getComments() {
+    var url = this.router.url;
+    var uuid = url.split('/')[2];
+    var name = url.split('/')[3];
+    this.commentService.getComments(uuid + '/' + name);
+    this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
+      this.comments = comments;
+      console.log(this.comments);
+    });
   }
 
   ngOnDestroy(): void {
@@ -78,8 +81,15 @@ export class MovieDataComponent implements OnInit {
     return this.movies.cast.map((actor: { name: any; }) => actor.name).join(', ');
   }
 
-  deleteComment() {
+  canCRUD(uuid: any): boolean {
+    return this.authService.getUserUUID() === uuid;
+  }
 
+  deleteComment(uuid: any) {
+    this.commentService.deleteComment(uuid);
+    setTimeout(() => {
+      this.getComments();
+    }, 500);
   }
 
   editComment() {

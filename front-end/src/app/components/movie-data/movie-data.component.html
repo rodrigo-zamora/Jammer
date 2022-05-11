@@ -83,11 +83,11 @@
               <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
               <h2>{{comment?.authorName}}</h2>
             </div>
-            <div class="crud">
+            <div class="crud" *ngIf="canCRUD(comment?.authorUUID)">
               <button mat-icon-button (click)="editComment()">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button (click)="deleteComment()">
+              <button mat-icon-button (click)="deleteComment(comment?.UUID)">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
