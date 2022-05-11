@@ -87,7 +87,7 @@
               <h2>{{comment?.authorName}}</h2>
             </div>
             <div class="crud" *ngIf="canCRUD(comment?.authorUUID)">
-              <button mat-icon-button (click)="openDialog()">
+              <button mat-icon-button (click)="openDialog(comment?.UUID)">
                 <mat-icon>edit</mat-icon>
               </button>
               <button mat-icon-button (click)="deleteComment(comment?.UUID)">

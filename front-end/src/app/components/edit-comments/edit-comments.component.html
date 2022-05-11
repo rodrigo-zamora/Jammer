@@ -1,12 +1,12 @@
 <h1 mat-dialog-title>{{'Editar comentario'}}</h1>
 <div mat-dialog-content class="content">
-  <p>Nuevo comentario</p>
+  <p>Editar comentario</p>
   <mat-form-field appearance="fill" ngNativeValidate>
     <mat-label>Comentario</mat-label>
-    <input matInput [(ngModel)]="data.listName">
+    <input matInput id="newComment">
   </mat-form-field>
 </div>
 <div mat-dialog-actions class="actions">
   <button mat-button  (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data.listName" cdkFocusInitial (click)="create(data.listName, data.email)" type="submit">Editar comentario</button>
+  <button mat-button cdkFocusInitial (click)="editComment(data.UUID)" type="submit">Editar comentario</button>
 </div>

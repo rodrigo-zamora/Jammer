@@ -38,4 +38,11 @@ export class CommentService {
     this.http.delete((this.api + commentUUID + '/' + userUUID)).subscribe(data => {});
   }
 
+  updateComment(commentUUID: string, comment: string) {
+    let userUUID = this.authService.getUserUUID();
+    this.http.put((this.api + commentUUID + '/' + userUUID), { text: comment }).subscribe((data: any) => {
+      this.getComments(data.movieUUID);
+    });
+  }
+
 }

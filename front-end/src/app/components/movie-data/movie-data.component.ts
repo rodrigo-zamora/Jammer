@@ -38,10 +38,10 @@ export class MovieDataComponent implements OnInit {
     public lists: ListService,
     private authService: AuthService) { }
 
-    openDialog(): void {
+    openDialog(commentUUID: string): void {
       const dialogRef = this.dialog.open(EditCommentsComponent, {
         width: '550px',
-        data: {name: this.name, animal: this.animal},
+        data: {UUID: commentUUID},
       });
   
       dialogRef.afterClosed().subscribe(result => {

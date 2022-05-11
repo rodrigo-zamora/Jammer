@@ -1,13 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth.service';
+import { CommentService } from '../comment.service';
 import { ListService } from '../list.service';
+import { MovieDataComponent } from '../movie-data/movie-data.component';
 
 export interface DialogData {
-  listName: string;
-  email: string[];
-  isPrivate: boolean;
+  UUID: string;
 }
 
 @Component({
@@ -18,47 +19,33 @@ export interface DialogData {
 
 export class EditCommentsComponent implements OnInit {
 
-    isPrivate = true;
-    isHidden = true;
-    image: any;
-  
     constructor(
       public dialogRef: MatDialogRef<EditCommentsComponent>,
       @Inject(MAT_DIALOG_DATA) public data: DialogData,
-      public lists: ListService,
-      private authService: AuthService
+      private snackbar: MatSnackBar,
+      private commentsService: CommentService
     ) {}
   
     onNoClick(): void {
       this.dialogRef.close();
     }
   
-    uploadImage() {
-  
-    }
-  
     ngOnInit(): void {
     }
   
-    onChange(event: MatCheckboxChange) {
-      this.isPrivate = event.checked;
-    }
-  
-    toggle(){
-      this.isHidden=!this.isHidden;
-      let emails = document.getElementById("emails");
-      if (emails) emails.hidden = this.isHidden;
-    }
-  
-    create(listName: string, emails: string[]) {
-      let userUUID = this.authService.getUserUUID();
-      console.log(this.image);
-      this.lists.createList(listName, this.isPrivate, userUUID, this.image);
-    }
-  
-    onFileChange(event: any) {
-      this.image = event.target.files[0];
-      console.log('file added');
+    editComment(commentUUID: string) {
+      let comment =(<HTMLInputElement>document.getElementById("newComment")).value;
+      if (!comment) {
+        this.snackbar.open('Por favor ingrese un comentario', '', {
+          duration: 3000
+        });
+      } else {
+        this.commentsService.updateComment(commentUUID, comment);
+        this.dialogRef.close();
+        this.snackbar.open('Comentario actualizado', '', {
+          duration: 3000
+        });
+      }
     }
   
   }
