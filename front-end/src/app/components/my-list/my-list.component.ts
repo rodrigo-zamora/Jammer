@@ -7,9 +7,6 @@ import { DialogCreateListComponent } from '../dialog-create-list/dialog-create-l
 import { AuthService } from '../auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-/**
- * @title Dialog Overview
- */
 @Component({
   selector: 'app-my-list',
   templateUrl: './my-list.component.html',
@@ -59,5 +56,4 @@ export class MyListComponent implements OnInit {
   canSeeLists(): boolean {
     return this.authService.hasSubscription();
   }
-
 }

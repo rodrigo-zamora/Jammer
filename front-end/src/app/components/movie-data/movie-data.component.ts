@@ -84,6 +84,7 @@ export class MovieDataComponent implements OnInit {
     this.commentService.getComments(uuid + '/' + name);
     this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
       comments.forEach((comment: any) => {
+        this.comments = [];
         if (!comment.isPrivate) {
           this.comments.push(comment);
         }
