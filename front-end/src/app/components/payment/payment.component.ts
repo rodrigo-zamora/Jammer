@@ -29,15 +29,38 @@ export class PaymentComponent implements OnInit {
   }
   
   paySubscription() {
-    let userUUID = this.authService.getUserUUID();
-    this.subscriptionService.createSubscription(userUUID);
-    this.subscriptionService.subscription$.pipe(takeUntil(this.destroyed)).subscribe((subscription) => {
-      this.subscription = subscription;
-      this.snackbar.open('Suscripción realizada correctamente ', '', {
-        duration: 4000
+    let card = (<HTMLInputElement>document.getElementById('card')).value;
+    let fecha = (<HTMLInputElement>document.getElementById('fecha')).value;
+    let cvv = (<HTMLInputElement>document.getElementById('cvv')).value;
+    let nombre = (<HTMLInputElement>document.getElementById('nombre')).value;
+    
+    if (!card) {
+      this.snackbar.open('Por favor ingrese un número de tarjeta', '', {
+        duration: 3000
       });
-      this.router.navigate(['/']);
-    });
+    } else if (!fecha) {
+      this.snackbar.open('Por favor ingrese una fecha de expiración', '', {
+        duration: 3000
+      });
+    } else if (!cvv) {
+      this.snackbar.open('Por favor ingrese un código de seguridad', '', {
+        duration: 3000
+      });
+    } else if (!nombre) {
+      this.snackbar.open('Por favor ingrese un nombre', '', {
+        duration: 3000
+      });
+    } else {
+      let userUUID = this.authService.getUserUUID();
+        this.subscriptionService.createSubscription(userUUID);
+        this.subscriptionService.subscription$.pipe(takeUntil(this.destroyed)).subscribe((subscription) => {
+          this.subscription = subscription;
+          this.snackbar.open('Suscripción realizada correctamente ', '', {
+            duration: 4000
+          });
+          this.router.navigate(['/']);
+        });
+      }
   }
 
   ngOnDestroy(): void {
