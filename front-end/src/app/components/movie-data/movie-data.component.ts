@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { CommentService } from '../comment.service';
 import { ListService } from '../list.service';
 import { AuthService } from '../auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -23,7 +26,14 @@ export class MovieDataComponent implements OnInit {
 
   destroyed = new ReplaySubject<void>(1);
 
-  constructor(public pelis: MoviesService, public commentService: CommentService, private router: Router, public lists: ListService, private authService: AuthService) { }
+  constructor(
+    public dialog: MatDialog,
+    private snackbar: MatSnackBar,
+    public pelis: MoviesService,
+    public commentService: CommentService,
+    private router: Router,
+    public lists: ListService,
+    private authService: AuthService) { }
 
   addToList(listUUID : string, movieUUID : string | undefined) {
     let userUUID = this.authService.getUserUUID();
@@ -86,10 +96,33 @@ export class MovieDataComponent implements OnInit {
   }
 
   deleteComment(uuid: any) {
-    this.commentService.deleteComment(uuid);
-    setTimeout(() => {
-      this.getComments();
-    }, 500);
+    const dialogData = new ConfirmDialogModel(
+      'Eliminar comentario',
+      '¿Estás seguro de que quieres eliminar este comentario?',
+      'Cancelar',
+      'Eliminar'
+    );
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: '400px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.commentService.deleteComment(uuid);
+
+        this.snackbar.open('Comentario eliminado', '', {
+          duration: 2000
+        });
+
+        setTimeout(() => {
+          this.getComments();
+        }, 500);
+
+      }
+    });
+
   }
 
   editComment() {
