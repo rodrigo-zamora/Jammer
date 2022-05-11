@@ -123,7 +123,7 @@ app.use((err, req, res, next) => {
     if (err instanceof ForbiddenError) return res.status(403).send(err.message);
     if (err instanceof UnauthorizedError) return res.status(401).send(err.message);
 
-    res.status(503).send('Something went wrong, try again');
+    res.status(503).send('Something went wrong, try again: ' + err.message);
 });
 
 app.get('*', (req, res) => {

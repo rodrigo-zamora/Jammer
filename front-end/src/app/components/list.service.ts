@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
 import { MoviesService, movie } from './movies.service';
 import { AuthService } from './auth.service';
@@ -62,7 +62,7 @@ export class ListService {
     );
   }
 
-  createList(listName: string, isPrivate: boolean, userUUID: string | null) {
+  createList(listName: string, isPrivate: boolean, userUUID: string | null, image: File | null) {
     console.log('Creating list with name: ' + listName + ' and isPrivate: ' + isPrivate);
     let listBody = {
       name: listName,
@@ -71,9 +71,33 @@ export class ListService {
     this.http.post(this.listAPI + userUUID, listBody).subscribe(
       (data: any) => {
         console.log('List created with UUID: ' + data.UUID);
-        this.getLists();
+        if (image) {
+          this.addImageToList(data.UUID, image);
+        } else {
+          this.getLists();
+        }
       }
     );
+  }
+
+  addImageToList(listUUID: string, file: File) {
+    let url = this.listAPI + 'list/' + listUUID;
+    console.log('Adding image to list with file: ' + file.name);
+    console.log('[SERVICE] Uploading image to: ' + url);
+    console.log('[SERVICE] Image name: ' + file.name);
+    console.log('[SERVICE] Image type: ' + file.type);
+    console.log('[SERVICE] Image size: ' + file.size);
+    console.log('[SERVICE] Image data: ' + file);
+    const formData = new FormData();
+    formData.append('list', file, file.name);
+    this.http.post(url, formData).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] Image uploaded');
+        this.getLists();
+      }),
+      (error: any) => {
+        console.log('[SERVICE] Error uploading image: ' + error);
+      }
   }
 
   addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {

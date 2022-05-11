@@ -56,11 +56,6 @@ export class MyListComponent implements OnInit {
     this.destroyed.complete();
   }
 
-  createList(listName: string, isPrivate: boolean) {
-    let userUUID = this.authService.getUserUUID();
-    this.lists.createList(listName, isPrivate, userUUID);
-  }
-
   canSeeLists(): boolean {
     return this.authService.hasSubscription();
   }

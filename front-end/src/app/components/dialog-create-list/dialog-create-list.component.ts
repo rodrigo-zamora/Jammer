@@ -19,6 +19,7 @@ export class DialogCreateListComponent implements OnInit {
 
   isPrivate = true;
   isHidden = true;
+  image: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogCreateListComponent>,
@@ -50,7 +51,13 @@ export class DialogCreateListComponent implements OnInit {
 
   create(listName: string, emails: string[]) {
     let userUUID = this.authService.getUserUUID();
-    this.lists.createList(listName, this.isPrivate, userUUID);
+    console.log(this.image);
+    this.lists.createList(listName, this.isPrivate, userUUID, this.image);
+  }
+
+  onFileChange(event: any) {
+    this.image = event.target.files[0];
+    console.log('file added');
   }
 
 }

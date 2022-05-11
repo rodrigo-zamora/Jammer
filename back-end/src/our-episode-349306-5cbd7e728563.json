@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "our-episode-349306",
+  "private_key_id": "5cbd7e72856376ff45f0d5d2b123059ca6e540dd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCr28gZQZVBMUOa\nR0Lzx7DkiMB0PbyokbxrqBVBj7I7aJ0pWA9/jsxlVk/wiTaWu3ebjRceO80mVuTD\n3c7pCROMR1R0r4/A4j4Nbg6joiStiJX8ZGRl6RY5bfvbElCkMCi3wuknF/4ueEVe\nEuKXEhlUmhQ2VUk8Y8SFRikWZ0QIiq1Uv4JQVgTnOCdcOnpxQGbehKLFUKXP19Z7\nSXBO9Go3fTeSl4dwriVItaY1FfuPugH1oYPdQGZl69J1Ih9ehF3yNmon99jGU8oc\nfvRFLgUPMIK4siJ4j4S1ASi7vu06fPhssPbC0eI13htCDi8w6hNYeMZ2t4X50UYa\ntGnlyAUfAgMBAAECggEAHwdM7uZs5LrYykuQdoQ412IrYTFeVQ8O9l8AC3i+xMQk\nD/livvSQycEWKMcVUIyjUTXdlStV5FSu9AAhoehuG5crU+/4o+oVKwaSZQ/a0GwH\nLG0RxWaaiR7m6Iw7fBFn4Jmzz8egsFItsAj32S++3Av/lzm5wcn/itJ6i510Zpgb\nO4R3ovRKFzg/UzvTUbJU30C0XzMoaAF7jk3O0FpsTCM8+PNB60g2cX0iiomhGiCU\nqDE/2KgNvqU3mXXnS/owwvJXMP3aMybGLZLXRZTyHS7DNzTG5PjKoGQyprm1nzJC\nBt44gPb9j8ZJUV2zo0oENOQMXNNETzjE3nhK5FzOuQKBgQDg5IKMazaihxOmVxv/\ncW8ZoO4waH1ueGQoNMeY8jwTr8wOsxyX0npNMwbv9VNGcrIHXZh1ssc3Queid+yR\nBRVZWEA1qOgh7Qix8nj/P22XOBxs3KvawzgFZmIg7yYmUERNNwrUpuTpQPFJVD5h\nmVbywlle1YFaDyuB4lSs70ygRwKBgQDDoVMJOlW99/CGLjDC3EzIqxUY5EtEr+OA\nacPQzZ5v8H4m6TCDaHUfsXoNBk3lNAPGhcb1ZT92lUi+mDGc5A/yepabPD1fGIix\noHcoD9cAVIXTEmezqcuZ5JnhXZ8TgYqblgz1OPtnFewX32b1Tc5EfgPxr/8eF4R6\ng6lSp394aQKBgBvJ4J+9N7kJe9IX/Wuo9pNyITx2DNmzopydOPSbKfU8ybgfRa80\n4MvdPEQ2Sh3wWjMyy33vo1IewESBEQgyWpr5nqWCw3w9r89dKLpRehcvZcPF2K5l\nZOy14/Yx1sLxNB9eZ8YzASIZVjc7Y6Hnsqi4fxaKxzr7mOKpttDPmOZNAoGATcvD\nx7GpE0icH+ASiAsvhcVzOFjhDcmcgR6OPmTmksFiiXrGThumKBpd3Pwa0gEjVzkv\n67p9yFyJdzHy2N9g8B6L8eO8zCpngau8dvQFnh3+sfdpwerOCr776sFeV1V2l3TO\nZl5oq4/uOXgf64Ere9VZIC3LGF5l0oq1NSdi67ECgYEA1HZT6Ap4Bxbg1tXX1dLs\nbwqt7iCNMfh+/gTfYXs+3xyzeAwgpdJEdpXExwlf4s29sZmMFT2AqXv45TSxvtO+\now0fLUAKc85F7Fea+FvyEsqnw1A0FCO9sx20VsvYVolPeuK1YzZKjxTBfEjJu2xD\n3D+wtGoGTG07enuQbJuiaq8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "multer-uploader@our-episode-349306.iam.gserviceaccount.com",
+  "client_id": "104717233481968168374",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/multer-uploader%40our-episode-349306.iam.gserviceaccount.com"
+}

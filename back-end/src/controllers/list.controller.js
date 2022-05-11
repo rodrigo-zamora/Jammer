@@ -341,8 +341,8 @@ const listController = {
             }
         }
     },
-    uploadImage: async function (listUUID, image) {
-        console.log(`Uploading image to list with listUUID ${listUUID}`);
+    addImage: async function (listUUID, image) {
+        console.log(`Adding image to list with listUUID ${listUUID}`);
         let list = await List.findOne({
             UUID: listUUID
         });
@@ -350,24 +350,14 @@ const listController = {
             throw new NotFoundError(`List with uuid ${listUUID} not found`);
         } else {
             list = new List(list);
-            try {
-                list.imageURL = image;
-                let savedList = await list.save();
-                return savedList;
-            } catch (err) {
-                throw new BadRequestError(err.message);
+            if (!image) {
+                throw new BadRequestError('No image provided');
+            } else {
+                list.imageURL = image.path;
+                await list.save();
+                return list;
             }
         }
-    },
-    getImage: async function (listUUID) {
-        console.log(`Getting image from list with listUUID ${listUUID}`);
-        let list = await List.findOne({
-            UUID: listUUID
-        });
-        if (!list) {
-            throw new NotFoundError(`List with uuid ${listUUID} not found`);
-        }
-        return list.imageURL;
     }
 };
 
