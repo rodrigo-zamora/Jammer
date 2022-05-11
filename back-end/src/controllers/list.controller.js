@@ -281,7 +281,7 @@ const listController = {
             }
         }
     },
-    addUserToList: async function (listUUID, userUUID) {
+    addUser: async function (listUUID, userUUID) {
         console.log(`Adding user with userUUID ${userUUID} to list with listUUID ${listUUID}`);
         let toAdd = await User.findOne({
             UUID: userUUID
@@ -311,7 +311,7 @@ const listController = {
             }
         }
     },
-    removeUserFromList: async function (listUUID, userUUID) {
+    removeUser: async function (listUUID, userUUID) {
         console.log(`Removing user with userUUID ${userUUID} from list with listUUID ${listUUID}`);
         let toRemove = await User.findOne({
             UUID: userUUID

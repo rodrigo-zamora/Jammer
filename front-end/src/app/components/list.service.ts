@@ -128,4 +128,25 @@ export class ListService {
       , 1000);
     }
   }
+
+  addUserToList(listUUID: string, userUUID: string | null) {
+    console.log('[SERVICE] Adding user with UUID: ' + userUUID + ' to list with UUID: ' + listUUID);
+    let url = this.listAPI + 'list/' + listUUID + '/add/user/' + userUUID;
+    this.http.post(url, userUUID, { withCredentials: true }).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] User added to list');
+        this.getLists();
+      });
+  }
+
+  removeUserFromList(listUUID: string, userUUID: string | null) {
+    console.log('[SERVICE] Removing user with UUID: ' + userUUID + ' from list with UUID: ' + listUUID);
+    let url = this.listAPI + 'list/' + listUUID + '/remove/user/' + userUUID;
+    this.http.delete(url).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] User removed from list');
+        this.getLists();
+      });
+  }
+
 }

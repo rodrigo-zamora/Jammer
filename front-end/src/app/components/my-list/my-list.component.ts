@@ -27,9 +27,9 @@ export class MyListComponent implements OnInit {
 
   constructor(private snackbbar: MatSnackBar, public lists: ListService, private router: Router, public dialog: MatDialog, private authService: AuthService, route: ActivatedRoute) {
     route.params.subscribe(params => {
+      this.authService.verifyLogin();
       this.lists.getLists();
       this.lists.userLists$.pipe(takeUntil(this.destroyed)).subscribe((list) => {
-        console.log(list)
         this.list = list.lists;
         this.sharedLists = list.sharedLists;
       });
