@@ -1,16 +1,16 @@
 <h1 mat-dialog-title>{{'Crear nueva lista'}}</h1>
 <div mat-dialog-content class="content">
   <p>Nombre de la lista</p>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" ngNativeValidate>
     <mat-label>Nombre</mat-label>
     <input matInput [(ngModel)]="data.listName">
   </mat-form-field>
 </div>
 <div hidden id="emails" mat-dialog-content class="content">
   <p>Compartir lista</p>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" ngNativeValidate>
     <mat-label>Correo electrónico del usuario a compartir</mat-label>
-    <input matInput [(ngModel)]="data.email">
+    <input matInput [(ngModel)]="data.email" required>
   </mat-form-field>
 </div>
 <div mat-dialog-content class="content">
@@ -22,5 +22,5 @@
 </div>
 <div mat-dialog-actions class="actions">
   <button mat-button  (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data.listName" cdkFocusInitial (click)="create(data.listName, data.email)">Crear lista</button>
+  <button mat-button [mat-dialog-close]="data.listName" cdkFocusInitial (click)="create(data.listName, data.email)" type="submit">Crear lista</button>
 </div>

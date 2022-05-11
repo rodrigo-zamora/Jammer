@@ -28,22 +28,28 @@
             {{getActors()}}</p>
         </div>
         <div class="button">
-          <a mat-raised-button class="seeMovie"
+          <a *ngIf="movies.links.latino.length != 0"
+            mat-raised-button class="seeMovie"
             type="button"
+            href="{{movies?.links.latino[0]}}"
             target="_blank"
-            href="{{movies?.links.latino[0]}}">
+            >
             Ver película en latino
           </a>
-          <a mat-raised-button class="seeMovie"
+          <a *ngIf="movies.links.espanol.length != 0"
+            mat-raised-button class="seeMovie"
             type="button"
+            href="{{movies?.links.espanol[0]}}"
             target="_blank"
-            href="{{movies?.links.espanol[0]}}">
+            >
             Ver película en español
           </a>
-          <a mat-raised-button class="seeMovie"
+          <a *ngIf="movies.links.sub.length != 0"
+            mat-raised-button class="seeMovie"
             type="button"
+            href="{{movies?.links.sub[0]}}"
             target="_blank"
-            href="{{movies?.links.sub[0]}}">
+            >
             Ver película subtitulada
           </a>
           <!--<button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una

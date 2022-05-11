@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="button-container">
+    <div class="button-container" *ngIf="hasSubscription()">
         <button mat-mini-fab color="primary" class="displayListsButton" (click)="displayLists()">
             <mat-icon mat-button [matMenuTriggerFor]="menu" class="moreButton">more_vert</mat-icon>
             <mat-menu #menu="matMenu">

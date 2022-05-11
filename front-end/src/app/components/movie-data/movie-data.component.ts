@@ -56,6 +56,9 @@ export class MovieDataComponent implements OnInit {
       this.movies = movie[0];
     });
     console.log(this.movies);
+    console.log('latino',this.movies.links.latino[0]);
+    console.log('español',this.movies.links.espanol[0]);
+    console.log('sub',this.movies.links.sub[0]);
   }
 
   ngOnDestroy(): void {

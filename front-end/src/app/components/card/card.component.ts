@@ -45,6 +45,10 @@ export class CardComponent implements OnInit {
     });
   }
 
+  hasSubscription(): boolean {
+    return this.authService.hasSubscription();
+  }
+
   ngOnInit(): void {
     
   }

@@ -16,26 +16,26 @@
     <div class="card box2 shadow-sm">
         <div class="d-flex align-items-center justify-content-between p-md-5 p-4"> <span class="h5 fw-bold m-0">Método de pago</span>
         </div>
-        <form action="">
+        <form action="" ngNativeValidate>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Tarjeta de Débito / Tarjeta de Crédito</span>
-                        <div class="inputWithIcon"> <input class="form-control" type="text" placeholder="5136 1845 5468 3894" pattern="^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$" required> <span class=""> <img src="https://1000marcas.net/wp-content/uploads/2019/12/logo-Mastercard.png" alt=""></span> </div>
+                        <div class="inputWithIcon"> <input class="form-control" type="number" placeholder="5136 1845 5468 3894" pattern="^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$" required /> <span class=""> <img src="https://1000marcas.net/wp-content/uploads/2019/12/logo-Mastercard.png" alt=""></span> </div>
                     </div>
                 </div>
                 <div class="col-md-6 cardDataLeft">
                     <div class="d-flex flex-column ps-md-5 px-md-0 px-4 mb-4"> <span>Fecha de expiración</span>
-                        <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="05/20" required> <span class="fas fa-calendar-alt"></span> </div>
+                        <div class="inputWithIcon"> <input type="text" class="form-control" placeholder="05/20" required /> <span class="fas fa-calendar-alt"></span> </div>
                     </div>
                 </div>
                 <div class="col-md-6 cardDataRight">
                     <div class="d-flex flex-column pe-md-5 px-md-0 px-4 mb-4"> <span>CVV</span>
-                        <div class="inputWithIcon"> <input type="password" class="form-control" placeholder="123" required> <span class="fas fa-lock"></span> </div>
+                        <div class="inputWithIcon"> <input type="password" class="form-control" placeholder="123" required /> <span class="fas fa-lock"></span> </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="d-flex flex-column px-md-5 px-4 mb-4"> <span>Nombre</span>
-                        <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text" placeholder="Nombre de la tarjeta" required> <span class="far fa-user"></span> </div>
+                        <div class="inputWithIcon"> <input class="form-control text-uppercase" type="text" placeholder="Nombre de la tarjeta" required /> <span class="far fa-user"></span> </div>
                     </div>
                 </div>
                 <div class="col-12 px-md-5 px-4 mt-3">

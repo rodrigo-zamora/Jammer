@@ -1,14 +1,15 @@
 <div class="movieInfoContent">
-    <form class="example-form">
+    <form class="example-form" ngNativeValidate>
         <mat-form-field appearance="fill">
             <mat-label>Deja un comentario</mat-label>
             <textarea
                 id="comment"
                 matInput
                 placeholder="Ex. Esta pelicula me hace sentir..."
+                required
             ></textarea>
         </mat-form-field>
-        <button mat-icon-button (click)="saveComment('detail')">
+        <button mat-icon-button (click)="saveComment('detail')" type="submit">
             <mat-icon>check_circle_outline</mat-icon>
         </button>
     </form>
