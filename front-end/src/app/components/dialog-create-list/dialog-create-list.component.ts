@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth.service';
 import { ListService } from '../list.service';
 
@@ -25,7 +26,8 @@ export class DialogCreateListComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogCreateListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public lists: ListService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackbar: MatSnackBar
   ) {}
 
   onNoClick(): void {
@@ -50,9 +52,18 @@ export class DialogCreateListComponent implements OnInit {
   }
 
   create(listName: string, emails: string[]) {
-    let userUUID = this.authService.getUserUUID();
-    console.log(this.image);
-    this.lists.createList(listName, this.isPrivate, userUUID, this.image);
+    let nombre = (<HTMLInputElement>document.getElementById("nombre")).value;
+    
+    if (!nombre) {
+      this.snackbar.open('Por favor, ingresa un nombre para la lista', '', {
+        duration: 3000
+      });
+    } else {
+      this.dialogRef.close();
+      let userUUID = this.authService.getUserUUID();
+      console.log(this.image);
+      this.lists.createList(listName, this.isPrivate, userUUID, this.image);
+    }
   }
 
   onFileChange(event: any) {
