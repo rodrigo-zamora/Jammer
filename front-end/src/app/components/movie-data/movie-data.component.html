@@ -78,11 +78,19 @@
       </div>
       <div class="forComments" *ngFor="let comment of comments">
         <div class="comment">
-          <div class="autorInfo">
-            <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
-            <h2>{{comment?.authorName}}</h2>
-          </div>
-          <div class="author">
+          <div class="commentHeader">
+            <div class="autorInfo">
+              <img class="authorImage" [src]="comment?.authorImage" alt="Imagen del Usuario">
+              <h2>{{comment?.authorName}}</h2>
+            </div>
+            <div class="crud">
+              <button mat-icon-button (click)="editComment()">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="deleteComment()">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
           <div class="text">
             <p>{{comment?.text}}</p>

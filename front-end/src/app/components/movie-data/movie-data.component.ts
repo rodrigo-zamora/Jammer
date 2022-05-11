@@ -78,4 +78,12 @@ export class MovieDataComponent implements OnInit {
     return this.movies.cast.map((actor: { name: any; }) => actor.name).join(', ');
   }
 
+  deleteComment() {
+
+  }
+
+  editComment() {
+    
+  }
+
 }
