@@ -31,7 +31,7 @@
           <a *ngIf="movies.links.latino.length != 0"
             mat-raised-button class="seeMovie"
             type="button"
-            href="{{movies?.links.latino[0]}}"
+            href="{{movies?.links.latino[0].url}}"
             target="_blank"
             >
             Ver película en latino
@@ -39,7 +39,7 @@
           <a *ngIf="movies.links.espanol.length != 0"
             mat-raised-button class="seeMovie"
             type="button"
-            href="{{movies?.links.espanol[0]}}"
+            href="{{movies?.links.espanol[0].url}}"
             target="_blank"
             >
             Ver película en español
@@ -47,12 +47,12 @@
           <a *ngIf="movies.links.sub.length != 0"
             mat-raised-button class="seeMovie"
             type="button"
-            href="{{movies?.links.sub[0]}}"
+            href="{{movies?.links.sub[0].url}}"
             target="_blank"
             >
             Ver película subtitulada
           </a>
-          <!--<button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una
+          <button mat-raised-button [matMenuTriggerFor]="menu" (click)="displayLists()" class="seeMovie">Agregar a una
             lista
             <mat-menu #menu="matMenu">
               <p style="color: #fff; text-align: center;">Agregar a la lista</p>
@@ -61,7 +61,7 @@
               <mat-divider></mat-divider>
               <button mat-menu-item class="addList" routerLink="/lists">Crear lista</button>
             </mat-menu>
-          </button>-->
+          </button>
         </div>
       </div>
     </div>

@@ -50,6 +50,12 @@ router.post('/list/:listUUID/:movieUUID',handleError(async (req, res) => {
     res.send(list);
 }));
 
+router.post('/list/:listUUID/:cuevanaUUID/:movieName',handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/:cuevanaUUID/:movieName');
+    let list = await listController.addMovie(req.params.listUUID, req.params.cuevanaUUID, req.params.movieName);
+    res.send(list);
+}));
+
 router.delete('/list/:listUUID/:movieUUID',handleError(async (req, res) => {
     console.log('DELETE /lists/list/:listUUID/:movieUUID');
     let list = await listController.deleteMovie(req.params.listUUID, req.params.movieUUID);

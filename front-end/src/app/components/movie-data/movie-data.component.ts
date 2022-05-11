@@ -35,9 +35,9 @@ export class MovieDataComponent implements OnInit {
     public lists: ListService,
     private authService: AuthService) { }
 
-  addToList(listUUID : string, movieUUID : string | undefined) {
+  addToList(listUUID : string, cuevanaUUID : string | undefined) {
     let userUUID = this.authService.getUserUUID();
-    this.lists.addMovieToList(listUUID, movieUUID, userUUID);
+    this.lists.addMovieToList(listUUID, cuevanaUUID, userUUID);
   }
 
   displayLists() {
@@ -58,7 +58,6 @@ export class MovieDataComponent implements OnInit {
 
     this.pelis.getMovieDetails(uuid + '/' + name);
     this.pelis.movieDetails$.pipe(takeUntil(this.destroyed)).subscribe((movie) => {
-      console.log(movie[0]);
       this.movies = movie[0];
     });
   }

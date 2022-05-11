@@ -167,7 +167,7 @@ const listController = {
             return list;
         }
     },
-    addMovie: async function (listUUID, movieUUID) {
+    addMovie: async function (listUUID, movieUUID, movieName) {
         console.log(`Adding movie with listUUID ${listUUID} and movieUUID ${movieUUID}`);
         let list = await List.findOne({
             UUID: listUUID
@@ -181,13 +181,13 @@ const listController = {
                 $or: [{
                     UUID: movieUUID
                 }, {
-                    cuevanaUUID: movieUUID
+                    cuevanaUUID: movieUUID + '/' + movieName
                 }]
             });
             if (!movieInDatabase) {
                 console.log('Movie does not exist in database');
                 console.log('Creating movie in database: ' + movieUUID);    
-                let toCreate = await MovieController.createFromCuevanaUUID(movieUUID);
+                let toCreate = await MovieController.createFromCuevanaUUID(movieUUID + '/' + movieName);
                 console.log('Movie created: ' + toCreate.title);
                 if (list.movies.includes(toCreate.UUID)) {
                     console.log('Movie already exists in list');
