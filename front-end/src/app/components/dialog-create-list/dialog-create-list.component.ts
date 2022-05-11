@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { AuthService } from '../auth.service';
 import { ListService } from '../list.service';
 
 export interface DialogData {
   listName: string;
-  email: string;
+  email: string[];
   isPrivate: boolean;
 }
 
@@ -15,6 +16,9 @@ export interface DialogData {
   styleUrls: ['./dialog-create-list.component.less']
 })
 export class DialogCreateListComponent implements OnInit {
+
+  isPrivate = true;
+  isHidden = true;
 
   constructor(
     public dialogRef: MatDialogRef<DialogCreateListComponent>,
@@ -34,10 +38,19 @@ export class DialogCreateListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  create(listName: string, isPrivate: boolean) {
+  onChange(event: MatCheckboxChange) {
+    this.isPrivate = event.checked;
+  }
+
+  toggle(){
+    this.isHidden=!this.isHidden;
+    let emails = document.getElementById("emails");
+    if (emails) emails.hidden = this.isHidden;
+  }
+
+  create(listName: string, emails: string[]) {
     let userUUID = this.authService.getUserUUID();
-    console.log('userUUID: ', userUUID);
-    this.lists.createList(listName, isPrivate, userUUID);
+    this.lists.createList(listName, this.isPrivate, userUUID);
   }
 
 }
