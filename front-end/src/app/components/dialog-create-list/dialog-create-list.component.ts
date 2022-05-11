@@ -48,7 +48,9 @@ export class DialogCreateListComponent implements OnInit {
   toggle(){
     this.isHidden=!this.isHidden;
     let emails = document.getElementById("emails");
+    let addEmails = document.getElementById("addEmails");
     if (emails) emails.hidden = this.isHidden;
+    if (addEmails) addEmails.hidden = this.isHidden;
   }
 
   create(listName: string, emails: string[]) {
