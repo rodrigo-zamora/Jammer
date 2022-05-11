@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
-
+import { EditCommentsComponent } from '../edit-comments/edit-comments.component';
 
 @Component({
   selector: 'app-movie-data',
@@ -20,6 +20,9 @@ export class MovieDataComponent implements OnInit {
   @Input() movie: movie | undefined;
 
   uLists: any;
+
+  animal: string | undefined;
+  name: string | undefined;
 
   movies: any;
   comments: any;
@@ -34,6 +37,17 @@ export class MovieDataComponent implements OnInit {
     private router: Router,
     public lists: ListService,
     private authService: AuthService) { }
+
+    openDialog(): void {
+      const dialogRef = this.dialog.open(EditCommentsComponent, {
+        width: '550px',
+        data: {name: this.name, animal: this.animal},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        this.animal = result;
+      });
+    }
 
   addToList(listUUID : string, cuevanaUUID : string | undefined) {
     let userUUID = this.authService.getUserUUID();

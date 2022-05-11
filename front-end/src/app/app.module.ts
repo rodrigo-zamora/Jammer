@@ -36,6 +36,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DialogUpdateListComponent } from './components/dialog-update-list/dialog-update-list.component';
+import { EditCommentsComponent } from './components/edit-comments/edit-comments.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { DialogUpdateListComponent } from './components/dialog-update-list/dialo
     DialogCreateListComponent,
     CommentComponent,
     ConfirmDialogComponent,
-    DialogUpdateListComponent
+    DialogUpdateListComponent,
+    EditCommentsComponent
   ],
   imports: [
     BrowserModule,
