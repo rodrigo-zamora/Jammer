@@ -22,5 +22,5 @@ export class SocketService {
         observer.next(comment);
       })
     });
-  }
+  }  
 }

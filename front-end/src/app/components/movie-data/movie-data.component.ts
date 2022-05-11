@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import { EditCommentsComponent } from '../edit-comments/edit-comments.component';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-movie-data',
@@ -36,7 +37,8 @@ export class MovieDataComponent implements OnInit {
     public commentService: CommentService,
     private router: Router,
     public lists: ListService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private socketService: SocketService) { }
 
     openDialog(commentUUID: string): void {
       const dialogRef = this.dialog.open(EditCommentsComponent, {
@@ -83,12 +85,7 @@ export class MovieDataComponent implements OnInit {
     this.comments = [];
     this.commentService.getComments(uuid + '/' + name);
     this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
-      comments.forEach((comment: any) => {
-        this.comments = [];
-        if (!comment.isPrivate) {
-          this.comments.push(comment);
-        }
-      });
+      this.comments = comments;
     });
   }
 
@@ -142,14 +139,8 @@ export class MovieDataComponent implements OnInit {
         setTimeout(() => {
           this.getComments();
         }, 500);
-
       }
     });
 
   }
-
-  editComment() {
-    
-  }
-
 }

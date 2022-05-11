@@ -77,25 +77,6 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-/*const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: '*'
-    }
-})
-
-io.on('connection', (socket) => {
-    console.log('New client connected');
-
-    socket.on('addComment', (data) => {
-        if (!data.isPrivate) {
-            console.log('New comment added: ', data);
-            io.emit('newComment', data);
-        }
-    });
-});*/
-
-
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
 const movieRoute = require('./routes/movie.route');

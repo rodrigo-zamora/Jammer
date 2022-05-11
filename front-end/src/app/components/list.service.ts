@@ -34,9 +34,9 @@ export class ListService {
           let movieUUID = data.movies[i];
           this.http.get(this.movieAPI + 'movie/' + movieUUID).subscribe(
             (data2: any) => {
-              this.listMovies.push(data2);  
+              this.listMovies.push(data2);
             });
-          }
+        }
         this.listMovies$.next(this.listMovies);
       });
   }
@@ -94,6 +94,18 @@ export class ListService {
       }
   }
 
+  updateList(listUUID: any, listBody: any) {
+    let url = this.listAPI + 'list/' + listUUID;
+    if (listBody.imageURL) {
+      this.addImageToList(listUUID, listBody.imageURL);
+    }
+    this.http.put(url, listBody).subscribe(
+      (data: any) => {
+        console.log('[SERVICE] List updated');
+        this.getLists();
+      });
+  }
+
   addMovieToList(listUUID: string, movieUUID: string | undefined, userUUID: string | null) {
     console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to list with UUID: ' + listUUID);
     console.log('[SERVICE] Movie UUID: ' + movieUUID);
@@ -119,13 +131,13 @@ export class ListService {
     console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to history');
     console.log(this.userLists);
     if (this.userLists) {
-        this.addMovieToList(this.userLists.lists[0].UUID, movieUUID, userUUID);
+      this.addMovieToList(this.userLists.lists[0].UUID, movieUUID, userUUID);
     } else {
       this.getLists();
       setTimeout(() => {
         this.addMovieToHistory(movieUUID, userUUID);
       }
-      , 1000);
+        , 1000);
     }
   }
 
