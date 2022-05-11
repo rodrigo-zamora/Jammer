@@ -4,6 +4,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { DialogCreateListComponent } from '../dialog-create-list/dialog-create-list.component';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogUpdateListComponent } from '../dialog-update-list/dialog-update-list.component';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ListCardComponent implements OnInit {
   name: string | undefined;
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogCreateListComponent, {
+    const dialogRef = this.dialog.open(DialogUpdateListComponent, {
       width: '550px',
       data: {name: this.name, animal: this.animal},
     });
