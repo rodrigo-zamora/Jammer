@@ -33,6 +33,7 @@
             type="button"
             href="{{movies?.links.latino[0].url}}"
             target="_blank"
+            (click)="addToHistory(movies?.id)"
             >
             Ver película en latino
           </a>
@@ -41,6 +42,7 @@
             type="button"
             href="{{movies?.links.espanol[0].url}}"
             target="_blank"
+            (click)="addToHistory(movies?.id)"
             >
             Ver película en español
           </a>
@@ -49,6 +51,7 @@
             type="button"
             href="{{movies?.links.sub[0].url}}"
             target="_blank"
+            (click)="addToHistory(movies?.id)"
             >
             Ver película subtitulada
           </a>

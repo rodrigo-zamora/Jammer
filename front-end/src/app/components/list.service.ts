@@ -82,12 +82,6 @@ export class ListService {
 
   addImageToList(listUUID: string, file: File) {
     let url = this.listAPI + 'list/' + listUUID;
-    console.log('Adding image to list with file: ' + file.name);
-    console.log('[SERVICE] Uploading image to: ' + url);
-    console.log('[SERVICE] Image name: ' + file.name);
-    console.log('[SERVICE] Image type: ' + file.type);
-    console.log('[SERVICE] Image size: ' + file.size);
-    console.log('[SERVICE] Image data: ' + file);
     const formData = new FormData();
     formData.append('list', file, file.name);
     this.http.post(url, formData).subscribe(
@@ -119,5 +113,19 @@ export class ListService {
         console.log('[SERVICE] Movie deleted from list');
         this.getMoviesFromList(listUUID);
       });
+  }
+
+  addMovieToHistory(movieUUID: string, userUUID: string | null) {
+    console.log('[SERVICE] Adding movie with UUID: ' + movieUUID + ' to history');
+    console.log(this.userLists);
+    if (this.userLists) {
+        this.addMovieToList(this.userLists.lists[0].UUID, movieUUID, userUUID);
+    } else {
+      this.getLists();
+      setTimeout(() => {
+        this.addMovieToHistory(movieUUID, userUUID);
+      }
+      , 1000);
+    }
   }
 }
