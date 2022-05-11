@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SocketService } from './components/socket.service';
 
+interface Comment {
+  comment: string;
+  from: "out" | "in";
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,6 +16,7 @@ export class AppComponent implements OnInit {
 
   title = 'front-end';
 
+  movieComments: Comment[] = [];
   movieComment: string = '';
 
   onSendComment() {

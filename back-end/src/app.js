@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     console.log('New client connected');
 
     socket.on('movieComment', (data) => {
-        socket.emit('movieComment', data);
+        io.emit('movieComment', data);
     })
 });
 
