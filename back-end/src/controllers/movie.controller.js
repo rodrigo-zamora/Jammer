@@ -1,9 +1,8 @@
 const axios = require('axios').default;
 
 const Movie = require('../models/Movie');
-const Cuevana3 = require('../utils/cuevana3');
 
-const cuevanaURL = "https://d123-177-241-39-34.ngrok.io";
+const cuevanaURL = "https://a3f0-177-241-39-34.ngrok.io";
 
 const {
     NotFoundError,

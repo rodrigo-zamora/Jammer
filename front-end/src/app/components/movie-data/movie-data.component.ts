@@ -92,8 +92,10 @@ export class MovieDataComponent implements OnInit {
   }
 
   addToHistory(uuid: any) {
-    let userUUID = this.authService.getUserUUID();
-    this.lists.addMovieToHistory(uuid, userUUID);
+    if (this.authService.isLoggedIn()) {
+      let userUUID = this.authService.getUserUUID();
+      this.lists.addMovieToHistory(uuid, userUUID);
+    }
   }
 
   ngOnDestroy(): void {
