@@ -22,8 +22,8 @@ export class MoviesService {
   //api = 'https://backend-jammer.herokuapp.com/movies/';
   //commentsAPI = 'https://backend-jammer.herokuapp.com/comments/';
 
-  api = 'http://localhost:3000/movies/';
-  commentsAPI = 'http://localhost:3000/comments/';
+  api = 'http://https://backend-jammer.herokuapp.com//movies/';
+  commentsAPI = 'http://https://backend-jammer.herokuapp.com//comments/';
 
   actionMovies$ = new Subject<movie[]>();
   animationMovies$ = new Subject<movie[]>();

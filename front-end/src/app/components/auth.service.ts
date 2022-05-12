@@ -8,7 +8,7 @@ import { Observable, of, Subject } from 'rxjs';
 
 export class AuthService {
 
-  api = 'http://localhost:3000/auth/';
+  api = 'http://https://backend-jammer.herokuapp.com//auth/';
   //api = 'https://backend-jammer.herokuapp.com/auth/';
 
   authData$ = new Subject<any>();
@@ -19,7 +19,7 @@ export class AuthService {
   }
   
   logout() {
-    window.location.replace('http://localhost:3000/auth/logout');
+    window.location.replace('http://https://backend-jammer.herokuapp.com//auth/logout');
   }
 
   verifyLogin() {
