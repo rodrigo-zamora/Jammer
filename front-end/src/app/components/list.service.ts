@@ -13,8 +13,8 @@ export class ListService {
   //listAPI = 'https://backend-jammer.herokuapp.com/lists/';
   //movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
 
-  listAPI = 'http://localhost:3000/lists/';
-  movieAPI = 'http://localhost:3000/movies/';
+  listAPI = 'http://https://backend-jammer.herokuapp.com//lists/';
+  movieAPI = 'http://https://backend-jammer.herokuapp.com//movies/';
 
   userLists$ = new Subject<any>();
   listMovies$ = new Subject<movie[]>();

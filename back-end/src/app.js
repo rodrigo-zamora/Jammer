@@ -21,7 +21,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:4200'],
+        origin: ['http://https://jammer-streaming.herokuapp.com/'],
     }
 });
 
@@ -65,7 +65,7 @@ process.on('SIGINT', function () {
 
 app.use(cors(
     {
-        origin: 'http://localhost:4200',
+        origin: 'http://https://jammer-streaming.herokuapp.com/',
         credentials: true
     }
 ));
