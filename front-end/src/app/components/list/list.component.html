@@ -6,16 +6,13 @@
         No has agregado ninguna película a la lista.
       </h2>
     </div>
-    <div *ngIf="listItem.length > 0">
+    <div *ngIf="listItem.length > 0" class="MovieCardContainer">
       <div class="movieInfo" *ngFor="let movie of listItem">
         <app-card [movie]="movie"></app-card>
-        <div class="right">
-          <div *ngFor="let com of commentItems">
-            <p>ASD</p>
-          </div>
-          <app-comment></app-comment>
+        <div class="button">
+          <button mat-raised-button class="deleteFromList" (click)="deleteFromList(movie.UUID)">Borrar de la lista</button>
         </div>
-        <button mat-raised-button class="deleteFromList" (click)="deleteFromList(movie.UUID)">Borrar de la lista</button>
+        <br>
       </div>
     </div>
     <app-footer></app-footer>
