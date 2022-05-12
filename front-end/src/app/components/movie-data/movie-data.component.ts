@@ -37,8 +37,7 @@ export class MovieDataComponent implements OnInit {
     public commentService: CommentService,
     private router: Router,
     public lists: ListService,
-    private authService: AuthService,
-    private socketService: SocketService) { }
+    private authService: AuthService) { }
 
     openDialog(commentUUID: string): void {
       const dialogRef = this.dialog.open(EditCommentsComponent, {
@@ -53,6 +52,9 @@ export class MovieDataComponent implements OnInit {
 
   addToList(listUUID : string, cuevanaUUID : string | undefined) {
     let userUUID = this.authService.getUserUUID();
+    this.snackbar.open('Película añadida a la lista', '', {
+      duration: 2000
+    });
     this.lists.addMovieToList(listUUID, cuevanaUUID, userUUID);
   }
 
