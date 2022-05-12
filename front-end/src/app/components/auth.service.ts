@@ -8,8 +8,8 @@ import { Observable, of, Subject } from 'rxjs';
 
 export class AuthService {
 
-  api = 'http://https://backend-jammer.herokuapp.com//auth/';
-  //api = 'https://backend-jammer.herokuapp.com/auth/';
+  api = 'https://backend-jammer.herokuapp.com/api/auth/';
+  //api = 'https://backend-jammer.herokuapp.com/api/auth/';
 
   authData$ = new Subject<any>();
 
@@ -19,7 +19,7 @@ export class AuthService {
   }
   
   logout() {
-    window.location.replace('http://https://backend-jammer.herokuapp.com//auth/logout');
+    window.location.replace('https://backend-jammer.herokuapp.com/api/auth/logout');
   }
 
   verifyLogin() {
@@ -28,6 +28,8 @@ export class AuthService {
       withCredentials: true
     }).subscribe(
       (data: any) => {
+        console.log('Login verified');
+        console.log(data);
         this.authData = data;
         this.authData$.next(this.authData);
       }

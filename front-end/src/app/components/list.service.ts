@@ -10,11 +10,11 @@ import { AuthService } from './auth.service';
 
 export class ListService {
 
-  //listAPI = 'https://backend-jammer.herokuapp.com/lists/';
-  //movieAPI = 'https://backend-jammer.herokuapp.com/movies/';
+  //listAPI = 'https://backend-jammer.herokuapp.com/api/lists/';
+  //movieAPI = 'https://backend-jammer.herokuapp.com/api/movies/';
 
-  listAPI = 'http://https://backend-jammer.herokuapp.com//lists/';
-  movieAPI = 'http://https://backend-jammer.herokuapp.com//movies/';
+  listAPI = 'https://backend-jammer.herokuapp.com/api/lists/';
+  movieAPI = 'https://backend-jammer.herokuapp.com/api/movies/';
 
   userLists$ = new Subject<any>();
   listMovies$ = new Subject<movie[]>();

@@ -8,30 +8,12 @@ const YAML = require('yamljs');
 require('dotenv').config();
 require('./config/passport');
 
-const http = require('http');
-const { Server } = require('socket.io'); 
-
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
 const COOKIE_KEY = process.env.COOKIE_KEY || 'secret';
 
 const app = express();
-
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: ['http://https://jammer-streaming.herokuapp.com/'],
-    }
-});
-
-io.on('connection', (socket) => {
-    console.log('New client connected');
-
-    socket.on('movieComment', (data) => {
-        io.emit('movieComment', data);
-    })
-});
 
 const mongoose = require('mongoose');
 
@@ -63,12 +45,7 @@ process.on('SIGINT', function () {
     });
 });
 
-app.use(cors(
-    {
-        origin: 'http://https://jammer-streaming.herokuapp.com/',
-        credentials: true
-    }
-));
+app.use(cors());
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
@@ -90,25 +67,13 @@ const swaggerDocument = YAML.load(path.resolve('./src/docs/swagger.yaml'));
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/', (req, res) => {
-    res.send('Jammer Service API');
-});
-
-app.use('/auth', authRoute);
-app.use('/users', userRoute);
-app.use('/lists', listRoute);
-app.use('/movies', movieRoute);
-app.use('/subscription', subscriptionRoute);
-app.use('/tags', tagRoute);
-app.use('/comments', commentRoute);
-
-const {
-    NotFoundError,
-    ConflictError,
-    BadRequestError,
-    ForbiddenError,
-    UnauthorizedError
-} = require('./utils/errors');
+app.use('/api/auth', authRoute);
+app.use('/api/users', userRoute);
+app.use('/api/lists', listRoute);
+app.use('/api/movies', movieRoute);
+app.use('/api/subscription', subscriptionRoute);
+app.use('/api/tags', tagRoute);
+app.use('/api/comments', commentRoute);
 
 app.use((err, req, res, next) => {
     if (err.details) return res.status(400).send(err.details[0].message);
@@ -122,8 +87,17 @@ app.use((err, req, res, next) => {
     res.status(503).send('Something went wrong, try again: ' + err.message);
 });
 
+app.use(express.static(path.join(__dirname, 'public/dist/front-end/')));
 app.get('*', (req, res) => {
-    res.send('404 Not found');
+    res.sendFile((path.join(__dirname, 'public/dist/front-end/index.html')))
 });
 
-module.exports = server;
+const {
+    NotFoundError,
+    ConflictError,
+    BadRequestError,
+    ForbiddenError,
+    UnauthorizedError
+} = require('./utils/errors');
+
+module.exports = app;

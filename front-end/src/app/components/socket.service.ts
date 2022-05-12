@@ -9,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://https://backend-jammer.herokuapp.com/');
+    this.socket = io('http://https://backend-jammer.herokuapp.com/api/');
   }
 
   sendMovieComment(message: string) {

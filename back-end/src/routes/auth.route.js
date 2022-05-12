@@ -15,7 +15,7 @@ router.get(
     function (req, res) {
         console.log(req.query.code);
         //res.redirect('https://jammer-streaming.herokuapp.com/');
-        res.redirect('http://https://jammer-streaming.herokuapp.com/')
+        res.redirect('https://backend-jammer.herokuapp.com/')
     }
 );
 
@@ -30,7 +30,7 @@ router.get('/verifyLogin', (req, res) => {
 router.get('/logout', (req, res) => {
     if (req.isAuthenticated()) {
         req.logout();
-        res.redirect('http://https://jammer-streaming.herokuapp.com/');
+        res.redirect('https://backend-jammer.herokuapp.com/');
         res.status(200).send('Logged out');
     } else {
         res.status(401).send('Not authorized');

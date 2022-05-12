@@ -9,7 +9,7 @@ passport.use(
             clientID: process.env.CLIENT_ID || '',
             clientSecret: process.env.CLIENT_SECRET || '',
             //callbackURL: 'https://backend-jammer.herokuapp.com/auth/google/callback'
-            callbackURL: 'http://https://backend-jammer.herokuapp.com//auth/google/callback'
+            callbackURL: 'https://backend-jammer.herokuapp.com/api/auth/google/callback'
         },
         async function (accessToken, refreshToken, profile, done) {
             let user = await User.findOne({
