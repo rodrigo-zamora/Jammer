@@ -70,4 +70,13 @@ export class AuthService {
       return true;
     }
   }
+
+  isOwner(listUUID: string) {
+    if (this.authData.lists.includes(listUUID)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

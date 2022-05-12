@@ -7,7 +7,7 @@ import { ListService } from '../list.service';
 
 export interface DialogData {
   listName: string;
-  email: string[];
+  email: string;
   isPrivate: boolean;
 }
 
@@ -53,9 +53,10 @@ export class DialogCreateListComponent implements OnInit {
     if (addEmails) addEmails.hidden = this.isHidden;
   }
 
-  create(listName: string, emails: string[]) {
+  create(listName: string, email: string) {
     let nombre = (<HTMLInputElement>document.getElementById("nombre")).value;
-    
+    let emails = email.split(',');
+    console.log(emails);
     if (!nombre) {
       this.snackbar.open('Por favor, ingresa un nombre para la lista', '', {
         duration: 3000

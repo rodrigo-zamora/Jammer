@@ -43,6 +43,7 @@ export class ListService {
 
   getLists() {
     let uuid = this.authService.getUserUUID();
+    console.log('[SERVICE] Getting lists for user with UUID: ' + uuid);
     if (uuid) {
       let url = this.listAPI + uuid;
       this.http.get(url).subscribe(
