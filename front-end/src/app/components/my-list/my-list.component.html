@@ -11,17 +11,19 @@
       <div class="button-container">
         <button mat-raised-button class="addButton" (click)="openDialog()">Crear lista</button>
       </div>
-      <div class="myLists">
-        <h1>Mis listas</h1>
-        <div class="allLists" *ngIf="list">
-          <app-list-card *ngFor="let item of list" [list]="item"></app-list-card>
+      <div class="listContainer">
+        <div class="myLists">
+          <h1>Mis listas</h1>
+          <div class="allLists" *ngIf="list">
+            <app-list-card *ngFor="let item of list" [list]="item"></app-list-card>
+          </div>
         </div>
-      </div>
-      <div class="sharedLists">
-        <h1>Listas compartidas</h1>
-        <div class="allLists" *ngIf="sharedLists">
-          <h3 *ngIf="sharedLists">No tienes ninguna lista compartida</h3>
-          <app-list-card *ngFor="let item of sharedLists" [list]="item"></app-list-card>
+        <div class="sharedLists">
+          <h1>Listas compartidas</h1>
+          <div class="allLists" *ngIf="sharedLists">
+            <h3 *ngIf="sharedLists">No tienes ninguna lista compartida</h3>
+            <app-list-card *ngFor="let item of sharedLists" [list]="item"></app-list-card>
+          </div>
         </div>
       </div>
     </div>
