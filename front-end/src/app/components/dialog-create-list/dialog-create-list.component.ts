@@ -64,7 +64,7 @@ export class DialogCreateListComponent implements OnInit {
       this.dialogRef.close();
       let userUUID = this.authService.getUserUUID();
       console.log(this.image);
-      this.lists.createList(listName, this.isPrivate, userUUID, this.image);
+      this.lists.createList(listName, this.isPrivate, userUUID, this.image, emails);
     }
   }
 

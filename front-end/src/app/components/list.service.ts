@@ -62,7 +62,7 @@ export class ListService {
     );
   }
 
-  createList(listName: string, isPrivate: boolean, userUUID: string | null, image: File | null) {
+  createList(listName: string, isPrivate: boolean, userUUID: string | null, image: File | null, emails: string[]) {
     console.log('Creating list with name: ' + listName + ' and isPrivate: ' + isPrivate);
     let listBody = {
       name: listName,
@@ -76,6 +76,9 @@ export class ListService {
         } else {
           this.getLists();
         }
+        emails.forEach(email => {
+          this.addUserToList(data.UUID, email);
+        });
       }
     );
   }
