@@ -39,18 +39,18 @@ export class MovieDataComponent implements OnInit {
     public lists: ListService,
     private authService: AuthService) { }
 
-    openDialog(commentUUID: string): void {
-      const dialogRef = this.dialog.open(EditCommentsComponent, {
-        width: '550px',
-        data: {UUID: commentUUID},
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        this.animal = result;
-      });
-    }
+  openDialog(commentUUID: string): void {
+    const dialogRef = this.dialog.open(EditCommentsComponent, {
+      width: '550px',
+      data: { UUID: commentUUID },
+    });
 
-  addToList(listUUID : string, cuevanaUUID : string | undefined) {
+    dialogRef.afterClosed().subscribe(result => {
+      this.animal = result;
+    });
+  }
+
+  addToList(listUUID: string, cuevanaUUID: string | undefined) {
     let userUUID = this.authService.getUserUUID();
     this.snackbar.open('Película añadida a la lista', '', {
       duration: 2000

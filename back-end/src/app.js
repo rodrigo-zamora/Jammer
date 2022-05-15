@@ -8,12 +8,40 @@ const YAML = require('yamljs');
 require('dotenv').config();
 require('./config/passport');
 
+const http = require('http');
+const {
+    Server
+} = require('socket.io');
+
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
 const COOKIE_KEY = process.env.COOKIE_KEY || 'secret';
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: ['http://localhost:3000',
+            'https://backend-jammer.herokuapp.com',
+        ]
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+
+    socket.on('newComment', (data) => {
+        console.log(data);
+        io.emit('newComment', data);
+    });
+
+});
 
 const mongoose = require('mongoose');
 
@@ -57,7 +85,6 @@ app.use(passport.session());
 const userRoute = require('./routes/user.route');
 const listRoute = require('./routes/list.route');
 const movieRoute = require('./routes/movie.route');
-const tagRoute = require('./routes/tags.route');
 const commentRoute = require('./routes/comment.route');
 const subscriptionRoute = require('./routes/subscription.route');
 const authRoute = require('./routes/auth.route');
@@ -72,7 +99,6 @@ app.use('/api/users', userRoute);
 app.use('/api/lists', listRoute);
 app.use('/api/movies', movieRoute);
 app.use('/api/subscription', subscriptionRoute);
-app.use('/api/tags', tagRoute);
 app.use('/api/comments', commentRoute);
 
 app.use((err, req, res, next) => {
@@ -100,4 +126,4 @@ const {
     UnauthorizedError
 } = require('./utils/errors');
 
-module.exports = app;
+module.exports = server;
