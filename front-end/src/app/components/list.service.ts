@@ -141,7 +141,7 @@ export class ListService {
       setTimeout(() => {
         this.addMovieToHistory(movieUUID, userUUID);
       }
-        , 1000);
+        , 5000);
     }
   }
 
