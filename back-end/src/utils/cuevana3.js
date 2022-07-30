@@ -1,24 +1,3 @@
-/*
-* Original Copyright Carlos Fernández <https://github.com/carlosfdezb> and contributors.
-* 
-* The following code is a derivative work of the code from the above copyright holder,
-* which is licensed under the MIT License. This code therefore is also licensed under
-* the terms of the MIT License.
-*
-* For the full copyright and license information, please view the LICENSE file.
-*/
-
-const cheerio = require('cheerio');
-const cloudscraper = require('cloudscraper').defaults({
-  agentOptions: {
-    ciphers: 'ECDHE-ECDSA-AES128-GCM-SHA256'
-  },
-  headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-  }
-})
-const {BASE_URL, MOVIES, SERIES, GENRES} = require('./urls')
-
 const getMovies = async(type) =>{
   const res = await cloudscraper(`${BASE_URL}${MOVIES[type]}` , {method: 'GET'});
   const body = await res;

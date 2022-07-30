@@ -21,12 +21,17 @@ div app-global-theme {
             color: #fff;
         }
     }
+    .listContainer {
+        display: flex;
+        flex-direction: column;
+    }
     .myLists, .sharedLists {
         margin: 30px;
         color: #fff;
 
         .allLists {
             display: flex;
+            flex-wrap: wrap;
         }
         .subscriptionClick:hover {
             color: #B62519;

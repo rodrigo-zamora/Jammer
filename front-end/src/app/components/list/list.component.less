@@ -8,28 +8,27 @@ div {
             color: white;
             height: calc(100vh - 400px);
         }
-
-        .movieInfo {
+        .MovieCardContainer {
             display: flex;
-            margin: 50px;
-            border: 1px solid #fff;
-            border-radius: 15px;
-            position: relative;
+            flex-wrap: wrap;
+            justify-content: center;
 
-            .right {
+            .movieInfo {
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-end;
-                color: #fff;
-                width: 100%;
-            }
+                margin: 30px;
+                border: 1px rgba(255, 255, 255, 0.5) solid;
+                border-radius: 15px;
+                align-items: center;
 
-            .deleteFromList {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                height: 35px;
-                background-color: #B62519;
+                .button {
+
+                    .deleteFromList {
+                        height: 35px;
+                        background-color: #B62519;
+                        width: auto;
+                    }
+                }
             }
         }
     }

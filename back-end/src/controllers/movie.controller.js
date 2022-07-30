@@ -1,5 +1,8 @@
+const axios = require('axios').default;
+
 const Movie = require('../models/Movie');
-const Cuevana3 = require('../utils/cuevana3');
+
+const cuevanaURL = "https://5e11-177-241-39-34.ngrok.io";
 
 const {
     NotFoundError,
@@ -89,9 +92,14 @@ const movieController = {
                 if (query.hasOwnProperty(key)) {
                     if (key == 'title') {
                         console.log('Searching for movies with title: ', query[key]);
-                        await Cuevana3.getSearch(query[key], 1).then(movies => {
-                            moviesList = moviesList.concat(movies);
-                        });
+                        return axios
+                            .get(`${cuevanaURL}/getSearch/${query[key]}/1`)
+                            .then(response => {
+                                console.log('Response: ', response.data);
+                                return response.data;
+                            }).catch(err => {
+                                throw new BadRequestError(err.message);
+                            });
                     }
                     if (key == 'genre') {
                         let genres = {
@@ -155,24 +163,24 @@ const movieController = {
     },
     getDetails: async function (cuevanaUUID) {
         console.log('Searching for details of movie with cuevanaUUID: ', cuevanaUUID);
-        let movieDetails;
-        await Cuevana3.getDetail(cuevanaUUID).then(movie => {
-            movieDetails = movie;
-        }).catch((err) => {
-            console.log(err);
-        })
-        return movieDetails;
+        return axios
+            .get(`${cuevanaURL}/getDetail/${cuevanaUUID}`)
+            .then(response => {
+                console.log('Response: ', response.data);
+                return response.data;
+            }).catch(err => {
+                throw new BadRequestError(err.message);
+            });
     },
     getLinks: async function (cuevanaUUID) {
         console.log('Searching for links of movie with cuevanaUUID: ', cuevanaUUID);
         let movieLinks;
-        await Cuevana3.getLinks(cuevanaUUID).then(movie => {
-            movieLinks = movie;
-            console.log(movieLinks);
-        }).catch((err) => {
-            console.log(err);
-        })
-        return movieLinks;
+        return axios
+            .get(`${cuevanaURL}/getLinks/${cuevanaUUID}`)
+            .then(response => {
+                console.log('Response: ', response.data);
+                return response.data;
+            });
     },
     createFromCuevanaUUID: async function (cuevanaUUID) {
         console.log('Creating movie from cuevanaUUID: ', cuevanaUUID);

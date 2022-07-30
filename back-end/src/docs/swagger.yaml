@@ -12,8 +12,6 @@ tags:
   description: Subscriptions management
 - name: Movies
   description: Search movies, get movie details, get movie links, and movie management
-- name: Tags
-  description: Tag management
 - name: Comments
   description: Comment management
 paths:
@@ -395,119 +393,6 @@ paths:
                 $ref: "#/components/schemas/List"
         "404":
           description: The list does not exist
-        "400":
-          description: The request is invalid
-  /tags:
-    get:
-      tags:
-      - Tags
-      summary: Get all tags
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Tag"
-        "400":
-          description: The request is invalid
-    post:
-      tags:
-      - Tags
-      summary: Create a new tag
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Action
-      responses:
-        "201":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "409":
-          description: A tag with that name already exists
-        "400":
-          description: The request is invalid
-  /tags/:tagUUID:
-    get: 
-      tags:
-      - Tags
-      summary: Get a tag by tag uuid
-      parameters:
-        - name: tagUUID
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "404":
-          description: The tag does not exist
-        "400":
-          description: The request is invalid
-    put:
-      tags:
-      - Tags
-      summary: Update a tag by tag uuid
-      parameters:
-        - name: tagUUID
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Action
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "404":
-          description: The tag does not exist
-        "400":
-          description: The request is invalid
-    delete:
-      tags:
-      - Tags
-      summary: Delete a tag by tag uuid
-      parameters:
-        - name: tagUUID
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "404":
-          description: The tag does not exist
         "400":
           description: The request is invalid
   /comments/:movieUUID:
@@ -1144,16 +1029,3 @@ components:
           type: string
           format: date-time
           example: 2022-03-28T02:16:03.133+00:00
-    Tag:
-      type: object
-      properties:
-        UUID:
-          type: string
-          format: uuid
-          example: 3fa85f64-5719-4562-b3fc-2c963f66afa6
-        name:
-          type: string
-          example: Drama
-        count:
-          type: integer
-          example: 1

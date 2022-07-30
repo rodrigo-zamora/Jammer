@@ -60,14 +60,10 @@ const listController = {
                     if (user.lists.includes(listUUID)) {
                         return list;
                     } else {
-                        if (!list.isShared) {
-                            throw new UnauthorizedError('List is not shared');
+                        if (user.sharedLists.includes(listUUID)) {
+                            return list;
                         } else {
-                            if (user.sharedLists.includes(listUUID)) {
-                                return list;
-                            } else {
-                                throw new UnauthorizedError('User not allowed to access this list');
-                            }
+                            throw new UnauthorizedError('User not allowed to access this list');
                         }
                     }
                 }
@@ -186,7 +182,7 @@ const listController = {
             });
             if (!movieInDatabase) {
                 console.log('Movie does not exist in database');
-                console.log('Creating movie in database: ' + movieUUID);    
+                console.log('Creating movie in database: ' + movieUUID);
                 let toCreate = await MovieController.createFromCuevanaUUID(movieUUID + '/' + movieName);
                 console.log('Movie created: ' + toCreate.title);
                 if (list.movies.includes(toCreate.UUID)) {
@@ -281,10 +277,10 @@ const listController = {
             }
         }
     },
-    addUserToList: async function (listUUID, userUUID) {
+    addUser: async function (listUUID, userUUID) {
         console.log(`Adding user with userUUID ${userUUID} to list with listUUID ${listUUID}`);
         let toAdd = await User.findOne({
-            UUID: userUUID
+            email: userUUID
         });
         if (!toAdd) {
             throw new NotFoundError(`User with uuid ${userUUID} not found`);
@@ -298,20 +294,17 @@ const listController = {
                 if (!list) {
                     throw new NotFoundError(`List with uuid ${listUUID} not found`);
                 } else {
-                    if (!list.isShared) {
-                        throw new UnauthorizedError(`List with uuid ${listUUID} is not shared`);
-                    } else {
-                        list.sharedWith.push(userUUID);
-                        await list.save();
-                        toAdd.sharedLists.push(listUUID);
-                        await toAdd.save();
-                        return list;
-                    }
+                    list.sharedWith.push(userUUID);
+                    await list.save();
+                    toAdd.sharedLists.push(listUUID);
+                    await toAdd.save();
+                    return list;
+
                 }
             }
         }
     },
-    removeUserFromList: async function (listUUID, userUUID) {
+    removeUser: async function (listUUID, userUUID) {
         console.log(`Removing user with userUUID ${userUUID} from list with listUUID ${listUUID}`);
         let toRemove = await User.findOne({
             UUID: userUUID

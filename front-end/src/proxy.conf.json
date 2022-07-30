@@ -1,6 +1,6 @@
 {
     "*": {
-        "target": "http://localhost:3000",
+        "target": "https://backend-jammer.herokuapp.com/api",
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true

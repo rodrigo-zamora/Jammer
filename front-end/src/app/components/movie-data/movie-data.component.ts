@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import { EditCommentsComponent } from '../edit-comments/edit-comments.component';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-movie-data',
@@ -38,19 +39,22 @@ export class MovieDataComponent implements OnInit {
     public lists: ListService,
     private authService: AuthService) { }
 
-    openDialog(commentUUID: string): void {
-      const dialogRef = this.dialog.open(EditCommentsComponent, {
-        width: '550px',
-        data: {UUID: commentUUID},
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        this.animal = result;
-      });
-    }
+  openDialog(commentUUID: string): void {
+    const dialogRef = this.dialog.open(EditCommentsComponent, {
+      width: '550px',
+      data: { UUID: commentUUID },
+    });
 
-  addToList(listUUID : string, cuevanaUUID : string | undefined) {
+    dialogRef.afterClosed().subscribe(result => {
+      this.animal = result;
+    });
+  }
+
+  addToList(listUUID: string, cuevanaUUID: string | undefined) {
     let userUUID = this.authService.getUserUUID();
+    this.snackbar.open('Película añadida a la lista', '', {
+      duration: 2000
+    });
     this.lists.addMovieToList(listUUID, cuevanaUUID, userUUID);
   }
 
@@ -80,16 +84,18 @@ export class MovieDataComponent implements OnInit {
     var url = this.router.url;
     var uuid = url.split('/')[2];
     var name = url.split('/')[3];
+    this.comments = [];
     this.commentService.getComments(uuid + '/' + name);
     this.commentService.comments$.pipe(takeUntil(this.destroyed)).subscribe((comments) => {
       this.comments = comments;
-      console.log(this.comments);
     });
   }
 
   addToHistory(uuid: any) {
-    let userUUID = this.authService.getUserUUID();
-    this.lists.addMovieToHistory(uuid, userUUID);
+    if (this.authService.isLoggedIn()) {
+      let userUUID = this.authService.getUserUUID();
+      this.lists.addMovieToHistory(uuid, userUUID);
+    }
   }
 
   ngOnDestroy(): void {
@@ -137,14 +143,8 @@ export class MovieDataComponent implements OnInit {
         setTimeout(() => {
           this.getComments();
         }, 500);
-
       }
     });
 
   }
-
-  editComment() {
-    
-  }
-
 }

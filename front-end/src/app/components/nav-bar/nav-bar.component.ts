@@ -32,7 +32,7 @@ export class NavBarComponent implements OnInit {
   }
  
   login() {
-    window.location.replace('http://localhost:3000/auth/google/login');
+    window.location.replace('https://backend-jammer.herokuapp.com/api/auth/google/login');
   }
 
   logout() {

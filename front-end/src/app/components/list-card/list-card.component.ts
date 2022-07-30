@@ -5,6 +5,7 @@ import { DialogCreateListComponent } from '../dialog-create-list/dialog-create-l
 import { ConfirmDialogComponent, ConfirmDialogModel } from '../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogUpdateListComponent } from '../dialog-update-list/dialog-update-list.component';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -16,19 +17,20 @@ export class ListCardComponent implements OnInit {
 
   @Input() list: any;
 
-  constructor(private snackbar: MatSnackBar, public lists: ListService, public dialog: MatDialog) { }
+  constructor(private authService: AuthService, private snackbar: MatSnackBar, public lists: ListService, public dialog: MatDialog) { }
 
   animal: string | undefined;
   name: string | undefined;
+  UUID: string | undefined;
+  nameList: string | undefined;
 
-  openDialog(): void {
+  openDialog(UUID: string, nameList: string): void {
     const dialogRef = this.dialog.open(DialogUpdateListComponent, {
       width: '550px',
-      data: {name: this.name, animal: this.animal},
+      data: {name: this.name, animal: this.animal, UUID: UUID, nameList: nameList},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.animal = result;
     });
   }
@@ -57,7 +59,10 @@ export class ListCardComponent implements OnInit {
         });
       }
     });
+  }
 
+  isOwner(uuid: string): boolean {
+    return this.authService.isOwner(uuid);
   }
 
 }

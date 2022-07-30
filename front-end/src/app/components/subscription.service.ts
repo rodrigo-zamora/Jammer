@@ -8,8 +8,8 @@ import { Observable, of, Subject } from 'rxjs';
 
 export class SubscriptionService {
 
-  //api = 'https://backend-jammer.herokuapp.com/subscription/';
-  api = 'http://localhost:3000/subscription/';
+  //api = 'https://backend-jammer.herokuapp.com/api/subscription/';
+  api = 'https://backend-jammer.herokuapp.com/api/subscription/';
 
   constructor(private http: HttpClient) { }
 

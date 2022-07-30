@@ -5,22 +5,24 @@ import { io, Socket } from 'socket.io-client';
 @Injectable({
   providedIn: 'root'
 })
+
 export class SocketService {
+
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('https://backend-jammer.herokuapp.com');
   }
 
-  sendMovieComment(message: string) {
-    this.socket.emit('movieComment', message);
+  sendNewComment(comment: string) {
+    this.socket.emit('newComment', comment);
   }
 
-  getMovieComments() {
+  getNewComment() {
     return new Observable<string>(observer => {
-      this.socket.on('movieComment', (comment: string) => {
+      this.socket.on('newComment', (comment) => {
         observer.next(comment);
-      })
+      });
     });
   }
 }

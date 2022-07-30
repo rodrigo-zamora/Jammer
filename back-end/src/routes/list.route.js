@@ -44,6 +44,18 @@ router.post('/list/:listUUID', uploadCloud.single('list'), async (req, res) => {
     res.send(list);
 });
 
+router.post('/list/:listUUID/add/user/:userUUID', handleError(async (req, res) => {
+    console.log('POST /lists/list/:listUUID/add/user/:userUUID');
+    let list = await listController.addUser(req.params.listUUID, req.params.userUUID);
+    res.send(list);
+}));
+
+router.delete('/list/:listUUID/remove/user/:userUUID', handleError(async (req, res) => {
+    console.log('DELETE /lists/list/:listUUID/remove/user/:userUUID');
+    let list = await listController.removeUser(req.params.listUUID, req.params.userUUID);
+    res.send(list);
+}));
+
 router.post('/list/:listUUID/:movieUUID',handleError(async (req, res) => {
     console.log('POST /lists/list/:listUUID/:movieUUID');
     let list = await listController.addMovie(req.params.listUUID, req.params.movieUUID);
