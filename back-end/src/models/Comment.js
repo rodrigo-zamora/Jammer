@@ -1,37 +1,21 @@
 const mongoose = require('mongoose');
 
-let Utils = require('../utils/utils');
-
 const commentSchema = new mongoose.Schema({
-    UUID: {
-        type: String,
-        required: false,
-        index: true,
-        unique: true,
-        default: function() {
-            return Utils.generateUUID();
-        }
-    },
-    authorUUID: {
-        type: String,
+    authorID: {
+        type: Schema.Types.ObjectID,
+        ref: 'User',
         required: true
     },
-    authorName: {
-        type: String,
-        required: true
-    },
-    authorImage: {
-        type: String,
-        required: false
-    },
-    movieUUID: {
-        type: String,
+    movieID: {
+        type: Schema.Types.ObjectID,
+        ref: 'Movie',
         required: true
     },
     tags: [{
-        tagUUID: {
-            type: String,
-            required: true
+        tagID: {
+            type: Schema.Types.ObjectID,
+            ref: 'Tag',
+            required: false
         }
     }],
     text: {
@@ -60,19 +44,6 @@ const commentSchema = new mongoose.Schema({
         default: Date.now
     }
 }, { collection : 'comments' });
-
-commentSchema.virtual('id').get(function () {
-    return this._id;
-});
-
-commentSchema.set('toJSON', {
-    virtuals: true,
-    transform: function(doc, ret) {
-        delete ret.id;
-        delete ret._id;
-        delete ret.__v;
-    }
-});
 
 let Comment = mongoose.model('comment', commentSchema);
 

@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 
-let Utils = require('../utils/utils');
-
 const listSchema = new mongoose.Schema({
-    UUID: {
-        type: String,
-        required: false,
-        index: true,
-        unique: true,
-        default: function() {
-            return Utils.generateUUID();
-        }
-    },
     name: {
         type: String,
         required: true,
@@ -24,42 +13,48 @@ const listSchema = new mongoose.Schema({
         required: false,
         trim: true,
         minlength: 2,
-        maxlength: 500,
-        validate: {
-            validator: (description) => {
-                return /^[a-zA-Z0-9\s\.,\?\!\:\;\(\)\-\_\=\+\*\&\%\$\#\@\[\]\{\}]+$/.test(text);
-            }
-        }
+        maxlength: 500
     },
-    movies: [],
-    isShared: {
+    isPublic: {
         type: Boolean,
         required: true,
         default: false
     },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    userID: {
+        type: Schema.Types.ObjectID,
+        ref: 'User',
+        required: true
+    },
     sharedWith: [{
-        type: String,
-        required: true,
-        default: []
+        userID: {
+            type: Schema.Types.ObjectID,
+            ref:'User',
+            required: false
+        }
     }],
-    imageURL: {
-        type: String,
-        required: false,
-        default: ''
-    }
+    movies: [{
+        movieID: {
+            type: Schema.Types.ObjectID,
+            ref: 'Movie',
+            required: false
+        }
+    }]
 }, { collection : 'lists' });
 
-listSchema.virtual('id').get(function () {
-    return this._id;
-});
+listSchema.pre('save', function (next) {
+    let list = this;
 
-listSchema.set('toJSON', {
-    virtuals: true,
-    transform: function(doc, ret) {
-        delete ret.id;
-        delete ret._id;
-        delete ret.__v;
-    }
+    list.updatedAt = Date.now();
+
+    next();
 });
 
 let List = mongoose.model('List', listSchema);

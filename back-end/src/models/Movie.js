@@ -3,16 +3,7 @@ const mongoose = require('mongoose');
 let Utils = require('../utils/utils');
 
 const movieSchema = new mongoose.Schema({
-    UUID: {
-        type: String,
-        required: false,
-        index: true,
-        unique: true,
-        default: function() {
-            return Utils.generateUUID();
-        }
-    },
-    cuevanaUUID: {
+    cuevanaID: {
         type: String,
         required: true,
         index: true,
@@ -51,19 +42,6 @@ const movieSchema = new mongoose.Schema({
         required: false
     }
 }, { collection : 'movies' });
-
-movieSchema.virtual('id').get(function () {
-    return this._id;
-});
-
-movieSchema.set('toJSON', {
-    virtuals: true,
-    transform: function(doc, ret) {
-        delete ret.id;
-        delete ret._id;
-        delete ret.__v;
-    }
-});
 
 let Movie = mongoose.model('Movie', movieSchema);
 

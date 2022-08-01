@@ -3,72 +3,61 @@ const bcrypt = require('bcrypt');
 
 const SALT_WORK_FACTOR = 10;
 
-const Utils = require('../utils/utils');
-//let Passport = require('../config/passport');
-
 const userSchema = new mongoose.Schema({
-    UUID: {
-        type: String,
-        required: false,
-        index: true,
-        unique: true,
-        default: function () {
-            return Utils.generateUUID();
-        }
-    },
     firstName: {
         type: String,
-        trim: true,
-        default: ''
+        required: true,
+        trim: true
     },
     lastName: {
         type: String,
-        trim: true,
-        default: ''
+        required: true,
+        trim: true
     },
-    imageURL: {
+    username: {
         type: String,
-        required: false
+        required: true,
+        unique: true,
+        trim: true
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        trim: true
     },
     password: {
         type: String,
         required: false,
-        minlength: 8,
-        maxlength: 50,
-        validate: {
-            validator: (password) => {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/.test(password);
-            },
-            message: (props) => `${props.value} is not a valid password!`
-        }
+        trim: true
     },
     createdAt: {
         type: Date,
-        required: false,
         default: Date.now
     },
     updatedAt: {
         type: Date,
-        required: false,
         default: Date.now
     },
-    subscription: {
+    createdUsingPassport: {
+        type: Boolean,
+        default: false
+    },
+    role: {
         type: String,
-        required: false,
-        default: null
+        enum: ['admin', 'user'],
+        default: 'user'
+    },
+    subscription: {
+        type: Schema.Types.ObjectId,
+        ref: 'Subscription'
     },
     lists: [{
-        type: String
-    }],
-    sharedLists: [{
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'List'
     }]
-}, { collection: 'users' });
+}, {
+    collection: 'users'
+});
 
 userSchema.pre('save', function (next) {
     let user = this;
@@ -76,41 +65,25 @@ userSchema.pre('save', function (next) {
     // Update updatedAt with the current date
     user.updatedAt = Date.now();
 
-    // Generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-        
-        // Hash the password using our new salt
-        bcrypt.hash(user.password, salt, function (err, hash) {
+    if (!user.isModified('password')) return next();
+
+    if (!user.createdUsingPassport) {
+        // Generate a salt
+        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
             if (err) return next(err);
 
-            // Override the cleartext password with the hashed one
-            user.password = hash;
-            next();
+            // Hash the password using the salt
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if (err) return next(err);
+
+                // Override the cleartext password with the hashed one
+                user.password = hash;
+                next();
+            });
         });
-    });
-    
-    next();
-});
-
-userSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
-
-userSchema.virtual('id').get(function () {
-    return this._id;
-});
-
-userSchema.set('toJSON', {
-    virtuals: true,
-    transform: function(doc, ret) {
-        delete ret.id;
-        delete ret._id;
-        delete ret.__v;
     }
+
+    next();
 });
 
 let User = mongoose.model('User', userSchema);
